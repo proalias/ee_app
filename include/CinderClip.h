@@ -28,6 +28,8 @@ public:
 
 	ci::Vec2f getCenter();
 
+	CinderClip(void);
+
 };
 
 #endif
