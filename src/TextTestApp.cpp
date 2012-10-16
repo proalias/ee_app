@@ -99,11 +99,11 @@ void TextTestApp::setup()
 	myFont.addLine( "FOR YOUR", 2 );
 	myFont.addLine( "DIGITAL LIFE", 2 );
 
-	repelClips = std::vector<CinderClip>();
-
+	
 
 	for (int i=0; i<20; i++){
-		repelClips.push_back(CinderClip());
+		CinderClip cinderClip = CinderClip();
+		repelClips.push_back(cinderClip);
 	}
 
 
@@ -119,25 +119,26 @@ void TextTestApp::setup()
 
 		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
 
-		particle.width = randFloat(0.5,6);
+		particle.width = randFloat(3,10);
 	
 		particle.x=randFloat(getWindowWidth());
 		particle.y=randFloat(getWindowHeight());
 
 		//particle.setBounce(-1);
-		particle.setMaxSpeed(2);
+		particle.setMaxSpeed(5);
+
+		
 
 		//particle.setEdgeBehavior("wrap");
 
 		particle.setWander(3);
 		particle.setGrav(0);
 
-		particle.addRepelPoint( 200,300,100,100 );
-
-		for (int rc = 0; rc<repelClips.size(); rc++){
-			particle.addRepelClip(repelClips[rc],1.0,1.0);
+		
+		for (int i=0; i<20; i++){
+			particle.addRepelClip( repelClips[i],500,200 );
 		}
-
+		
 		mParticles.push_back( particle );
 
 		
@@ -241,9 +242,9 @@ void TextTestApp::drawSkeleton(){
 
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
-
+			int boneIndex = 0;
 			// Iterate through joints
-			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt ) {
+			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt, boneIndex++ ) {
 
 				// Set user color
 				gl::color( color );
@@ -251,6 +252,7 @@ void TextTestApp::drawSkeleton(){
 				// Get position and rotation
 				const Bone& bone	= boneIt->second;
 				Vec3f position		= bone.getPosition();
+				
 				Matrix44f transform	= bone.getAbsoluteRotationMatrix();
 				Vec3f direction		= transform.transformPoint( position ).normalized();
 				direction			*= 0.05f;
@@ -261,8 +263,8 @@ void TextTestApp::drawSkeleton(){
 				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
-				repelClips[i].x = destinationScreen.x;
-				repelClips[i].y = destinationScreen.y;
+				repelClips[boneIndex].x = destinationScreen.x;
+				repelClips[boneIndex].y = destinationScreen.y;
 
 				gl::color(Color(1.0,0.0,0.0));
 				gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
@@ -348,12 +350,12 @@ void TextTestApp::drawSkeleton(){
 				
 
 				// Draw joint
-				gl::drawSphere( position, 0.025f, 16 );
+				//gl::drawSphere( position, 0.025f, 16 );
 
 				// Draw joint orientation
-				glLineWidth( 0.5f );
+				//glLineWidth( 0.5f );
 				gl::color( ColorAf::white() );
-				gl::drawVector( position, position + direction, 0.05f, 0.01f );
+				//gl::drawVector( position, position + direction, 0.05f, 0.01f );
 
 			}
 
