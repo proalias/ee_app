@@ -41,8 +41,8 @@ class TextTestApp : public AppNative {
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	//settings->setWindowSize( 1920, 1200 );
 	settings->setWindowSize( 1280, 800 );
+	//settings->setWindowSize( 1280, 800 );
 	//settings->setFrameRate( 30.0f );
 	//settings->setFullScreen( true );
 }
