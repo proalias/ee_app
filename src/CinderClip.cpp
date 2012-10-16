@@ -1,6 +1,5 @@
 #include "CinderClip.h"
 
-
 CinderClip::CinderClip(void)
 {
 	x=0;
@@ -15,7 +14,6 @@ CinderClip::CinderClip(void)
 	minDist=100;
 	k=100;
 }
-
 
 ci::Vec2f CinderClip::getCenter(){
 	return ci::Vec2f(width/2, height/2);
