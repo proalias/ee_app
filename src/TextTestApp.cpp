@@ -10,6 +10,7 @@
 
 #include "FontRenderer.h"
 #include "Particle.h"
+#include "CinderClip.h"
 #include "ParticleA.h"
 
 
@@ -44,6 +45,7 @@ class TextTestApp : public AppNative {
 	FontRenderer myFont;
  
 	std::list<ParticleA>	mParticles;
+	std::vector<CinderClip> repelClips;
 	
 private:
 	// Kinect
@@ -97,6 +99,13 @@ void TextTestApp::setup()
 	myFont.addLine( "FOR YOUR", 2 );
 	myFont.addLine( "DIGITAL LIFE", 2 );
 
+	repelClips = std::vector<CinderClip>();
+
+
+	for (int i=0; i<20; i++){
+		repelClips.push_back(CinderClip());
+	}
+
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
@@ -125,7 +134,13 @@ void TextTestApp::setup()
 
 		particle.addRepelPoint( 200,300,100,100 );
 
+		for (int rc = 0; rc<repelClips.size(); rc++){
+			particle.addRepelClip(repelClips[rc],1.0,1.0);
+		}
+
 		mParticles.push_back( particle );
+
+		
 	}
 
 
@@ -217,8 +232,8 @@ void TextTestApp::drawSkeleton(){
 	if ( mKinect->isCapturing() ) {
 
 		// Set up 3D view
-		gl::pushMatrices();
-		gl::setMatrices( mCamera );
+		//gl::pushMatrices();
+		//gl::setMatrices( mCamera );
 
 		// Iterate through skeletons
 		uint32_t i = 0;
@@ -241,7 +256,18 @@ void TextTestApp::drawSkeleton(){
 				direction			*= 0.05f;
 				position.z			*= -1.0f;
 
-				
+
+				Vec3f destination		= skeletonIt->at( bone.getStartJoint() ).getPosition();
+				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
+				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
+
+				repelClips[i].x = destinationScreen.x;
+				repelClips[i].y = destinationScreen.y;
+
+				gl::color(Color(1.0,0.0,0.0));
+				gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
+
+				/*
 				// Draw generic bone stuff here
 				glLineWidth( 2.0f );
 				JointName startJoint = bone.getStartJoint();
@@ -250,9 +276,10 @@ void TextTestApp::drawSkeleton(){
 					destination.z		*= -1.0f;
 					gl::drawLine( position, destination );
 				}
+				*/
 
 
-				//draw bone specifif stuff here
+				//draw bone specific stuff here
 				switch(boneIt->first){
 						case NUI_SKELETON_POSITION_HIP_CENTER:
 							//draw hip center
@@ -318,7 +345,7 @@ void TextTestApp::drawSkeleton(){
 				}
 
 
-
+				
 
 				// Draw joint
 				gl::drawSphere( position, 0.025f, 16 );
@@ -332,7 +359,7 @@ void TextTestApp::drawSkeleton(){
 
 		}
 		
-		gl::popMatrices();
+		//gl::popMatrices();
 	}
 }
 
