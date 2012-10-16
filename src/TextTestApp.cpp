@@ -69,7 +69,7 @@ void TextTestApp::setup()
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
 	myFont = FontRenderer();
-	myFont.addLine( "4GEE IS HERE AV", 10 ); // TODO - parameter needs to be font size
+	myFont.addLine( "ALIAS IS COOL", 10 ); // TODO - parameter needs to be font size
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
 }
