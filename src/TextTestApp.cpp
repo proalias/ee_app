@@ -50,7 +50,7 @@ void TextTestApp::prepareSettings( Settings *settings )
 	settings->setWindowSize( 1280, 800 );
 	//settings->setWindowSize( 1280, 800 );
 	//settings->setFrameRate( 30.0f );
-	settings->setFullScreen( true );
+	//settings->setFullScreen( true );
 }
 
 
@@ -75,10 +75,11 @@ void TextTestApp::setup()
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
 	myFont = FontRenderer();
-	myFont.addLine( "WELCOME TO", 10 ); // TODO - parameter needs to be font size
-	myFont.addLine( "THE NEW NETWORK", 10 ); // TODO - parameter needs to be font size
-	myFont.addLine( "FOR YOUR", 10 ); // TODO - parameter needs to be font size
-	myFont.addLine( "DIGITAL LIFE", 10 ); // TODO - parameter needs to be font size
+	myFont.addLine( "WELCOME TO", 2 );
+	myFont.addLine( "THE NEW NETWORK", 2 );
+	myFont.addLine( "FOR YOUR", 2 );
+	myFont.addLine( "DIGITAL LIFE", 2 );
+
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
@@ -92,7 +93,7 @@ void TextTestApp::setup()
 
 		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
 
-		particle.width = randFloat(5);
+		particle.width = randFloat(0.5,6);
 	
 		particle.x=randFloat(getWindowWidth());
 		particle.y=randFloat(getWindowHeight());
@@ -101,8 +102,6 @@ void TextTestApp::setup()
 		particle.setMaxSpeed(2);
 
 		//particle.setEdgeBehavior("wrap");
-
-		particle.setEdgeBehavior("bounce");
 
 		particle.setWander(3);
 		particle.setGrav(0);

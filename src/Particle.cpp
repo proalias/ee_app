@@ -9,13 +9,13 @@ Particle::Particle()
 {
 }
 
-Particle::Particle( Vec2f loc )
+Particle::Particle( Vec2f loc, float size )
 {
 	sLoc	= loc;
 	mLoc	= loc;
 	mDir	= Rand::randVec2f();
 	mVel	= Rand::randFloat( 5.0f );
-	mRadius	= 9.0f;
+	mRadius	= size*2.5;
 }
 
 void Particle::update()

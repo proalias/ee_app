@@ -1,6 +1,37 @@
 #include "FontRenderer.h"
 #include "cinder/Rand.h"
 
+
+// goes through all points and gets the widest
+float FontRenderer::getLineWidth( float index )
+{
+	std::vector<Particle> line = lines[index];
+	float widestPoint = 0.0;
+	float pointLength = lines.size();
+	for( int i=0; i<pointLength; i++ ){
+		if(line[i].mLoc.x>widestPoint){
+			widestPoint = line[i].mLoc.x;
+		}
+	}
+	return widestPoint;
+}	
+
+
+// goes through all points and gets the highest
+float FontRenderer::getLineHeight( float index )
+{
+	std::vector<Particle> line = lines[index];
+	float longestPoint = 0.0;
+	float pointLength = lines.size();
+	for( int i=0; i<pointLength; i++ ){
+		if(line[i].mLoc.y>longestPoint){
+			longestPoint = line[i].mLoc.y;
+		}
+	}
+	return longestPoint;
+}
+
+
 // sorts the leading per character
 float FontRenderer::getCharWidth( char char1, char char2 )
 {
@@ -200,32 +231,32 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 }
 
 // TODO - pass in an init position for x and y
-void FontRenderer::addLine( const std::string &line, int size )
+void FontRenderer::addLine( const std::string &copy, int size )
 {
+	std::vector<Particle> newline = vector<Particle>();
+
 	// current characters postition 
 	int xPosition = 0;
-	int yPosition = 50;
+	//int yPosition = 0;
 	
-	for( int i=0; i<line.length(); i++ )
+	for( int i=0; i<copy.length(); i++ )
 	{
-		char theChar = line[i];
+		char theChar = copy[i];
 
 		std::vector<Vec2f> character = FontRenderer::getCharacter( theChar );
 		
 		float pointLength = character.size();
 
-		//float mysize = myNob.A.size();
-
 		for( int i=0; i<pointLength; i++ )
 		{
 			float x = character[i][0]+xPosition;
-			float y = character[i][1]+yPosition;
-			mParticles.push_back( Particle( Vec2f( x*4, y*4 ) ) );
+			float y = character[i][1];//+yPosition;
+			newline.push_back( Particle( Vec2f( x*size, y*size ), size ) );
 		}
 
 		char theNextChar = *"";
-		if(i<line.length()-1){
-			theNextChar = line[i+1];
+		if(i<copy.length()-1){
+			theNextChar = copy[i+1];
 		}
 
 		xPosition += FontRenderer::getCharWidth( theChar, theNextChar );//20;
@@ -238,8 +269,7 @@ void FontRenderer::addLine( const std::string &line, int size )
 			xPosition += 5;
 		}
 	}
-	
-	// TODO - centre it all on the stage
+	lines.push_back(newline);
 }
 
 FontRenderer::FontRenderer(void)
@@ -249,10 +279,32 @@ FontRenderer::FontRenderer(void)
 
 void FontRenderer::draw()
 {
-	for( list<Particle>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-		p->draw();
+	
+	
+	float yPos = 0;
+	float xPos = (getWindowWidth()/2);
+
+	for (int j=0;j<lines.size();j++){
+
+		gl::pushMatrices();
+
+		xPos = (getWindowWidth()/2) - getLineWidth(j);
+
+
+		gl::translate( xPos, yPos, 0 );
+
+		for( vector<Particle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+			p->draw();
+		}
+	
+		//yPos = FontRenderer::getLineHeight(j)+10;
+
+		gl::popMatrices();
 	}
+
+	
+		
 }
 
 void FontRenderer::clear()

@@ -3,9 +3,12 @@
 #include <vector>
 #include "Particle.h"
 #include "NobleeBold.h"
+#include "cinder/gl/gl.h"
+#include "cinder/app/App.h"
 
-using namespace std;
 using namespace ci;
+using namespace ci::app;
+using namespace std;
 
 #include <list>
 using std::list;
@@ -20,6 +23,7 @@ public:
 	// TODO - for now using one font. should be able to use any of the weights
 	NobleeBold font;
 
+    std::vector<std::vector<Particle>> lines;
 	//void setColor( Color );
 
 	// pass in a string you want to display and a size
@@ -35,6 +39,9 @@ public:
 	std::vector<Vec2f> getCharacter(char);
 
 	float getCharWidth( char, char );
+
+	float getLineWidth( float ); // gets the width of a line by index
+	float getLineHeight( float ); // gets the height of a line by index
 
 	FontRenderer(void);
 	//~FontRenderer(void);

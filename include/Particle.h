@@ -7,7 +7,7 @@
 class Particle {
  public:
 	Particle();
-	Particle( ci::Vec2f );
+	Particle( ci::Vec2f, float );
 	void update();
 	void draw();
 	
