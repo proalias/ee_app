@@ -10,6 +10,7 @@
 
 #include "FontRenderer.h"
 #include "Particle.h"
+#include "CinderClip.h"
 #include "ParticleA.h"
 
 #include "CinderClip.h"
@@ -50,8 +51,7 @@ class TextTestApp : public AppNative {
 	std::vector<ParticleA>	gridParticles;
 	void drawGrid();
 
-
-	CinderClip myClip;
+	std::vector<CinderClip> repelClips;
 	
 private:
 	// Kinect
@@ -109,11 +109,12 @@ void TextTestApp::setup()
 	myFont.addLine( "FOR YOUR", 2 );
 	myFont.addLine( "DIGITAL LIFE", 2 );
 
+	
 
-	myClip = CinderClip();
-	myClip.x = 200;
-	myClip.y = 300;
-
+	for (int i=0; i<20; i++){
+		CinderClip cinderClip = CinderClip();
+		repelClips.push_back(cinderClip);
+	}
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
@@ -127,27 +128,25 @@ void TextTestApp::setup()
 
 		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
 
-		particle.width = randFloat(0.5,6);
+		particle.width = randFloat(3,10);
 	
 		particle.x=randFloat(getWindowWidth());
 		particle.y=randFloat(getWindowHeight());
 
 		//particle.setBounce(-1);
-		particle.setMaxSpeed(2);
+		particle.setMaxSpeed(5);
 
 		//particle.setEdgeBehavior("wrap");
 
 		particle.setWander(3);
 		particle.setGrav(0);
-
-	//	particle.addRepelPoint( 200,300,100,100 );
-
-		particle.addRepelClip( myClip, 100, 100 );
-
-
+		
+		for (int i=0; i<20; i++){
+			particle.addRepelClip( repelClips[i],500,200 );
+		}
+		
 		mParticles.push_back( particle );
 	}
-
 
 	setupSkeletonTracker();
 }
@@ -196,8 +195,6 @@ void TextTestApp::updateSkeleton()
 	}
 
 }
-
-
 
 
 void TextTestApp::drawGrid()
@@ -262,11 +259,6 @@ void TextTestApp::drawGrid()
 
 void TextTestApp::draw()
 {
-
-	myClip.x += 2.0;
-
-	//myClip.incrementX();
-
 	// this pair of lines is the standard way to clear the screen in OpenGL
 	glClearColor( 0,0,0,1 );
 	glClear( GL_COLOR_BUFFER_BIT );
@@ -319,8 +311,8 @@ void TextTestApp::drawSkeleton(){
 	if ( mKinect->isCapturing() ) {
 
 		// Set up 3D view
-		gl::pushMatrices();
-		gl::setMatrices( mCamera );
+		//gl::pushMatrices();
+		//gl::setMatrices( mCamera );
 
 		// Iterate through skeletons
 		uint32_t i = 0;
@@ -328,9 +320,9 @@ void TextTestApp::drawSkeleton(){
 
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
-
+			int boneIndex = 0;
 			// Iterate through joints
-			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt ) {
+			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt, boneIndex++ ) {
 
 				// Set user color
 				gl::color( color );
@@ -338,12 +330,24 @@ void TextTestApp::drawSkeleton(){
 				// Get position and rotation
 				const Bone& bone	= boneIt->second;
 				Vec3f position		= bone.getPosition();
+				
 				Matrix44f transform	= bone.getAbsoluteRotationMatrix();
 				Vec3f direction		= transform.transformPoint( position ).normalized();
 				direction			*= 0.05f;
 				position.z			*= -1.0f;
 
-				
+
+				Vec3f destination		= skeletonIt->at( bone.getStartJoint() ).getPosition();
+				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
+				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
+
+				repelClips[boneIndex].x = destinationScreen.x;
+				repelClips[boneIndex].y = destinationScreen.y;
+
+				gl::color(Color(1.0,0.0,0.0));
+				gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
+
+				/*
 				// Draw generic bone stuff here
 				glLineWidth( 2.0f );
 				JointName startJoint = bone.getStartJoint();
@@ -352,9 +356,10 @@ void TextTestApp::drawSkeleton(){
 					destination.z		*= -1.0f;
 					gl::drawLine( position, destination );
 				}
+				*/
 
 
-				//draw bone specifif stuff here
+				//draw bone specific stuff here
 				switch(boneIt->first){
 						case NUI_SKELETON_POSITION_HIP_CENTER:
 							//draw hip center
@@ -420,21 +425,21 @@ void TextTestApp::drawSkeleton(){
 				}
 
 
-
+				
 
 				// Draw joint
-				gl::drawSphere( position, 0.025f, 16 );
+				//gl::drawSphere( position, 0.025f, 16 );
 
 				// Draw joint orientation
-				glLineWidth( 0.5f );
+				//glLineWidth( 0.5f );
 				gl::color( ColorAf::white() );
-				gl::drawVector( position, position + direction, 0.05f, 0.01f );
+				//gl::drawVector( position, position + direction, 0.05f, 0.01f );
 
 			}
 
 		}
 		
-		gl::popMatrices();
+		//gl::popMatrices();
 	}
 }
 
