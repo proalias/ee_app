@@ -34,7 +34,8 @@ void ParticleA::init()
 	__repelPoints = std::vector<RepelPoint>();
 	__springClips = std::vector<CinderClip>();
 	__gravClips = std::vector<CinderClip>();
-	__repelClips = std::vector<CinderClip>();
+	
+	//__repelClips = std::vector<CinderClip*>();
 
 
 
@@ -271,9 +272,9 @@ void ParticleA::update()
 
 		for ( int rc= 0; rc < __repelClips.size(); rc++ )
 		{
-			clip = __repelClips[rc];
-			minDist = __repelClips[rc].minDist;
-			k = __repelClips[rc].k;
+			clip = *__repelClips[rc];
+			minDist = clip.minDist;//*__repelClips[rc].minDist;
+			k = clip.k;//__repelClips[rc].k;
 			dx = clip.x - x;
 			dy = clip.y - y;
 
@@ -464,7 +465,7 @@ float ParticleA::addGravClip(CinderClip clip, float force)
 	return __gravClips.size() - 1;
 }
 
-int ParticleA::addRepelClip( CinderClip clip, float force, float minDist )
+int ParticleA::addRepelClip( CinderClip &clip, float force, float minDist )
 {
 	if ( !force )
 	{
@@ -477,7 +478,7 @@ int ParticleA::addRepelClip( CinderClip clip, float force, float minDist )
 
 	clip.k = force;
 	clip.minDist;
-	__repelClips.push_back( clip );
+	__repelClips.push_back( &clip );
 	return __repelClips.size() - 1;
 }
 
