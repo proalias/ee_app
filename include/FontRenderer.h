@@ -5,6 +5,7 @@
 #include "NobleeBold.h"
 #include "cinder/gl/gl.h"
 #include "cinder/app/App.h"
+#include "cinder/Rand.h"
 
 using namespace ci;
 using namespace ci::app;

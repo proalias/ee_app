@@ -1,23 +1,24 @@
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
-#include "cinder/Text.h"
-#include "cinder/ImageIo.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/Utilities.h"
-#include "cinder/Font.h"
-#include "cinder/Rand.h"
-#include "Resources.h"
+
 #include "cinder/app/AppBasic.h"
-#include "Particle.h"
-#include "ColorConstants.h"
+#include "cinder/app/AppNative.h"
+#include "cinder/Camera.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/ImageIo.h"
+#include "cinder/params/Params.h"
+#include "cinder/Utilities.h"
+#include "Kinect.h"
+
 #include "FontRenderer.h"
+#include "Particle.h"
 #include "ParticleA.h"
+
+
+#include <list>
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-
-#include <list>
+using namespace KinectSdk;
 using std::list;
 
 static const bool PREMULT = false;
@@ -28,19 +29,35 @@ class TextTestApp : public AppNative {
 	void prepareSettings( Settings *settings ); // TODO - whats this wheres it get called?
 
 	void setup();
+	void setupSkeletonTracker();
+
 	void update();
+	void updateSkeleton();
+
 	void draw();
+	void drawSkeleton();
 
 	gl::Texture bgImage;
 	
 	gl::Texture mSimpleTexture;
 
 	FontRenderer myFont;
-
-	 public:
-	 
+ 
 	std::list<ParticleA>	mParticles;
+	
+private:
+	// Kinect
+	uint32_t							mCallbackId;
+	KinectSdk::KinectRef				mKinect;
+	std::vector<KinectSdk::Skeleton>	mSkeletons;
+	void								onSkeletonData( std::vector<KinectSdk::Skeleton> skeletons, 
+		const KinectSdk::DeviceOptions &deviceOptions );
 
+	// Camera
+	ci::CameraPersp						mCamera;
+
+	// Save screenshot
+	void								screenShot();
 };
 
 
@@ -110,14 +127,55 @@ void TextTestApp::setup()
 
 		mParticles.push_back( particle );
 	}
+
+
+	setupSkeletonTracker();
 }
+
+
+void TextTestApp::setupSkeletonTracker(){
+	
+	// Start Kinect
+	mKinect = Kinect::create();
+	mKinect->start( DeviceOptions().enableDepth( false ).enableVideo( false ) );
+	mKinect->removeBackground();
+
+	// Set the skeleton smoothing to remove jitters. Better smoothing means
+	// less jitters, but a slower response time.
+	mKinect->setTransform( Kinect::TRANSFORM_SMOOTH );
+
+	// Add callback to receive skeleton data
+	mCallbackId = mKinect->addSkeletonTrackingCallback( &TextTestApp::onSkeletonData, this );
+
+	// Set up camera
+	mCamera.lookAt( Vec3f( 0.0f, 0.0f, 2.0f ), Vec3f::zero() );
+	mCamera.setPerspective( 45.0f, getWindowAspectRatio(), 0.01f, 1000.0f );
+}
+
 
 void TextTestApp::update()
 {
+	
+	updateSkeleton();
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 		p->update();
 	}
 }
+
+void TextTestApp::updateSkeleton()
+{
+
+	if ( mKinect->isCapturing() ) {
+		mKinect->update();
+	} else {
+		// If Kinect initialization failed, try again every 90 frames
+		if ( getElapsedFrames() % 90 == 0 ) {
+			mKinect->start();
+		}
+	}
+
+}
+
 
 void TextTestApp::draw()
 {
@@ -128,7 +186,8 @@ void TextTestApp::draw()
 	//gl::setMatricesWindow( getWindowSize() );
 
 	gl::draw( bgImage );
-
+	
+	drawSkeleton();
 //	gl::enableAlphaBlending( PREMULT );
 
 	gl::color( Color::white() );
@@ -148,8 +207,142 @@ void TextTestApp::draw()
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 
 	}
-
 }
+
+
+void TextTestApp::drawSkeleton(){
+	// Clear window
+
+	// We're capturing
+	if ( mKinect->isCapturing() ) {
+
+		// Set up 3D view
+		gl::pushMatrices();
+		gl::setMatrices( mCamera );
+
+		// Iterate through skeletons
+		uint32_t i = 0;
+		for ( vector<Skeleton>::const_iterator skeletonIt = mSkeletons.cbegin(); skeletonIt != mSkeletons.cend(); ++skeletonIt, i++ ) {
+
+			// Set color
+			Colorf color = mKinect->getUserColor( i );
+
+			// Iterate through joints
+			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt ) {
+
+				// Set user color
+				gl::color( color );
+
+				// Get position and rotation
+				const Bone& bone	= boneIt->second;
+				Vec3f position		= bone.getPosition();
+				Matrix44f transform	= bone.getAbsoluteRotationMatrix();
+				Vec3f direction		= transform.transformPoint( position ).normalized();
+				direction			*= 0.05f;
+				position.z			*= -1.0f;
+
+				
+				// Draw generic bone stuff here
+				glLineWidth( 2.0f );
+				JointName startJoint = bone.getStartJoint();
+				if ( skeletonIt->find( startJoint ) != skeletonIt->end() ) {
+					Vec3f destination	= skeletonIt->find( startJoint )->second.getPosition();
+					destination.z		*= -1.0f;
+					gl::drawLine( position, destination );
+				}
+
+
+				//draw bone specifif stuff here
+				switch(boneIt->first){
+						case NUI_SKELETON_POSITION_HIP_CENTER:
+							//draw hip center
+				 			break;
+					 
+						case NUI_SKELETON_POSITION_SPINE:
+							//draw spine
+				 			break;
+						case NUI_SKELETON_POSITION_SHOULDER_CENTER:
+							//draw shoulder center
+				 			break;
+						case NUI_SKELETON_POSITION_HEAD:
+							//draw head
+				 			break;
+						case NUI_SKELETON_POSITION_SHOULDER_LEFT:
+							//draw left shoulder
+							break;				 
+						case NUI_SKELETON_POSITION_ELBOW_LEFT:
+							//draw left elbow
+							break;				 
+						case NUI_SKELETON_POSITION_WRIST_LEFT:
+							//draw left wrist
+							break;				 
+						case NUI_SKELETON_POSITION_HAND_LEFT:
+							//draw left hand
+							break;				 
+						case NUI_SKELETON_POSITION_SHOULDER_RIGHT:
+							//draw right shoulder
+							break;				 
+						case NUI_SKELETON_POSITION_ELBOW_RIGHT:
+							//draw right elbow
+							break;				 
+						case NUI_SKELETON_POSITION_WRIST_RIGHT:
+							//draw right wrist
+							break;				 
+						case NUI_SKELETON_POSITION_HAND_RIGHT:
+							//draw right hand
+							break;				 
+						case NUI_SKELETON_POSITION_HIP_LEFT:
+							//draw left hip
+							break;				 
+						case NUI_SKELETON_POSITION_KNEE_LEFT:
+							//draw left knee
+							break;				 
+						case NUI_SKELETON_POSITION_ANKLE_LEFT:
+							//draw left ankle
+							break;				 
+						case NUI_SKELETON_POSITION_FOOT_LEFT:
+							//draw left foot
+							break;
+						case NUI_SKELETON_POSITION_HIP_RIGHT:
+							//draw right hip
+							break;
+						case NUI_SKELETON_POSITION_KNEE_RIGHT:
+							//draw right knee
+							break;
+						case NUI_SKELETON_POSITION_ANKLE_RIGHT:
+							//draw right ankle
+							break;
+						case NUI_SKELETON_POSITION_FOOT_RIGHT:
+							//draw right foot
+							break;
+				}
+
+
+
+
+				// Draw joint
+				gl::drawSphere( position, 0.025f, 16 );
+
+				// Draw joint orientation
+				glLineWidth( 0.5f );
+				gl::color( ColorAf::white() );
+				gl::drawVector( position, position + direction, 0.05f, 0.01f );
+
+			}
+
+		}
+		
+		gl::popMatrices();
+	}
+}
+
+
+// Receives skeleton data
+void TextTestApp::onSkeletonData( vector<Skeleton> skeletons, const DeviceOptions &deviceOptions )
+{
+	mSkeletons = skeletons;
+}
+
 
 // This line tells Cinder to actually create the application
 CINDER_APP_NATIVE( TextTestApp, RendererGl )

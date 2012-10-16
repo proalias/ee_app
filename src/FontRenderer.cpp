@@ -1,5 +1,4 @@
 #include "FontRenderer.h"
-#include "cinder/Rand.h"
 
 
 // goes through all points and gets the widest
