@@ -41,13 +41,16 @@ public:
     float addRepelPoint( float x, float y, float force, float minDist );
 	float addSpringClip(CinderClip clip, float force);
 	float addGravClip(CinderClip clip, float force);
-	int addRepelClip( CinderClip clip, float force, float minDist );
+	
+	int addRepelClip( CinderClip &clip, float force, float minDist );
+
     void removeSpringPoint( int index );
     void removeGravPoint( int index );
     void removeRepelPoint( int index );
     void removeSpringClip(int index);
     void removeGravClip(int index);
     void removeRepelClip(int index);
+
     void clearSpringPoints();
     void clearGravPoints();
     void clearRepelPoints();
@@ -61,7 +64,8 @@ public:
     std::vector<RepelPoint> __repelPoints;
     std::vector<CinderClip> __springClips;
     std::vector<CinderClip> __gravClips;
-    std::vector<CinderClip> __repelClips;
+    
+	std::vector<CinderClip*> __repelClips;
 
 	//ci::Rectf __efClip;
         
