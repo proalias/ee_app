@@ -100,19 +100,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
     <ClCompile Include="..\src\NobleeBold.cpp" />
     <ClCompile Include="..\src\NobleeRegular.cpp" />
     <ClCompile Include="..\src\Particle.cpp" />
     <ClCompile Include="..\src\FontRenderer.cpp" />
+    <ClCompile Include="..\src\ParticleA.cpp" />
+    <ClCompile Include="..\src\RepelPoint.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
     <ClInclude Include="..\include\NobleeBold.h" />
     <ClInclude Include="..\include\NobleeRegular.h" />
     <ClInclude Include="..\include\Particle.h" />
     <ClInclude Include="..\include\FontRenderer.h" />
+    <ClInclude Include="..\include\ParticleA.h" />
+    <ClInclude Include="..\include\RepelPoint.h" />
     <ClInclude Include="..\include\Resources.h" />
   </ItemGroup>
   <ItemGroup>
