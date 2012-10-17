@@ -27,13 +27,13 @@ void ParticleA::init()
 
 
 	__bounds = ci::Rectf();
-	setBounds( 0, 500, 0, 500 );//SCREEN WIDTH & HEIGHT 
-	__maxSpeed = 2000000;
+	setBounds( 0, 1280, 0, 800 );//SCREEN WIDTH & HEIGHT 
+	__maxSpeed = 1;
 	__springPoints = std::vector<ci::Vec3f>();
 	__gravPoints = std::vector<RepelPoint>();
 	__repelPoints = std::vector<RepelPoint>();
-	__springClips = std::vector<CinderClip>();
-	__gravClips = std::vector<CinderClip>();
+//	__springClips = std::vector<CinderClip>();
+//	__gravClips = std::vector<CinderClip>();
 	
 	//__repelClips = std::vector<CinderClip*>();
 
@@ -250,8 +250,8 @@ void ParticleA::update()
 
 		for ( int sc = 0; sc < __springClips.size(); sc++ )
 		{
-			CinderClip clip = __springClips[sc];
-			k = __springClips[sc].k;
+			CinderClip clip = *__springClips[sc];
+			k = clip.k;
 			__vx += (clip.getCenter().x - x) * k;
 			__vy += (clip.getCenter().y - y) * k;
 
@@ -259,13 +259,13 @@ void ParticleA::update()
 
 		for ( int gc = 0; gc < __gravClips.size(); gc++ )
 		{
-			CinderClip clip = __gravClips[gc];
+			CinderClip clip = *__gravClips[gc];
 			dx = clip.x - x;
 			dy = clip.y - y;
 
 			distSQ = dx * dx + dy * dy;
 			dist = ci::math<float>::sqrt( distSQ );
-			force = __gravClips[gc].k / distSQ;
+			force = clip.k / distSQ;
 			__vx += force * dx / dist;
 			__vy += force * dy / dist;
 		}
@@ -443,25 +443,25 @@ float ParticleA::addRepelPoint( float x, float y, float force, float minDist)
 	return __repelPoints.size() - 1;
 }
 
-float ParticleA::addSpringClip(CinderClip clip, float force)
+float ParticleA::addSpringClip(CinderClip &clip, float force)
 {
 	if (!force)
 	{
 		float force = .1;
 	}
 	clip.k = force;
-	__springClips.push_back( clip );
+	__springClips.push_back( &clip );
 	return __springClips.size() - 1;
 }
 
-float ParticleA::addGravClip(CinderClip clip, float force)
+float ParticleA::addGravClip(CinderClip &clip, float force)
 {
 	if (!force)
 	{
 		float force = 1000;
 	}
 	clip.k = force;
-	__gravClips.push_back(clip);
+	__gravClips.push_back(&clip);
 	return __gravClips.size() - 1;
 }
 

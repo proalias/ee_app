@@ -99,9 +99,6 @@ void TextTestApp::setup()
 	//simple.addLine( "SIMPLE TEXT TEST 1" );
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
-	// draw the grid. TODO - create a class for this and just add a grid instance
-	TextTestApp::drawGrid();
-
 	myFont = FontRenderer();
 	myFont.addLine( "WELCOME TO", 2 );
 	myFont.addLine( "THE NEW NETWORK", 2 );
@@ -113,9 +110,12 @@ void TextTestApp::setup()
 		repelClips.push_back(cinderClip);
 	}
 
+	// draw the grid. TODO - create a class for this and just add a grid instance
+	TextTestApp::drawGrid();
+
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
-	for( int i=0; i<1000; i++ )
+	for( int i=0; i<100; i++ )
 	{
 			//float x = //character[i][0]+xPosition;
 			//float y = //character[i][1]+yPosition;
@@ -139,7 +139,7 @@ void TextTestApp::setup()
 		particle.setGrav(0);
 		
 		for (int i=0; i<20; i++){
-			particle.addRepelClip( repelClips[i],500,200 );
+			particle.addRepelClip( repelClips[i], 500, 200 );
 		}
 		
 		mParticles.push_back( particle );
@@ -177,11 +177,14 @@ void TextTestApp::update()
 		p->update();
 	}
 
+	for( vector<ParticleA>::iterator gp = gridParticles.begin(); gp != gridParticles.end(); ++gp ){
+		gp->update();
+	}
+
 }
 
 void TextTestApp::updateSkeleton()
 {
-
 	if ( mKinect->isCapturing() ) {
 		mKinect->update();
 	} else {
@@ -190,28 +193,24 @@ void TextTestApp::updateSkeleton()
 			mKinect->start();
 		}
 	}
-
 }
 
 
-void TextTestApp::drawGrid()
+void TextTestApp::drawGrid(  )
 {
-	int SPACING = 70;
+	int SPACING = 40;
 
 	float COLUMNS = getWindowWidth()/SPACING;
 	float ROWS = getWindowHeight()/SPACING;
 	
 	int LAYERS = 1;
 
-	int totalParticles = COLUMNS*ROWS;
-	int psize = mParticles.size();
+//	int totalParticles = COLUMNS*ROWS;
+//	int psize = mParticles.size();
 
 	gridParticles.clear();
 
-	for (int l = 0; l < LAYERS; l++){
-		//gl::pushMatrices();
-
-		//gl::translate(0,0,-l*mDepth);
+	//for (int l = 0; l < LAYERS; l++){
 
 		for( int j=0; j<ROWS; j++ ){
 			for( int i=0; i<COLUMNS; i++ ){
@@ -225,28 +224,21 @@ void TextTestApp::drawGrid()
 				particle.y = j*SPACING;
 
 				//particle.setBounce(-1);
-				//particle.setMaxSpeed(2);
+				particle.setMaxSpeed(2);
 				//particle.setEdgeBehavior("wrap");
 
 				//particle.setWander(3);
 				particle.setGrav(0);
+				particle.addSpringPoint( i*SPACING, j*SPACING, 0.01 ); // FORCES THE PARTICLE INTO POSITION
 
-				//particle.addRepelPoint( 200,300,100,100 );
-
-				particle.addSpringPoint( i*SPACING, j*SPACING, 100 ); // FORCES THE PARTICLE INTO POSITION
+				for (int i=0; i<repelClips.size(); i++){
+					particle.addRepelClip( repelClips[i], 50, 100 );
+				}
 
 				gridParticles.push_back( particle );
 			}
 		}
-
-	
-//		gl::color(ColorA(1.0,1.0,1.0,1.0 - (1.0/mLayers) * l));
-
-
-
-		//gl::popMatrices();
-	}
-
+//	}
 }
 
 
@@ -263,8 +255,6 @@ void TextTestApp::draw()
 	//gl::setMatricesWindow( getWindowSize() );
 
 	gl::draw( bgImage );
-	
-
 
 	//for (int l = 0; l < 3; l++){
 	//	gl::pushMatrices();
@@ -273,7 +263,7 @@ void TextTestApp::draw()
 		for( vector<ParticleA>::iterator p = gridParticles.begin(); p != gridParticles.end(); ++p ){
 			gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 		}
-	//	gl::popMatrices();
+		//gl::popMatrices();
 	//}
 
 
