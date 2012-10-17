@@ -398,11 +398,11 @@ void TextTestApp::drawSkeleton(){
 				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
-				repelClips[boneIndex].x = destinationScreen.x;
-				repelClips[boneIndex].y = destinationScreen.y;
+				repelClips[boneIndex].x = destinationScreen.x*2;
+				repelClips[boneIndex].y = destinationScreen.y*2;
 
 				gl::color(Color(1.0,0.0,0.0));
-				gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
+				gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
 
 				/*
 				// Draw generic bone stuff here
