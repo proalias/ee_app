@@ -48,8 +48,10 @@ class TextTestApp : public AppNative {
  
 	std::list<ParticleA>	mParticles;
 
-	std::vector<ParticleA>	gridParticles;
-	void drawGrid();
+	std::vector<ParticleA>	gridLayer1;
+	std::vector<ParticleA>	gridLayer2;
+	std::vector<ParticleA>	gridLayer3;
+	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int );
 
 	std::vector<CinderClip> repelClips;
 	
@@ -111,15 +113,12 @@ void TextTestApp::setup()
 	}
 
 	// draw the grid. TODO - create a class for this and just add a grid instance
-	TextTestApp::drawGrid();
+	TextTestApp::drawGrid( gridLayer1, 0 );
+	TextTestApp::drawGrid( gridLayer2, -2 );
+	TextTestApp::drawGrid( gridLayer3, 2 );
 
-	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
-	// TODO - text needs to centre align
 	for( int i=0; i<100; i++ )
 	{
-			//float x = //character[i][0]+xPosition;
-			//float y = //character[i][1]+yPosition;
-
 		ParticleA particle = ParticleA();
 		particle.init();
 
@@ -177,11 +176,17 @@ void TextTestApp::update()
 		p->update();
 	}
 
-	for( vector<ParticleA>::iterator gp = gridParticles.begin(); gp != gridParticles.end(); ++gp ){
+	for( vector<ParticleA>::iterator gp = gridLayer1.begin(); gp != gridLayer1.end(); ++gp ){
 		gp->update();
 	}
-
+	for( vector<ParticleA>::iterator gp2 = gridLayer2.begin(); gp2 != gridLayer2.end(); ++gp2 ){
+		gp2->update();
+	}
+	for( vector<ParticleA>::iterator gp3 = gridLayer3.begin(); gp3 != gridLayer3.end(); ++gp3 ){
+		gp3->update();
+	}
 }
+
 
 void TextTestApp::updateSkeleton()
 {
@@ -196,49 +201,42 @@ void TextTestApp::updateSkeleton()
 }
 
 
-void TextTestApp::drawGrid(  )
+void TextTestApp::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offset )
 {
 	int SPACING = 40;
 
 	float COLUMNS = getWindowWidth()/SPACING;
 	float ROWS = getWindowHeight()/SPACING;
 	
-	int LAYERS = 1;
+	//fieldLayerContainer.clear();
 
-//	int totalParticles = COLUMNS*ROWS;
-//	int psize = mParticles.size();
+	for( int j=0; j<ROWS; j++ ){
+		for( int i=0; i<COLUMNS; i++ ){
 
-	gridParticles.clear();
-
-	//for (int l = 0; l < LAYERS; l++){
-
-		for( int j=0; j<ROWS; j++ ){
-			for( int i=0; i<COLUMNS; i++ ){
-
-				ParticleA particle = ParticleA();
-				particle.init();
-				particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-				particle.width = 2;
+			ParticleA particle = ParticleA();
+			particle.init();
+			particle.setBounds( 0, getWindowWidth(), 0, getWindowHeight() );
+			particle.width = 2;//andFloat(2,6);
 	
-				particle.x = i*SPACING;
-				particle.y = j*SPACING;
+			particle.x = ( i*SPACING ) + offset;
+			particle.y = ( j*SPACING ) + offset;
 
-				//particle.setBounce(-1);
-				particle.setMaxSpeed(2);
-				//particle.setEdgeBehavior("wrap");
+			//particle.setBounce(-1);
+			particle.setMaxSpeed(10);
+			//particle.setEdgeBehavior("wrap");
 
-				//particle.setWander(3);
-				particle.setGrav(0);
-				particle.addSpringPoint( i*SPACING, j*SPACING, 0.01 ); // FORCES THE PARTICLE INTO POSITION
+			//particle.setWander(3);
+			particle.setGrav(0);
+			particle.addSpringPoint( particle.x, particle.y, 0.01 ); // FORCES THE PARTICLE INTO POSITION
 
-				for (int i=0; i<repelClips.size(); i++){
-					particle.addRepelClip( repelClips[i], 50, 100 );
-				}
-
-				gridParticles.push_back( particle );
+			for (int i=0; i<repelClips.size(); i++){
+				particle.addRepelClip( repelClips[i], 500, 500 );
 			}
+
+			fieldLayerContainer.push_back( particle );
 		}
-//	}
+	}
+
 }
 
 
@@ -256,15 +254,25 @@ void TextTestApp::draw()
 
 	gl::draw( bgImage );
 
-	//for (int l = 0; l < 3; l++){
-	//	gl::pushMatrices();
-	//	gl::translate(0,0,-l*20);
-		// draw the grid
-		for( vector<ParticleA>::iterator p = gridParticles.begin(); p != gridParticles.end(); ++p ){
-			gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-		}
-		//gl::popMatrices();
-	//}
+	for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
+		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width + (p->getVx()+p->getVy())/5 );
+	}
+
+
+	gl::pushMatrices();
+	gl::translate(0,0,-10);
+	for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
+		gl::drawSolidCircle( Vec2f( p2->x, p2->y ), p2->width + (p2->getVx()+p2->getVy())/5);
+	}
+	gl::popMatrices();
+
+
+	gl::pushMatrices();
+	gl::translate(0,0,-20);
+	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
+		gl::drawSolidCircle( Vec2f( p3->x, p3->y ), p3->width + (p3->getVx()+p3->getVy())/5 );
+	}
+	gl::popMatrices();
 
 
 
@@ -282,11 +290,7 @@ void TextTestApp::draw()
 	gl::color( Color( 1, 1, 1 ) );
 
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-	//	p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-	//	p->draw();
-
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-
 	}
 }
 
@@ -331,8 +335,8 @@ void TextTestApp::drawSkeleton(){
 				repelClips[boneIndex].x = destinationScreen.x;
 				repelClips[boneIndex].y = destinationScreen.y;
 
-				gl::color(Color(1.0,0.0,0.0));
-				gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
+				//gl::color(Color(1.0,0.0,0.0));
+				//gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
 
 				/*
 				// Draw generic bone stuff here
