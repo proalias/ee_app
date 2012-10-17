@@ -106,8 +106,8 @@ void TextTestApp::setup()
 	myFont = FontRenderer();
 	myFont.addLine( "WELCOME TO", 2 );
 	myFont.addLine( "THE NEW NETWORK", 2 );
-	myFont.addLine( "FOR YOUR", 2 );
-	myFont.addLine( "DIGITAL LIFE", 2 );	
+	myFont.addLine( "          FOR YOUR", 2 );
+	myFont.addLine( "          DIGITAL LIFE", 2 );	
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();

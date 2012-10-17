@@ -324,7 +324,7 @@ void FontRenderer::draw()
 			p->draw();
 		}
 	
-		yPos += FontRenderer::getLineHeight(j)+10;
+		yPos += FontRenderer::getLineHeight(j)+5;
 
 		gl::popMatrices();
 	}
