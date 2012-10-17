@@ -6,7 +6,7 @@ float FontRenderer::getLineWidth( float index )
 {
 	std::vector<Particle> line = lines[index];
 	float widestPoint = 0.0;
-	float pointLength = lines.size();
+	float pointLength = line.size();
 	for( int i=0; i<pointLength; i++ ){
 		if(line[i].mLoc.x>widestPoint){
 			widestPoint = line[i].mLoc.x;
@@ -21,7 +21,7 @@ float FontRenderer::getLineHeight( float index )
 {
 	std::vector<Particle> line = lines[index];
 	float longestPoint = 0.0;
-	float pointLength = lines.size();
+	float pointLength = line.size();
 	for( int i=0; i<pointLength; i++ ){
 		if(line[i].mLoc.y>longestPoint){
 			longestPoint = line[i].mLoc.y;
@@ -277,18 +277,15 @@ FontRenderer::FontRenderer(void)
 }
 
 void FontRenderer::draw()
-{
-	
-	
-	float yPos = 0;
-	float xPos = (getWindowWidth()/2);
+{	
+	float yPos = 100;
+	float xPos = 0;//(getWindowWidth()/2);
 
 	for (int j=0;j<lines.size();j++){
 
 		gl::pushMatrices();
 
-		xPos = (getWindowWidth()/2) - getLineWidth(j);
-
+		xPos = (getWindowWidth()/2) - (getLineWidth(j)/2);
 
 		gl::translate( xPos, yPos, 0 );
 
@@ -297,13 +294,12 @@ void FontRenderer::draw()
 			p->draw();
 		}
 	
-		//yPos = FontRenderer::getLineHeight(j)+10;
+		yPos += FontRenderer::getLineHeight(j)+10;
 
 		gl::popMatrices();
 	}
 
 	
-		
 }
 
 void FontRenderer::clear()
