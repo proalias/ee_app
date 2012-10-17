@@ -101,6 +101,8 @@ void TextTestApp::setup()
 	//simple.addLine( "SIMPLE TEXT TEST 1" );
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
+	gl::enableAlphaBlending();
+
 	myFont = FontRenderer();
 	myFont.addLine( "WELCOME TO", 2 );
 	myFont.addLine( "THE NEW NETWORK", 2 );
@@ -254,23 +256,29 @@ void TextTestApp::draw()
 
 	gl::draw( bgImage );
 
+	gl::color( 1, 1, 1, 0.9 );
+
 	for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width + (p->getVx()+p->getVy())/5 );
 	}
 
 
+	gl::color( 1, 1, 1, 0.8 );
+
 	gl::pushMatrices();
 	gl::translate(0,0,-10);
 	for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
-		gl::drawSolidCircle( Vec2f( p2->x, p2->y ), p2->width + (p2->getVx()+p2->getVy())/5);
+		gl::drawSolidCircle( Vec2f( p2->x+2, p2->y+2 ), p2->width + (p2->getVx()+p2->getVy())/5);
 	}
 	gl::popMatrices();
 
 
+	gl::color( 1, 1, 1, 0.7 );
+
 	gl::pushMatrices();
 	gl::translate(0,0,-20);
 	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
-		gl::drawSolidCircle( Vec2f( p3->x, p3->y ), p3->width + (p3->getVx()+p3->getVy())/5 );
+		gl::drawSolidCircle( Vec2f( p3->x-2, p3->y-2 ), p3->width + (p3->getVx()+p3->getVy())/5 );
 	}
 	gl::popMatrices();
 
