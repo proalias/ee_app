@@ -102,14 +102,11 @@ void TextTestApp::setup()
 	// draw the grid. TODO - create a class for this and just add a grid instance
 	TextTestApp::drawGrid();
 
-
 	myFont = FontRenderer();
 	myFont.addLine( "WELCOME TO", 2 );
 	myFont.addLine( "THE NEW NETWORK", 2 );
 	myFont.addLine( "FOR YOUR", 2 );
-	myFont.addLine( "DIGITAL LIFE", 2 );
-
-	
+	myFont.addLine( "DIGITAL LIFE", 2 );	
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
@@ -118,7 +115,7 @@ void TextTestApp::setup()
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
-	for( int i=0; i<5000; i++ )
+	for( int i=0; i<1000; i++ )
 	{
 			//float x = //character[i][0]+xPosition;
 			//float y = //character[i][1]+yPosition;
