@@ -14,10 +14,10 @@ using namespace ci;
 class ParticleA{
 public:
    
-    void	setVx(float nVx);
-    float	getVx();
-    void	setVy(float nVy);
-    float  getVy();
+    void setVx(float nVx);
+    float getVx();
+    void setVy(float nVy);
+    float getVy();
     void  setDamp(float nDamp);
     float  getDamp();
     void setBounce(float nBounce);
@@ -39,9 +39,9 @@ public:
     float addSpringPoint(float x, float y, float force);
     float addGravPoint(float x, float y, float force);
     float addRepelPoint( float x, float y, float force, float minDist );
-	float addSpringClip(CinderClip clip, float force);
-	float addGravClip(CinderClip clip, float force);
 	
+	float addSpringClip(CinderClip &clip, float force);
+	float addGravClip(CinderClip &clip, float force);
 	int addRepelClip( CinderClip &clip, float force, float minDist );
 
     void removeSpringPoint( int index );
@@ -62,13 +62,12 @@ public:
 	std::vector<ci::Vec3f> __springPoints;
     std::vector<RepelPoint> __gravPoints;
     std::vector<RepelPoint> __repelPoints;
-    std::vector<CinderClip> __springClips;
-    std::vector<CinderClip> __gravClips;
     
+	std::vector<CinderClip*> __springClips;
+    std::vector<CinderClip*> __gravClips;
 	std::vector<CinderClip*> __repelClips;
 
-	//ci::Rectf __efClip;
-        
+	//ci::Rectf __efClip;  
 
 	void pressHandler( ci::app::MouseEvent);
     void releaseHandler( ci::app::MouseEvent);
@@ -99,10 +98,10 @@ public:
 	float mouseX;
 	float mouseY;
 
-	float __k       ;
-	float __damp    ;
-	float __bounce  ;     
-	float __grav    ;
+	float __k;
+	float __damp;
+	float __bounce;     
+	float __grav;
 	float __maxSpeed;
 	float __wander;
 
