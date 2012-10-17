@@ -12,9 +12,10 @@
 #include "Particle.h"
 #include "CinderClip.h"
 #include "ParticleA.h"
+#include "TweenParticle.h"
 
 #include "CinderClip.h"
-
+#include "SVGtoParticleParser.H"
 
 #include <list>
 
@@ -39,9 +40,13 @@ class TextTestApp : public AppNative {
 
 	void draw();
 	void drawSkeleton();
+	void drawParticle(float tx, float ty, float scale);
+
+
+	void toggleAnimation();
 
 	gl::Texture bgImage;
-	
+	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
 
 	FontRenderer myFont;
@@ -52,7 +57,25 @@ class TextTestApp : public AppNative {
 	void drawGrid();
 
 	std::vector<CinderClip> repelClips;
+
+	bool animationInProgress;
+	std::vector<TweenParticle> pointsContainer;
+	std::vector<TweenParticle> animatingParticles;
 	
+	ci::Vec2f getRandomPointOffscreen();
+	bool tweeningPointsIn;
+
+	//mode definitions
+	int mGestureMode;
+	static const int GESTUREMODE_TEXT_PROMPT_WAVE = 0;
+	static const int GESTUREMODE_WAVE = 1;
+	static const int GESTUREMODE_SUPERFAST = 2;
+	static const int GESTUREMODE_GUITAR = 3;
+	int mNextGesture;
+
+	SVGtoParticleParser svgParser;
+	std::map<std::string, std::vector<TweenParticle>> artwork;
+
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -85,6 +108,7 @@ void TextTestApp::setup()
 
 	// TODO - fit to screen?...
 	bgImage = loadImage( loadAsset( "scoopfullhd.png" ) );
+	particleImg = loadImage(loadAsset( "particle.png" ) );
 	
 	// TODO - might be used for rubrik font later.. so leave here
 
@@ -146,6 +170,34 @@ void TextTestApp::setup()
 	}
 
 	setupSkeletonTracker();
+
+	tweeningPointsIn = false;
+
+	svgParser = SVGtoParticleParser();
+
+	//artwork["give_us_a_wave"] = myFont.mParticles;
+	artwork["hand"] = std::vector<TweenParticle>();
+	artwork["guitar"] = std::vector<TweenParticle>();
+	artwork["superfast_swoosh"] = std::vector<TweenParticle>();
+	artwork["superfast_dial"] = std::vector<TweenParticle>();
+
+
+	
+	cinder::XmlTree xmlDoc0( loadAsset( "hand.svg" ) );
+	svgParser.recursiveParse(xmlDoc0,artwork["hand"]);
+	cinder::XmlTree xmlDoc1( loadAsset( "airguitar.svg" ) );
+	svgParser.recursiveParse(xmlDoc1,artwork["guitar"]);
+	
+	cinder::XmlTree xmlDoc2( loadAsset( "superfast-swoosh.svg" ) );
+	svgParser.recursiveParse(xmlDoc2,artwork["superfast_swoosh"]);
+	
+	cinder::XmlTree xmlDoc3( loadAsset( "superfast-dial.svg" ) );
+	svgParser.recursiveParse(xmlDoc3,artwork["superfast_dial"]);
+
+	animationInProgress = false;
+
+	pointsContainer = artwork["hand"];
+	toggleAnimation();
 }
 
 
@@ -177,6 +229,16 @@ void TextTestApp::update()
 		p->update();
 	}
 
+	double time = getElapsedSeconds();
+	gl::color(1.0,1.0,1.0);
+	
+	for (int i=0;i<animatingParticles.size();i++){  
+		if (animatingParticles[i].moving){
+			animatingParticles[i].update(time);
+			animationInProgress = true;
+		}
+		drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
+	}
 }
 
 void TextTestApp::updateSkeleton()
@@ -264,8 +326,6 @@ void TextTestApp::draw()
 
 	gl::draw( bgImage );
 	
-
-
 	//for (int l = 0; l < 3; l++){
 	//	gl::pushMatrices();
 	//	gl::translate(0,0,-l*20);
@@ -397,13 +457,13 @@ void TextTestApp::drawSkeleton(){
 							break;				 
 						case NUI_SKELETON_POSITION_HIP_LEFT:
 							//draw left hip
-							break;				 
+							break;
 						case NUI_SKELETON_POSITION_KNEE_LEFT:
 							//draw left knee
 							break;				 
 						case NUI_SKELETON_POSITION_ANKLE_LEFT:
 							//draw left ankle
-							break;				 
+							break;
 						case NUI_SKELETON_POSITION_FOOT_LEFT:
 							//draw left foot
 							break;
@@ -437,6 +497,117 @@ void TextTestApp::drawSkeleton(){
 		}
 		
 		//gl::popMatrices();
+	}
+}
+
+
+ci::Vec2f TextTestApp::getRandomPointOffscreen(){
+	float x = randFloat(-2000,2000);
+	float y = randFloat(-2000,2000);
+
+
+	int SCREEN_WIDTH = getWindowWidth();
+	int SCREEN_HEIGHT = getWindowHeight();
+
+
+	if (x > 0 && x < SCREEN_WIDTH){
+		x+=SCREEN_WIDTH;
+	}
+
+	if (y > 0 && y < SCREEN_HEIGHT){
+		y+=SCREEN_HEIGHT;
+	}
+
+	return ci::Vec2f(x,y);
+}
+
+
+void TextTestApp::drawParticle(float tx, float ty, float scale){
+	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
+	gl::draw(particleImg,rect);
+}
+
+void TextTestApp::toggleAnimation(){
+	if (!animationInProgress){
+		
+		animationInProgress = true;
+		int reassigned = 0;
+			
+		if (!tweeningPointsIn){
+
+
+			tweeningPointsIn = true;//!tweeningPointsIn;
+			for (int i=0; i <pointsContainer.size();i++){
+				reassigned +=1;
+				float destx = pointsContainer[i].xpos;
+				float desty = pointsContainer[i].ypos;
+
+				ci::Vec2f pt = getRandomPointOffscreen();
+				
+
+				//p.animateTo(ci::Vec2f(destx,desty),ci::Vec2f(p.xpos,p.ypos),3.0,getElapsedSeconds());  	
+				if ( i >= animatingParticles.size() ){
+
+					//timeline().apply( &p.xpos, xpos, destx, 3.0f, EaseOutBack(0.3) );
+					//timeline().apply( &p.ypos, ypos, desty, 3.0f, EaseOutBack(0.3) );
+					TweenParticle p = TweenParticle(pt.x,pt.y, pointsContainer[i].rad);
+					p.color.r = pointsContainer[i].color.r;
+					p.color.g = pointsContainer[i].color.g;
+					p.color.b = pointsContainer[i].color.b;
+					animatingParticles.push_back(p);
+					animatingParticles.back().animateTo(ci::Vec2f(destx,desty),pt,3.0,getElapsedSeconds(),p.rad);
+				}else{
+					//timeline().apply( &animatingParticles[i].xpos, xpos, destx, 3.0f, EaseOutBack(0.3) );
+					//timeline().apply( &animatingParticles[i].ypos, xpos, desty, 3.0f, EaseOutBack(0.3) );
+					animatingParticles[i].color = pointsContainer[i].color;
+					animatingParticles[i].animateTo(ci::Vec2f(destx,desty),pt,3.0,getElapsedSeconds(),pointsContainer[i].rad);
+					//animatingParticles[i].ypos = p.ypos;
+				}
+			}
+
+			//clear remaining particles
+
+			int remaining = animatingParticles.size() - reassigned;
+			for (int i = 0; i< remaining; i++){
+				animatingParticles[i+reassigned].animateTo(getRandomPointOffscreen(),3.0,getElapsedSeconds(), 0.0);
+			}
+
+		}else{
+
+			tweeningPointsIn = false;
+
+			for (int i=0; i <pointsContainer.size();i++){
+
+				
+				float xpos = pointsContainer[i].xpos;
+				float ypos = pointsContainer[i].ypos;
+
+
+
+				if ( i >= animatingParticles.size() ){		
+					ci::Vec2f pt = getRandomPointOffscreen();
+				
+					TweenParticle p = TweenParticle(xpos,ypos, pointsContainer[i].rad);
+					p.color.r = pointsContainer[i].color.r;
+					p.color.g = pointsContainer[i].color.g;
+					p.color.b = pointsContainer[i].color.b;
+					animatingParticles.push_back(p);
+					animatingParticles.back().animateTo(pt,3.0,getElapsedSeconds(),p.rad);
+				}else{
+					animatingParticles[i].color = pointsContainer[i].color;
+					animatingParticles[i].animateTo(ci::Vec2f(animatingParticles[i].xpos,animatingParticles[i].ypos),3.0,getElapsedSeconds(),pointsContainer[i].rad);
+				}
+			}
+			
+			//clear remaining particles
+
+			int remaining = animatingParticles.size() - reassigned;
+			for (int i = 0; i< remaining; i++){
+				animatingParticles[i+reassigned].animateTo(getRandomPointOffscreen(),3.0,getElapsedSeconds(), 0.0);
+			}
+
+			mGestureMode = mNextGesture;
+		}
 	}
 }
 

@@ -111,7 +111,9 @@
     <ClCompile Include="..\src\FontRenderer.cpp" />
     <ClCompile Include="..\src\ParticleA.cpp" />
     <ClCompile Include="..\src\RepelPoint.cpp" />
+    <ClCompile Include="..\src\SVGtoParticleParser.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
+    <ClCompile Include="..\src\TweenParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
@@ -124,6 +126,8 @@
     <ClInclude Include="..\include\ParticleA.h" />
     <ClInclude Include="..\include\RepelPoint.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\include\SVGtoParticleParser.h" />
+    <ClInclude Include="..\include\TweenParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
