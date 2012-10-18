@@ -317,6 +317,10 @@ void TextTestApp::drawSkeleton(){
 		uint32_t i = 0;
 		for ( vector<Skeleton>::const_iterator skeletonIt = mSkeletons.cbegin(); skeletonIt != mSkeletons.cend(); ++skeletonIt, i++ ) {
 
+
+			//skeletonIt.SkeletonPosition[NUI_SKELETON_POSITIONS_SHOULDER_RIGHT];
+			
+
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
 			int boneIndex = 0;
@@ -340,11 +344,11 @@ void TextTestApp::drawSkeleton(){
 				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
-				repelClips[boneIndex].x = destinationScreen.x;
+				repelClips[boneIndex].x = destinationScreen.x+320;
 				repelClips[boneIndex].y = destinationScreen.y;
 
 				//gl::color(Color(1.0,0.0,0.0));
-				//gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
+				//gl::drawSolidCircle( Vec2f(destinationScreen.x+320, destinationScreen.y), 20);
 
 				/*
 				// Draw generic bone stuff here

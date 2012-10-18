@@ -307,7 +307,6 @@ void FontRenderer::draw()
 	*/
 
 
-
 	float yPos = 100;
 	float xPos = 0;//(getWindowWidth()/2);
 
@@ -320,7 +319,7 @@ void FontRenderer::draw()
 		gl::translate( xPos, yPos, 0 );
 
 		for( vector<Particle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+			//p->mLoc+=( Rand::randFloat( 1.0f ) - Rand::randFloat( 1.0f ) );
 			p->draw();
 		}
 	
