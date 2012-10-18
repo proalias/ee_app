@@ -1,15 +1,14 @@
 #include "FontRenderer.h"
 
-
 // goes through all points and gets the widest
 float FontRenderer::getLineWidth( float index )
 {
-	std::vector<Particle> line = lines[index];
+	std::vector<TweenParticle> line = lines[index];
 	float widestPoint = 0.0;
 	float pointLength = line.size();
 	for( int i=0; i<pointLength; i++ ){
-		if(line[i].mLoc.x>widestPoint){
-			widestPoint = line[i].mLoc.x;
+		if(line[i].xpos>widestPoint){
+			widestPoint = line[i].xpos;
 		}
 	}
 	return widestPoint;
@@ -19,12 +18,12 @@ float FontRenderer::getLineWidth( float index )
 // goes through all points and gets the highest
 float FontRenderer::getLineHeight( float index )
 {
-	std::vector<Particle> line = lines[index];
+	std::vector<TweenParticle> line = lines[index];
 	float longestPoint = 0.0;
 	float pointLength = line.size();
 	for( int i=0; i<pointLength; i++ ){
-		if(line[i].mLoc.y>longestPoint){
-			longestPoint = line[i].mLoc.y;
+		if(line[i].ypos>longestPoint){
+			longestPoint = line[i].ypos;
 		}
 	}
 	return longestPoint;
@@ -232,7 +231,7 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 // TODO - pass in an init position for x and y
 void FontRenderer::addLine( const std::string &copy, int size )
 {
-	std::vector<Particle> newline = vector<Particle>();
+	std::vector<TweenParticle> newline = vector<TweenParticle>();
 
 	// current characters postition 
 	int xPosition = 0;
@@ -250,7 +249,8 @@ void FontRenderer::addLine( const std::string &copy, int size )
 		{
 			float x = character[i][0]+xPosition;
 			float y = character[i][1];//+yPosition;
-			newline.push_back( Particle( Vec2f( x*size, y*size ), size ) );
+			newline.push_back( TweenParticle(  x*size, y*size , size ) );
+			
 		}
 
 		char theNextChar = *"";
@@ -267,13 +267,58 @@ void FontRenderer::addLine( const std::string &copy, int size )
 		if(pointLength<1){
 			xPosition += 5;
 		}
+
 	}
+	
 	lines.push_back(newline);
+	
+
+
 }
 
 FontRenderer::FontRenderer(void)
 {
 	font = NobleeBold();
+}
+
+
+void FontRenderer::animateIn(){
+	for (int j=0;j<lines.size();j++){
+
+		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+			p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOffscreen(),3.0,getElapsedSeconds(),p->rad);
+		}
+	
+	}
+}
+
+void FontRenderer::animateOut(){
+	for (int j=0;j<lines.size();j++){
+
+		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+			p->animateTo(getRandomPointOffscreen(), ci::Vec2f(p->xpos,p->ypos),3.0,getElapsedSeconds(),p->rad);
+		}
+	
+	}
+}
+
+
+
+ci::Vec2f FontRenderer::getRandomPointOffscreen(){
+	float x = randFloat(-2000,2000);
+	float y = randFloat(-2000,2000);
+
+	if (x > 0 && x < getWindowHeight()){
+		x+=getWindowHeight();
+	}
+
+	if (y > 0 && y < getWindowWidth()){
+		y+=getWindowWidth();
+	}
+
+	return ci::Vec2f(x,y);
 }
 
 void FontRenderer::draw()
@@ -289,8 +334,9 @@ void FontRenderer::draw()
 
 		gl::translate( xPos, yPos, 0 );
 
-		for( vector<Particle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+			p->update(getElapsedSeconds());
 			p->draw();
 		}
 	

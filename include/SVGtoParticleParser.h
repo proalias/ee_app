@@ -1,0 +1,19 @@
+#include "cinder/Cinder.h"
+#include "cinder/Xml.h"
+#include "Particle.h"
+
+
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+
+#include <stdio.h>
+#include <string.h>
+#include <vector>
+
+using namespace cinder;
+using namespace std;
+
+class SVGtoParticleParser{
+	public:
+	void recursiveParse(cinder::XmlTree node, std::vector<Particle> &pointsContainer);
+};

@@ -48,6 +48,9 @@
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\TweenParticle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h">
       <Filter>blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\TweenParticle.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

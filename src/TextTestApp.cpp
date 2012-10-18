@@ -14,7 +14,8 @@
 #include "ParticleA.h"
 
 #include "CinderClip.h"
-
+#include "SVGtoParticleParser.h"
+#include "TweenParticle.h"
 
 #include <list>
 
@@ -40,6 +41,8 @@ class TextTestApp : public AppNative {
 	void draw();
 	void drawSkeleton();
 
+	void toggleAnimation();
+
 	gl::Texture bgImage;
 	
 	gl::Texture mSimpleTexture;
@@ -53,6 +56,22 @@ class TextTestApp : public AppNative {
 
 	std::vector<CinderClip> repelClips;
 	
+
+	ci::Vec2f getRandomPointOffscreen();
+
+	std::vector<TweenParticle> animatingParticles;
+	SVGtoParticleParser svgParser;
+	std::vector<TweenParticle> pointsContainer;
+	
+	//mode definitions
+
+	int mGestureMode;
+	static const int GESTUREMODE_TEXT_PROMPT_WAVE = 0;
+	static const int GESTUREMODE_WAVE = 1;
+	static const int GESTUREMODE_SUPERFAST = 2;
+	static const int GESTUREMODE_GUITAR = 3;
+	int mNextGesture;
+
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -66,6 +85,10 @@ private:
 
 	// Save screenshot
 	void								screenShot();
+
+
+	bool animationInProgress;
+	bool trackingRightHand;
 };
 
 
@@ -106,7 +129,7 @@ void TextTestApp::setup()
 	myFont.addLine( "THE NEW NETWORK", 2 );
 	myFont.addLine( "FOR YOUR", 2 );
 	myFont.addLine( "DIGITAL LIFE", 2 );
-	
+	myFont.animateIn();
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
@@ -116,9 +139,9 @@ void TextTestApp::setup()
 
 
 	// draw the grid. TODO - create a class for this and just add a grid instance
-	TextTestApp::drawGrid();
+	//TextTestApp::drawGrid();//THIS CRASHES EVERYTHING!!
 
-
+	int repelClipCount = repelClips.size();
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
@@ -145,15 +168,116 @@ void TextTestApp::setup()
 		particle.setWander(3);
 		particle.setGrav(0);
 		
-		//for (int i=0; i<20; i++){
-		//	particle.addRepelClip( repelClips[i],500,200 );
-		//}
+		for (int k=0; k<repelClipCount; k++){
+			particle.addRepelClip( repelClips[k],500,200 );
+		}
 		
 		mParticles.push_back( particle );
 	}
 
 	setupSkeletonTracker();
 }
+
+
+void TextTestApp::toggleAnimation(){
+	if (!animationInProgress){
+		
+		animationInProgress = true;
+		int reassigned = 0;
+			
+		if (!trackingRightHand){
+
+
+			trackingRightHand = true;//!trackingRightHand;
+			for (int i=0; i <pointsContainer.size();i++){
+				reassigned +=1;
+				float destx = pointsContainer[i].xpos;
+				float desty = pointsContainer[i].ypos;
+
+				ci::Vec2f pt = getRandomPointOffscreen();
+				
+
+				//p.animateTo(ci::Vec2f(destx,desty),ci::Vec2f(p.xpos,p.ypos),3.0,getElapsedSeconds());  	
+				if ( i >= animatingParticles.size() ){
+
+					//timeline().apply( &p.xpos, xpos, destx, 3.0f, EaseOutBack(0.3) );
+					//timeline().apply( &p.ypos, ypos, desty, 3.0f, EaseOutBack(0.3) );
+					TweenParticle p = TweenParticle(pt.x,pt.y, pointsContainer[i].rad);
+					p.color.r = pointsContainer[i].color.r;
+					p.color.g = pointsContainer[i].color.g;
+					p.color.b = pointsContainer[i].color.b;
+					animatingParticles.push_back(p);
+					animatingParticles.back().animateTo(ci::Vec2f(destx,desty),pt,3.0,getElapsedSeconds(),p.rad);
+				}else{
+					//timeline().apply( &animatingParticles[i].xpos, xpos, destx, 3.0f, EaseOutBack(0.3) );
+					//timeline().apply( &animatingParticles[i].ypos, xpos, desty, 3.0f, EaseOutBack(0.3) );
+					animatingParticles[i].color = pointsContainer[i].color;
+					animatingParticles[i].animateTo(ci::Vec2f(destx,desty),pt,3.0,getElapsedSeconds(),pointsContainer[i].rad);
+					//animatingParticles[i].ypos = p.ypos;
+				}
+			}
+
+			//clear remaining particles
+
+			int remaining = animatingParticles.size() - reassigned;
+			for (int i = 0; i< remaining; i++){
+				animatingParticles[i+reassigned].animateTo(getRandomPointOffscreen(),3.0,getElapsedSeconds(), 0.0);
+			}
+
+		}else{
+
+			trackingRightHand = false;
+
+			for (int i=0; i <pointsContainer.size();i++){
+
+				
+				float xpos = pointsContainer[i].xpos;
+				float ypos = pointsContainer[i].ypos;
+
+
+
+				if ( i >= animatingParticles.size() ){		
+					ci::Vec2f pt = getRandomPointOffscreen();
+				
+					TweenParticle p = TweenParticle(xpos,ypos, pointsContainer[i].rad);
+					p.color.r = pointsContainer[i].color.r;
+					p.color.g = pointsContainer[i].color.g;
+					p.color.b = pointsContainer[i].color.b;
+					animatingParticles.push_back(p);
+					animatingParticles.back().animateTo(pt,3.0,getElapsedSeconds(),p.rad);
+				}else{
+					animatingParticles[i].color = pointsContainer[i].color;
+					animatingParticles[i].animateTo(ci::Vec2f(animatingParticles[i].xpos,animatingParticles[i].ypos),3.0,getElapsedSeconds(),pointsContainer[i].rad);
+				}
+			}
+			
+			//clear remaining particles
+
+			int remaining = animatingParticles.size() - reassigned;
+			for (int i = 0; i< remaining; i++){
+				animatingParticles[i+reassigned].animateTo(getRandomPointOffscreen(),3.0,getElapsedSeconds(), 0.0);
+			}
+
+			mGestureMode = mNextGesture;
+		}
+	}
+}
+
+ci::Vec2f TextTestApp::getRandomPointOffscreen(){
+	float x = randFloat(-2000,2000);
+	float y = randFloat(-2000,2000);
+
+	if (x > 0 && x < getWindowHeight()){
+		x+=getWindowHeight();
+	}
+
+	if (y > 0 && y < getWindowWidth()){
+		y+=getWindowWidth();
+	}
+
+	return ci::Vec2f(x,y);
+}
+
 
 
 void TextTestApp::setupSkeletonTracker(){
@@ -204,7 +328,6 @@ void TextTestApp::updateSkeleton()
 
 }
 
-
 void TextTestApp::drawGrid()
 {
 	int SPACING = 36;
@@ -244,8 +367,8 @@ void TextTestApp::drawGrid()
 				particle.setGrav(0);
 				particle.addSpringPoint( i*SPACING, j*SPACING, 0.01 ); // FORCES THE PARTICLE INTO POSITION
 
-				for (int i=0; i<repelClips.size(); i++){
-					particle.addRepelClip( repelClips[i], 100, 50 );
+				for (int k=0; k<repelClips.size(); k++){
+					particle.addRepelClip( repelClips[k], 100, 50 );
 				}
 
 				gridParticles.push_back( particle );

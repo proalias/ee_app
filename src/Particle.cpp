@@ -9,7 +9,7 @@ Particle::Particle()
 {
 }
 
-Particle::Particle( Vec2f loc, float size )
+Particle::Particle(  Vec2f loc, float size )
 {
 	sLoc	= loc;
 	mLoc	= loc;
