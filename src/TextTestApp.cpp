@@ -141,10 +141,7 @@ void TextTestApp::setup()
 	TextTestApp::drawGrid();
 
 	myFont = FontRenderer();
-	myFont.addLine( "WELCOME TO", 2 );
-	myFont.addLine( "THE NEW NETWORK", 2 );
-	myFont.addLine( "FOR YOUR", 2 );
-	myFont.addLine( "DIGITAL LIFE", 2 );
+	myFont.addLine( "EE APP START TEST TEXT", 2 );
 	
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
