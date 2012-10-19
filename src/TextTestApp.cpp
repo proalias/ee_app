@@ -103,6 +103,10 @@ private:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
+	//setAlwaysOnTop();
+	//setBorderless();
+	//setFullScreen(true);
+
 	settings->setWindowSize( 1280, 800 );
 	//settings->setWindowSize( 1280, 800 );
 	//settings->setFrameRate( 30.0f );
