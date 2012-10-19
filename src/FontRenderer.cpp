@@ -357,4 +357,6 @@ void FontRenderer::draw()
 void FontRenderer::clear()
 {
 	mParticles.clear();
+
+	lines.clear();
 }

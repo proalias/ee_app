@@ -13,10 +13,16 @@ public:
 	std::vector<TweenParticle> getPointsForIcon(int iconConstant);
 	void init();
 
-	static const int ICON_FACTORY_WAVE = 0;
-	static const int ICON_FACTORY_HAND = 1;
-	static const int ICON_FACTORY_AIR_GUITAR = 2;
-	static const int ICON_FACTORY_SPEED_DIAL = 3;
+	static const int HAND = 0;
+	static const int AIR_GUITAR = 1;
+	static const int SWOOSH = 2;
+	static const int DIAL = 3;
+
+	// TODO - these are missing ones
+	static const int LOCATION_PIN = 4;// TODO - can not be strings for debugging?
+	static const int ARROW = 5;
+	static const int BUTTON = 6;
+	static const int ROCKET = 7;
 
 private:
 	SVGtoParticleParser svgParser;

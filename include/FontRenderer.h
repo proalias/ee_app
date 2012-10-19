@@ -26,7 +26,7 @@ public:
 	// TODO - for now using one font. should be able to use any of the weights
 	NobleeBold font;
 
-	std::vector<TweenParticle> points;
+//	std::vector<TweenParticle> points;
 	
     std::vector<std::vector<TweenParticle>> lines;
 	//void setColor( Color );
