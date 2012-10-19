@@ -14,7 +14,7 @@
 #include "CinderClip.h"
 #include "ParticleA.h"
 #include "TweenParticle.h"
-#include "SVGtoParticleParser.H"
+#include "IconFactory.h"
 
 #include <list>
 
@@ -67,6 +67,9 @@ class TextTestApp : public AppNative {
 
 	SVGtoParticleParser svgParser;
 	
+	IconFactory iconFactory;
+
+
 	//mode definitions
 
 	int mGestureMode;
@@ -76,7 +79,6 @@ class TextTestApp : public AppNative {
 	static const int GESTUREMODE_GUITAR = 3;
 	int mNextGesture;
 
-	std::map<std::string, std::vector<TweenParticle>> artwork;
 
 	Timer textAnimationTimer;
 
@@ -188,30 +190,11 @@ void TextTestApp::setup()
 
 	tweeningPointsIn = false;
 
-	svgParser = SVGtoParticleParser();
-
-	//artwork["give_us_a_wave"] = myFont.mParticles;
-	artwork["hand"] = std::vector<TweenParticle>();
-	artwork["guitar"] = std::vector<TweenParticle>();
-	artwork["superfast_swoosh"] = std::vector<TweenParticle>();
-	artwork["superfast_dial"] = std::vector<TweenParticle>();
-
-
-	
-	cinder::XmlTree xmlDoc0( loadAsset( "hand.svg" ) );
-	svgParser.recursiveParse(xmlDoc0,artwork["hand"]);
-	cinder::XmlTree xmlDoc1( loadAsset( "airguitar.svg" ) );
-	svgParser.recursiveParse(xmlDoc1,artwork["guitar"]);
-	
-	cinder::XmlTree xmlDoc2( loadAsset( "superfast-swoosh.svg" ) );
-	svgParser.recursiveParse(xmlDoc2,artwork["superfast_swoosh"]);
-	
-	cinder::XmlTree xmlDoc3( loadAsset( "superfast-dial.svg" ) );
-	svgParser.recursiveParse(xmlDoc3,artwork["superfast_dial"]);
-
 	animationInProgress = false;
 
-	pointsContainer = artwork["hand"];
+	iconFactory.init();
+
+	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::ICON_FACTORY_AIR_GUITAR);
 	toggleAnimation();
 }
 

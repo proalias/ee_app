@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
+    <ClCompile Include="..\src\IconFactory.cpp" />
     <ClCompile Include="..\src\NobleeBold.cpp" />
     <ClCompile Include="..\src\NobleeRegular.cpp" />
     <ClCompile Include="..\src\Particle.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
+    <ClInclude Include="..\include\IconFactory.h" />
     <ClInclude Include="..\include\NobleeBold.h" />
     <ClInclude Include="..\include\NobleeRegular.h" />
     <ClInclude Include="..\include\Particle.h" />
