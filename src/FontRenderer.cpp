@@ -1,5 +1,13 @@
 #include "FontRenderer.h"
 
+
+
+FontRenderer::FontRenderer(void)
+{
+	font = NobleeBold();
+	animationInProgress = false;
+}
+
 // goes through all points and gets the widest
 float FontRenderer::getLineWidth( float index )
 {
@@ -12,7 +20,7 @@ float FontRenderer::getLineWidth( float index )
 		}
 	}
 	return widestPoint;
-}	
+}
 
 
 // goes through all points and gets the highest
@@ -276,31 +284,30 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 }
 
-FontRenderer::FontRenderer(void)
-{
-	font = NobleeBold();
-}
-
 
 void FontRenderer::animateIn(){
-	for (int j=0;j<lines.size();j++){
-
-		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-			p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOffscreen(),3.0,getElapsedSeconds(),p->rad);
+	if (animationInProgress == false){
+		animationInProgress = true;
+		for (int j=0;j<lines.size();j++){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOffscreen(),3.0,getElapsedSeconds(),p->rad);
+			}
 		}
-	
 	}
 }
 
 void FontRenderer::animateOut(){
-	for (int j=0;j<lines.size();j++){
+	if (animationInProgress == false){
+		animationInProgress = true;
+		for (int j=0;j<lines.size();j++){
 
-		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-			p->animateTo(getRandomPointOffscreen(), ci::Vec2f(p->xpos,p->ypos),3.0,getElapsedSeconds(),p->rad);
-		}
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+				p->animateTo(getRandomPointOffscreen(), ci::Vec2f(p->xpos,p->ypos),3.0,getElapsedSeconds(),p->rad);
+			}
 	
+		}
 	}
 }
 
@@ -334,10 +341,15 @@ void FontRenderer::draw()
 
 		gl::translate( xPos, yPos, 0 );
 
+		
+		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 			p->update(getElapsedSeconds());
 			p->draw();
+			if (p->moving){
+				animationInProgress = true;
+			}
 		}
 	
 		yPos += FontRenderer::getLineHeight(j)+10;

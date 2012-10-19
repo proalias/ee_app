@@ -1,6 +1,6 @@
 #include "cinder/Cinder.h"
 #include "cinder/Xml.h"
-#include "Particle.h"
+#include "TweenParticle.h"
 
 
 #include <boost/algorithm/string.hpp>
@@ -15,5 +15,6 @@ using namespace std;
 
 class SVGtoParticleParser{
 	public:
-	void recursiveParse(cinder::XmlTree node, std::vector<Particle> &pointsContainer);
+
+	void recursiveParse(cinder::XmlTree node, std::vector<TweenParticle> &pointsContainer);
 };

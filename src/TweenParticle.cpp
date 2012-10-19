@@ -9,7 +9,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad)
 	xpos = pX;
 	ypos = pY;
 	rad = pRad;
-	snapback = ci::randFloat(0.4);;
+	snapback = ci::randFloat(0.4);
 	color = Color(1.0,1.0,1.0);
 
 	mDestRad = pRad;
@@ -59,7 +59,7 @@ void TweenParticle::update(double t){
 		}
 	}
 }
-float TweenParticle::ease(float time,float begin,float change,float duration,float snapback = 0.10158){
+float TweenParticle::ease(float time,float begin,float change,float duration,float snapback = 1.70158){
 	return change*((time=time/duration-1)*time*((snapback+1)*time + snapback) + 1) + begin;
 }
 

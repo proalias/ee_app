@@ -1,7 +1,7 @@
 #include "cinder/Color.h"
 #include "cinder/Vector.h"
 #include <vector>
-//#include "Particle.h"
+#include "Particle.h"
 #include "NobleeBold.h"
 #include "cinder/gl/gl.h"
 #include "cinder/app/App.h"
@@ -54,5 +54,6 @@ public:
 	FontRenderer(void);
 	//~FontRenderer(void);
 
+	bool animationInProgress;
 	float lineHeight;
 };

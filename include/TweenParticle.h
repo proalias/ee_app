@@ -1,11 +1,12 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#ifndef TWEENPARTICLE_H
+#define TWEENPARTICLE_H
 
 #include "cinder\Cinder.h"
 #include "cinder\Timeline.h"
 #include "cinder\Vector.h"
 #include "cinder\gl\gl.h"
 #include "cinder\Rand.h"
+
 
 using namespace cinder;
 
@@ -19,8 +20,8 @@ public:
 	void tweenTo(float px, float py);
 	void animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, float startTime, float rad);
 	void animateTo(ci::Vec2f dest, float duration, float startTime, float rad);
-	ci::Anim<float> xpos;
-	ci::Anim<float> ypos;
+	float xpos;
+	float ypos;
 	float rad;
 	Color color;
 	bool moving;

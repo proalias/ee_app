@@ -2,6 +2,7 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppNative.h"
 #include "cinder/Camera.h"
+
 #include "cinder/gl/Texture.h"
 #include "cinder/ImageIo.h"
 #include "cinder/params/Params.h"
@@ -12,10 +13,8 @@
 #include "Particle.h"
 #include "CinderClip.h"
 #include "ParticleA.h"
-
-#include "CinderClip.h"
-#include "SVGtoParticleParser.h"
 #include "TweenParticle.h"
+#include "SVGtoParticleParser.H"
 
 #include <list>
 
@@ -34,17 +33,21 @@ class TextTestApp : public AppNative {
 
 	void setup();
 	void setupSkeletonTracker();
+	void updateAnimatingParticles();
 
 	void update();
 	void updateSkeleton();
 
 	void draw();
 	void drawSkeleton();
+	void drawParticle(float tx, float ty, float scale);
+
 
 	void toggleAnimation();
 
+
 	gl::Texture bgImage;
-	
+	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
 
 	FontRenderer myFont;
@@ -55,13 +58,14 @@ class TextTestApp : public AppNative {
 	void drawGrid();
 
 	std::vector<CinderClip> repelClips;
-	
 
+	bool animationInProgress;
+	std::vector<TweenParticle> pointsContainer;
+	std::vector<TweenParticle> animatingParticles;
+	
 	ci::Vec2f getRandomPointOffscreen();
 
-	std::vector<TweenParticle> animatingParticles;
 	SVGtoParticleParser svgParser;
-	std::vector<TweenParticle> pointsContainer;
 	
 	//mode definitions
 
@@ -71,6 +75,10 @@ class TextTestApp : public AppNative {
 	static const int GESTUREMODE_SUPERFAST = 2;
 	static const int GESTUREMODE_GUITAR = 3;
 	int mNextGesture;
+
+	std::map<std::string, std::vector<TweenParticle>> artwork;
+
+	Timer textAnimationTimer;
 
 private:
 	// Kinect
@@ -87,8 +95,8 @@ private:
 	void								screenShot();
 
 
-	bool animationInProgress;
 	bool trackingRightHand;
+	bool tweeningPointsIn;
 };
 
 
@@ -108,6 +116,7 @@ void TextTestApp::setup()
 
 	// TODO - fit to screen?...
 	bgImage = loadImage( loadAsset( "scoopfullhd.png" ) );
+	particleImg = loadImage(loadAsset( "particle.png" ) );
 	
 	// TODO - might be used for rubrik font later.. so leave here
 
@@ -122,30 +131,26 @@ void TextTestApp::setup()
 	//simple.addLine( "SIMPLE TEXT TEST 1" );
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
-	
+	// draw the grid. TODO - create a class for this and just add a grid instance
+	TextTestApp::drawGrid();
 
 	myFont = FontRenderer();
 	myFont.addLine( "WELCOME TO", 2 );
 	myFont.addLine( "THE NEW NETWORK", 2 );
 	myFont.addLine( "FOR YOUR", 2 );
 	myFont.addLine( "DIGITAL LIFE", 2 );
-	myFont.animateIn();
+	
+	Timer textAnimationTimer = Timer();
+	textAnimationTimer.start();
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
 		repelClips.push_back(cinderClip);
 	}
 
-
-
-	// draw the grid. TODO - create a class for this and just add a grid instance
-	//TextTestApp::drawGrid();//THIS CRASHES EVERYTHING!!
-
-	int repelClipCount = repelClips.size();
-
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
-	for( int i=0; i<100; i++ )
+	for( int i=0; i<1000; i++ )
 	{
 			//float x = //character[i][0]+xPosition;
 			//float y = //character[i][1]+yPosition;
@@ -168,14 +173,42 @@ void TextTestApp::setup()
 		particle.setWander(3);
 		particle.setGrav(0);
 		
-		for (int k=0; k<repelClipCount; k++){
-			particle.addRepelClip( repelClips[k],500,200 );
+		for (int i=0; i<20; i++){
+			particle.addRepelClip( repelClips[i],500,200 );
 		}
 		
 		mParticles.push_back( particle );
 	}
 
 	setupSkeletonTracker();
+
+	tweeningPointsIn = false;
+
+	svgParser = SVGtoParticleParser();
+
+	//artwork["give_us_a_wave"] = myFont.mParticles;
+	artwork["hand"] = std::vector<TweenParticle>();
+	artwork["guitar"] = std::vector<TweenParticle>();
+	artwork["superfast_swoosh"] = std::vector<TweenParticle>();
+	artwork["superfast_dial"] = std::vector<TweenParticle>();
+
+
+	
+	cinder::XmlTree xmlDoc0( loadAsset( "hand.svg" ) );
+	svgParser.recursiveParse(xmlDoc0,artwork["hand"]);
+	cinder::XmlTree xmlDoc1( loadAsset( "airguitar.svg" ) );
+	svgParser.recursiveParse(xmlDoc1,artwork["guitar"]);
+	
+	cinder::XmlTree xmlDoc2( loadAsset( "superfast-swoosh.svg" ) );
+	svgParser.recursiveParse(xmlDoc2,artwork["superfast_swoosh"]);
+	
+	cinder::XmlTree xmlDoc3( loadAsset( "superfast-dial.svg" ) );
+	svgParser.recursiveParse(xmlDoc3,artwork["superfast_dial"]);
+
+	animationInProgress = false;
+
+	pointsContainer = artwork["hand"];
+	toggleAnimation();
 }
 
 
@@ -308,11 +341,48 @@ void TextTestApp::update()
 		p->update();
 	}
 
-	for( vector<ParticleA>::iterator gp = gridParticles.begin(); gp != gridParticles.end(); ++gp ){
-		gp->update();
+	if (textAnimationTimer.isStopped()){
+		textAnimationTimer.start();
 	}
 
+	//trigger the text animation
+	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 13){
+		myFont.animateIn();
+	}
+
+
+
+	myFont.draw();
+
+	double time = getElapsedSeconds();
+	gl::color(1.0,1.0,1.0);
+	
+	for (int i=0;i<animatingParticles.size();i++){  
+		if (animatingParticles[i].moving){
+			animatingParticles[i].update(time);
+			animationInProgress = true;
+		}
+		drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
+	}
+
+	updateAnimatingParticles();
+
 }
+
+void TextTestApp::updateAnimatingParticles(){
+	double time = getElapsedSeconds();
+	
+	for (int i=0;i<animatingParticles.size();i++){  
+		if (animatingParticles[i].moving){
+			animatingParticles[i].update(time);
+			animationInProgress = true;
+		}
+		//gl::color(animatingParticles[i].color);
+		drawParticle(animatingParticles[i].xpos,animatingParticles[i].ypos,animatingParticles[i].rad);
+		//drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
+	}
+}
+
 
 void TextTestApp::updateSkeleton()
 {
@@ -330,10 +400,10 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::drawGrid()
 {
-	int SPACING = 36;
+	int SPACING = 70;
 
-	float COLUMNS = getWindowWidth()+50/SPACING;
-	float ROWS = getWindowHeight()+50/SPACING;
+	float COLUMNS = getWindowWidth()/SPACING;
+	float ROWS = getWindowHeight()/SPACING;
 	
 	int LAYERS = 1;
 
@@ -353,33 +423,39 @@ void TextTestApp::drawGrid()
 				ParticleA particle = ParticleA();
 				particle.init();
 				particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-				
 				particle.width = 2;
 	
 				particle.x = i*SPACING;
 				particle.y = j*SPACING;
 
 				//particle.setBounce(-1);
-				particle.setMaxSpeed(5);
+				//particle.setMaxSpeed(2);
 				//particle.setEdgeBehavior("wrap");
 
 				//particle.setWander(3);
 				particle.setGrav(0);
-				particle.addSpringPoint( i*SPACING, j*SPACING, 0.01 ); // FORCES THE PARTICLE INTO POSITION
 
-				for (int k=0; k<repelClips.size(); k++){
-					particle.addRepelClip( repelClips[k], 100, 50 );
-				}
+				//particle.addRepelPoint( 200,300,100,100 );
+
+				particle.addSpringPoint( i*SPACING, j*SPACING, 100 ); // FORCES THE PARTICLE INTO POSITION
 
 				gridParticles.push_back( particle );
 			}
 		}
 
-		//gl::color(ColorA(1.0,1.0,1.0,1.0 - (1.0/mLayers) * l));
+	
+//		gl::color(ColorA(1.0,1.0,1.0,1.0 - (1.0/mLayers) * l));
+
+
+
 		//gl::popMatrices();
 	}
 
 }
+
+
+
+
 
 
 void TextTestApp::draw()
@@ -392,23 +468,20 @@ void TextTestApp::draw()
 
 	gl::draw( bgImage );
 	
-
-
-	for (int l = 0; l < 3; l++)
-	{
-		gl::pushMatrices();
-		gl::translate(0,0,-l*20);
+	//for (int l = 0; l < 3; l++){
+	//	gl::pushMatrices();
+	//	gl::translate(0,0,-l*20);
 		// draw the grid
 		for( vector<ParticleA>::iterator p = gridParticles.begin(); p != gridParticles.end(); ++p ){
 			gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 		}
-		gl::popMatrices();
-	}
+	//	gl::popMatrices();
+	//}
 
 
 
 	drawSkeleton();
-//	gl::enableAlphaBlending( PREMULT );
+	gl::enableAlphaBlending();
 
 	gl::color( Color::white() );
 	//gl::draw( mSimpleTexture, Vec2f( 10, getWindowHeight() - mSimpleTexture.getHeight() - 5 ) );
@@ -467,11 +540,11 @@ void TextTestApp::drawSkeleton(){
 				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
-				repelClips[boneIndex].x = destinationScreen.x;
-				repelClips[boneIndex].y = destinationScreen.y;
+				repelClips[boneIndex].x = destinationScreen.x*2;
+				repelClips[boneIndex].y = destinationScreen.y*2;
 
 				gl::color(Color(1.0,0.0,0.0));
-				gl::drawSolidCircle( Vec2f(destinationScreen.x, destinationScreen.y), 20);
+				gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
 
 				/*
 				// Draw generic bone stuff here
@@ -526,13 +599,13 @@ void TextTestApp::drawSkeleton(){
 							break;				 
 						case NUI_SKELETON_POSITION_HIP_LEFT:
 							//draw left hip
-							break;				 
+							break;
 						case NUI_SKELETON_POSITION_KNEE_LEFT:
 							//draw left knee
 							break;				 
 						case NUI_SKELETON_POSITION_ANKLE_LEFT:
 							//draw left ankle
-							break;				 
+							break;
 						case NUI_SKELETON_POSITION_FOOT_LEFT:
 							//draw left foot
 							break;
@@ -568,6 +641,16 @@ void TextTestApp::drawSkeleton(){
 		//gl::popMatrices();
 	}
 }
+
+
+
+
+
+void TextTestApp::drawParticle(float tx, float ty, float scale){
+	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
+	gl::draw(particleImg,rect);
+}
+
 
 
 // Receives skeleton data
