@@ -314,16 +314,10 @@ void FontRenderer::animateOut(){
 
 
 ci::Vec2f FontRenderer::getRandomPointOffscreen(){
-	float x = randFloat(-2000,2000);
-	float y = randFloat(-2000,2000);
+	float x = randFloat( 0,10) * 40;
+	float y = randFloat( 0,10) * 30;
 
-	if (x > 0 && x < getWindowHeight()){
-		x+=getWindowHeight();
-	}
-
-	if (y > 0 && y < getWindowWidth()){
-		y+=getWindowWidth();
-	}
+	
 
 	return ci::Vec2f(x,y);
 }
