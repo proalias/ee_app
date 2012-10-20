@@ -16,13 +16,15 @@ void PassiveScene1::setup( FontRenderer &thefont )
 	font->addLine( "          DIGITAL LIFE", 2 );
 
 	animationTimer.start();
+	
 }
 
 void PassiveScene1::update()
 {
-	if(animationTimer.getSeconds()>7){
+	if(animationTimer.getSeconds()>17){
 		// test dispatching event
 		animationTimer.stop();
+		animateOut();
 		animationTimer = Timer(); // reset the timer
 		_signal( this );
 	}
@@ -30,11 +32,11 @@ void PassiveScene1::update()
 
 
 void PassiveScene1::animateIn(){
-
+	font->animateIn();
 }
 
 void PassiveScene1::animateOut(){
-
+	font->animateOut();
 }
 
 

@@ -256,7 +256,7 @@ void FontRenderer::addLine( const std::string &copy, int size )
 		{
 			float x = character[i][0]+xPosition;
 			float y = character[i][1];//+yPosition;
-			newline.push_back( TweenParticle(  x*size, y*size , size ) );
+			newline.push_back( TweenParticle(  x*size, y*size , size*2.5 ) );
 			
 		}
 

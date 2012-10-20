@@ -16,6 +16,7 @@
 #include "cinder/Vector.h"
 #include "cinder/app/MouseEvent.h"
 #include "cinder/Rand.h"
+#include "cinder/Timeline.h"
 //#include "gl.h"
  
 //#include "Button.h"
@@ -31,6 +32,7 @@
 #include "ParticleA.h"
 #include "TweenParticle.h"
 #include "IconFactory.h"
+#include "IconRenderer.h"
 
 #include "PassiveScene1.h"
 //#include "PassiveScene1.h"
@@ -82,7 +84,7 @@ class TextTestApp : public AppNative {
 	SVGtoParticleParser svgParser;
 	
 	IconFactory iconFactory;
-
+	std::vector<IconRenderer> iconRenderers;
 
 	//mode definitions
 
@@ -95,6 +97,7 @@ class TextTestApp : public AppNative {
 
 
 	Timer textAnimationTimer;
+
 
 private:
 	// Kinect
@@ -227,6 +230,14 @@ void TextTestApp::setup()
 	iconFactory.init();
 
 	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
+	IconRenderer airGuitarRenderer = IconRenderer(airGuitarPoints);
+	airGuitarRenderer.xPos = 400;
+	airGuitarRenderer.yPos = 300;
+	airGuitarRenderer.xScale = airGuitarRenderer.yScale = 0.5;
+
+	iconRenderers.push_back(airGuitarRenderer);
+
+
 	toggleAnimation();
 }
 
@@ -236,7 +247,7 @@ void TextTestApp::toggleAnimation(){
 		
 		animationInProgress = true;
 		int reassigned = 0;
-			
+		
 		if (!trackingRightHand){
 
 			trackingRightHand = true;//!trackingRightHand;
@@ -370,10 +381,14 @@ void TextTestApp::update()
 
 	//trigger the text animation
 	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 13){
-		myFont.animateIn();
+		myFont.animateOut();
+		iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
 	}
 
 
+	//iconRenderers.back().xPos = iconRenderers.back().xPos + 1;
+	//iconRenderers.back().xScale = iconRenderers.back().xScale + 0.1;
+	//iconRenderers.back().yScale = iconRenderers.back().yScale + 0.1;
 
 	myFont.draw();
 
@@ -446,6 +461,13 @@ void TextTestApp::draw()
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 
 	}
+
+	
+	for( vector<IconRenderer>::iterator p = iconRenderers.begin(); p != iconRenderers.end(); ++p ){
+		p->draw();
+	}
+
+
 }
 
 
