@@ -28,6 +28,7 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
+#include "PassiveScene5.h"
 
 #include <list>
 
@@ -137,10 +138,13 @@ void TextTestApp::onPassiveSceneComplete()
 {
 	myFont.addLine( "CALL BACK WORKS", 2 );
 
+	currentScene->animateOut(timeline());
 	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
-	currentScene = new PassiveScene2();
+	currentScene = new PassiveScene5();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
-	currentScene->setup( myFont );
+	currentScene->setup( myFont, iconFactory );
+
+	currentScene->animateIn(timeline());
 }
 
 
@@ -156,7 +160,7 @@ void TextTestApp::setup()
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
-	currentScene->setup( myFont );
+	currentScene->setup( myFont , iconFactory);
 
 	iconFactory.init();
 	
@@ -199,121 +203,9 @@ void TextTestApp::setup()
 
 	setupSkeletonTracker();
 
-	tweeningPointsIn = false;
-
-	animationInProgress = false;
-
-
-	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
-	IconRenderer airGuitarRenderer = IconRenderer(airGuitarPoints);
-	airGuitarRenderer.xPos = 400;
-	airGuitarRenderer.yPos = 300;
-	airGuitarRenderer.xScale = airGuitarRenderer.yScale = 0.5;
-
-	iconRenderers.push_back(airGuitarRenderer);
-
-
-	toggleAnimation();
+	
 }
 
-
-void TextTestApp::toggleAnimation(){
-	if (!animationInProgress){
-		
-		animationInProgress = true;
-		int reassigned = 0;
-		
-		if (!trackingRightHand){
-
-			trackingRightHand = true;//!trackingRightHand;
-			for (int i=0; i <pointsContainer.size();i++){
-				reassigned +=1;
-				float destx = pointsContainer[i].xpos;
-				float desty = pointsContainer[i].ypos;
-
-				ci::Vec2f pt = getRandomPointOffscreen();
-				
-
-				//p.animateTo(ci::Vec2f(destx,desty),ci::Vec2f(p.xpos,p.ypos),3.0,getElapsedSeconds());  	
-				if ( i >= animatingParticles.size() ){
-
-					//timeline().apply( &p.xpos, xpos, destx, 3.0f, EaseOutBack(0.3) );
-					//timeline().apply( &p.ypos, ypos, desty, 3.0f, EaseOutBack(0.3) );
-					TweenParticle p = TweenParticle(pt.x,pt.y, pointsContainer[i].rad);
-					p.color.r = pointsContainer[i].color.r;
-					p.color.g = pointsContainer[i].color.g;
-					p.color.b = pointsContainer[i].color.b;
-					animatingParticles.push_back(p);
-					animatingParticles.back().animateTo(ci::Vec2f(destx,desty),pt,3.0,getElapsedSeconds(),p.rad);
-				}else{
-					//timeline().apply( &animatingParticles[i].xpos, xpos, destx, 3.0f, EaseOutBack(0.3) );
-					//timeline().apply( &animatingParticles[i].ypos, xpos, desty, 3.0f, EaseOutBack(0.3) );
-					animatingParticles[i].color = pointsContainer[i].color;
-					animatingParticles[i].animateTo(ci::Vec2f(destx,desty),pt,3.0,getElapsedSeconds(),pointsContainer[i].rad);
-					//animatingParticles[i].ypos = p.ypos;
-				}
-			}
-
-			//clear remaining particles
-
-			int remaining = animatingParticles.size() - reassigned;
-			for (int i = 0; i< remaining; i++){
-				animatingParticles[i+reassigned].animateTo(getRandomPointOffscreen(),3.0,getElapsedSeconds(), 0.0);
-			}
-
-		}else{
-
-			trackingRightHand = false;
-
-			for (int i=0; i <pointsContainer.size();i++){
-
-				
-				float xpos = pointsContainer[i].xpos;
-				float ypos = pointsContainer[i].ypos;
-
-
-
-				if ( i >= animatingParticles.size() ){		
-					ci::Vec2f pt = getRandomPointOffscreen();
-				
-					TweenParticle p = TweenParticle(xpos,ypos, pointsContainer[i].rad);
-					p.color.r = pointsContainer[i].color.r;
-					p.color.g = pointsContainer[i].color.g;
-					p.color.b = pointsContainer[i].color.b;
-					animatingParticles.push_back(p);
-					animatingParticles.back().animateTo(pt,3.0,getElapsedSeconds(),p.rad);
-				}else{
-					animatingParticles[i].color = pointsContainer[i].color;
-					animatingParticles[i].animateTo(ci::Vec2f(animatingParticles[i].xpos,animatingParticles[i].ypos),3.0,getElapsedSeconds(),pointsContainer[i].rad);
-				}
-			}
-			
-			//clear remaining particles
-
-			int remaining = animatingParticles.size() - reassigned;
-			for (int i = 0; i< remaining; i++){
-				animatingParticles[i+reassigned].animateTo(getRandomPointOffscreen(),3.0,getElapsedSeconds(), 0.0);
-			}
-
-			mGestureMode = mNextGesture;
-		}
-	}
-}
-
-ci::Vec2f TextTestApp::getRandomPointOffscreen(){
-	float x = randFloat(-2000,2000);
-	float y = randFloat(-2000,2000);
-
-	if (x > 0 && x < getWindowHeight()){
-		x+=getWindowHeight();
-	}
-
-	if (y > 0 && y < getWindowWidth()){
-		y+=getWindowWidth();
-	}
-
-	return ci::Vec2f(x,y);
-}
 
 
 
@@ -434,6 +326,8 @@ void TextTestApp::draw()
 	gl::color( Color::white() );
 
 	myFont.draw();
+
+	currentScene->draw();
 
 	gl::color( Color( 1, 1, 1 ) );
 

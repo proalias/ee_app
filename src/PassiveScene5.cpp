@@ -1,12 +1,11 @@
 #include "PassiveScene5.h"
-#include "boost/bind.hpp"
 
 PassiveScene5::PassiveScene5()
 {
 	_id = "PassiveScene5"; // for boost signal
 }
 
-void PassiveScene5::setup( FontRenderer &thefont, ci::Timeline &timeline, IconFactory &iconFactory)
+void PassiveScene5::setup( FontRenderer &thefont, IconFactory &theIconFactory)
 {
 
 	font = &thefont;
@@ -16,13 +15,24 @@ void PassiveScene5::setup( FontRenderer &thefont, ci::Timeline &timeline, IconFa
 	font->addLine( "          FOR YOUR", 2 );
 	font->addLine( "          DIGITAL LIFE", 2 );
 
-	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
-	IconRenderer airGuitarRenderer = IconRenderer(airGuitarPoints);
-	airGuitarRenderer.xPos = 400;
-	airGuitarRenderer.yPos = 300;
-	airGuitarRenderer.xScale = airGuitarRenderer.yScale = 0.5;
+	iconFactory =  &theIconFactory;
 
-	icons.push_back(airGuitarRenderer);
+	airGuitar = IconRenderer();
+	airGuitar.setPoints(iconFactory->getPointsForIcon(IconFactory::AIR_GUITAR));
+	airGuitar.xPos = 400;
+	airGuitar.yPos = 300;
+	airGuitar.xScale = airGuitar.yScale = 0.5;
+
+	
+	arrow = IconRenderer();
+	arrow.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
+	arrow.xPos = 400;
+	arrow.yPos = 600;
+	
+	arrow.xScale = arrow.yScale = 0.5;
+	
+
+	
 
 	animationTimer.start();
 
@@ -43,12 +53,12 @@ void PassiveScene5::update()
 
 void PassiveScene5::animateIn(ci::Timeline &timeline){
 	font->animateIn();
-	icons.back().tweenTo(timeline,1000.0,1000.0,10.0);
+	airGuitar.tweenTo(timeline,100.0,600.0,10.0);
 }
 
 void PassiveScene5::animateOut(ci::Timeline &timeline){
 	font->animateOut();
-	icons.back().tweenTo(timeline,30.0,30.0,10.0);
+	airGuitar.tweenTo(timeline,30.0,30.0,10.0);
 }
 
 
@@ -56,8 +66,6 @@ void PassiveScene5::draw()
 {
 	//font.draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
 
-	for (std::vector<IconRenderer>::iterator icon = icons.begin(); icon < icons.end(); icon++){
-	
-		icon->draw();
-	}
+		airGuitar.draw();
+		arrow.draw();
 }

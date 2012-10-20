@@ -6,7 +6,7 @@ PassiveScene3::PassiveScene3()
 	_id = "PassiveScene3"; // for boost signal
 }
 
-void PassiveScene3::setup( FontRenderer &thefont )
+void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
 	font->clear();
@@ -20,10 +20,11 @@ void PassiveScene3::setup( FontRenderer &thefont )
 	//
 	// TODO - font animate out. clear on complete maybe?
 	font->clear();
-	font->addLine( "WITH SUPERFASY", 3 );
+	font->addLine( "WITH SUPERFAST", 3 );
 	font->addLine( "   4GEE AND", 3 );
 	font->addLine( "   FIBRE BROADBAND", 3 );
 
+	iconFactory =  &theIconFactory;
 	//_signal( this );
 
 	animationTimer.start();

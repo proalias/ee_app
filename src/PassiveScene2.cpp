@@ -6,7 +6,7 @@ PassiveScene2::PassiveScene2()
 	_id = "PassiveScene2"; // for boost signal
 }
 
-void PassiveScene2::setup( FontRenderer &thefont )
+void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	// show pin icons
 
@@ -16,6 +16,7 @@ void PassiveScene2::setup( FontRenderer &thefont )
 	font->addLine( "   IS HERE", 4 );
 
 	//_signal( this );
+	iconFactory =  &theIconFactory;
 
 	animationTimer.start();
 }
@@ -26,7 +27,7 @@ void PassiveScene2::update()
 		// test dispatching event
 		animationTimer.stop();
 		animationTimer = Timer(); // reset the timer
-		//_signal( this );
+		_signal( this );
 
 		font->clear();
 
