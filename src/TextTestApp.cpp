@@ -26,9 +26,8 @@
 #include "SceneBase.h"
 #include "PassiveScene1.h"
 #include "PassiveScene2.h"
-
-//#include "PassiveScene5.h"
-
+#include "PassiveScene3.h"
+#include "PassiveScene4.h"
 
 #include <list>
 
@@ -155,7 +154,7 @@ void TextTestApp::setup()
 	myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene1();
+	currentScene = new PassiveScene4();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont );
 

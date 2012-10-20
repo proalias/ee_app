@@ -1,20 +1,32 @@
 #include "PassiveScene4.h"
+#include "boost/bind.hpp"
 
-PassiveScene4::PassiveScene4( const FontRenderer &theFont )
+PassiveScene4::PassiveScene4()
 {
-	font = theFont; // TODO - check im doing this right? dereferecing properly
-	setup();
+	_id = "PassiveScene4"; // for boost signal
 }
 
-void PassiveScene4::setup()
+void PassiveScene4::setup( FontRenderer &thefont )
 {
-	font.clear();
+	font = &thefont;
+	font->clear();
+	font->addLine( " ", 3 );
+	font->addLine( "COME IN", 3 );
+	font->addLine( "      AND SEE US", 3 );
 
-	//font = FontRenderer();
-	font.addLine( "COME IN", 4 );
-	font.addLine( "   AND SEE US", 4 );
+//	font->animateIn();
 
+	animationTimer.start();
+}
 
+void PassiveScene4::update()
+{
+	if(animationTimer.getSeconds()>15){ // TODO - find out timings for this screen
+		// test dispatching event
+		animationTimer.stop();
+		animationTimer = Timer(); // reset the timer
+		_signal( this );
+	}
 }
 
 
@@ -29,5 +41,5 @@ void PassiveScene4::animateOut(){
 
 void PassiveScene4::draw()
 {
-	// TODO - if complete dispatch some kind of complete event so parent can move to next passive scene
+	//font.draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
 }

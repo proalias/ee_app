@@ -16,14 +16,14 @@ public:
 	void update();
 	void draw();
 
-	void animateIn();
-	void animateOut();
-
 	PassiveScene1(void);
 	//~PassiveScene1(void);
 
  private:
 	Timer animationTimer;
+
+	void animateIn();
+	void animateOut();
 
 };
 
