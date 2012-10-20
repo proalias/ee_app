@@ -1,6 +1,8 @@
 #include "cinder/Color.h"
 #include "cinder/Vector.h"
 #include <vector>
+#pragma once
+
 #include "Particle.h"
 #include "NobleeBold.h"
 #include "cinder/gl/gl.h"

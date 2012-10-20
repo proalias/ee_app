@@ -9,6 +9,21 @@
 #include "cinder/Utilities.h"
 #include "Kinect.h"
 
+
+
+#include "cinder/app/AppBasic.h"
+#include "cinder/gl/gl.h"
+#include "cinder/Vector.h"
+#include "cinder/app/MouseEvent.h"
+#include "cinder/Rand.h"
+//#include "gl.h"
+ 
+//#include "Button.h"
+//#include "boost/bind.hpp"
+
+
+#include "boost/bind.hpp"
+
 #include "Background.h"
 #include "FontRenderer.h"
 #include "Particle.h"
@@ -16,6 +31,11 @@
 #include "ParticleA.h"
 #include "TweenParticle.h"
 #include "IconFactory.h"
+
+#include "PassiveScene1.h"
+//#include "PassiveScene1.h"
+//#include "PassiveScene1.h"
+//#include "PassiveScene1.h"
 
 #include <list>
 
@@ -97,6 +117,11 @@ private:
 protected:
 	Background mbackground;
 
+	PassiveScene1 sceneTest;
+	void onPassiveSceneComplete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	// TODO also couldnt get the parameter working
+	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
+
 };
 
 
@@ -113,6 +138,16 @@ void TextTestApp::prepareSettings( Settings *settings )
 	//settings->setFrameRate( 30.0f );
 	//settings->setFullScreen( true );
 }
+
+
+
+void TextTestApp::onPassiveSceneComplete()
+{
+	std::cout << "PassiveScene1 instance is talking to me!" << std::endl;
+	myFont.addLine( "CUNTY BOLOX", 3 );
+	myFont.addLine( "CALL BACK WORKS", 2 );
+}
+
 
 
 void TextTestApp::setup()
@@ -135,7 +170,13 @@ void TextTestApp::setup()
 
 	myFont = FontRenderer();
 	myFont.addLine( "EE APP START TEST TEXT", 2 );
-	
+
+	// Get the signal instance
+	// Use boost::bind, to bind our class's function, to our (this) specific instnace
+	// _1 is a typedef for boost::arg - So we're creating a spot for the first argument in the function
+	sceneTest.getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	sceneTest.setup( myFont );
+
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
 
@@ -198,7 +239,6 @@ void TextTestApp::toggleAnimation(){
 		int reassigned = 0;
 			
 		if (!trackingRightHand){
-
 
 			trackingRightHand = true;//!trackingRightHand;
 			for (int i=0; i <pointsContainer.size();i++){
@@ -549,7 +589,7 @@ void TextTestApp::drawSkeleton(){
 
 
 
-
+// TODO - is this being used anymore?
 void TextTestApp::drawParticle(float tx, float ty, float scale){
 	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
 	gl::draw(particleImg,rect);
