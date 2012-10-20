@@ -8,8 +8,8 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
-#include "cinder/app/MouseEvent.h"
 #include "cinder/Rand.h"
+#include "cinder/Timeline.h"
 
 #include "boost/bind.hpp"
 
@@ -21,12 +21,14 @@
 #include "ParticleA.h"
 #include "TweenParticle.h"
 #include "IconFactory.h"
+#include "IconRenderer.h"
 
 #include "SceneBase.h"
 #include "PassiveScene1.h"
 #include "PassiveScene2.h"
-//#include "PassiveScene1.h"
-//#include "PassiveScene1.h"
+
+//#include "PassiveScene5.h"
+
 
 #include <list>
 
@@ -73,9 +75,12 @@ class TextTestApp : public AppNative {
 	SVGtoParticleParser svgParser;
 	
 	IconFactory iconFactory;
-
-
+	std::vector<IconRenderer> iconRenderers;
+	
 	//mode definitions
+
+
+	PassiveScene5 passiveScene5;
 
 	int mGestureMode;
 	static const int GESTUREMODE_TEXT_PROMPT_WAVE = 0;
@@ -86,6 +91,7 @@ class TextTestApp : public AppNative {
 
 
 	Timer textAnimationTimer;
+
 
 private:
 	// Kinect
@@ -117,8 +123,6 @@ protected:
 };
 
 
-
-
 void TextTestApp::prepareSettings( Settings *settings )
 {
 	// TODO - turn on for the live app
@@ -144,7 +148,6 @@ void TextTestApp::onPassiveSceneComplete()
 }
 
 
-
 void TextTestApp::setup()
 {
 	mbackground.setup();// = Background();
@@ -164,14 +167,17 @@ void TextTestApp::setup()
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
 	myFont = FontRenderer();
-	myFont.addLine( "EE APP START TEST TEXT", 2 );
+	myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont );
 
+	iconFactory.init();
+	
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
+
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
@@ -218,9 +224,16 @@ void TextTestApp::setup()
 
 	animationInProgress = false;
 
-	iconFactory.init();
 
 	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
+	IconRenderer airGuitarRenderer = IconRenderer(airGuitarPoints);
+	airGuitarRenderer.xPos = 400;
+	airGuitarRenderer.yPos = 300;
+	airGuitarRenderer.xScale = airGuitarRenderer.yScale = 0.5;
+
+	iconRenderers.push_back(airGuitarRenderer);
+
+
 	toggleAnimation();
 }
 
@@ -230,7 +243,7 @@ void TextTestApp::toggleAnimation(){
 		
 		animationInProgress = true;
 		int reassigned = 0;
-			
+		
 		if (!trackingRightHand){
 
 			trackingRightHand = true;//!trackingRightHand;
@@ -361,14 +374,31 @@ void TextTestApp::update()
 		textAnimationTimer.start();
 	}
 
+
+	
 	//trigger the text animation
-	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 13){
-		myFont.animateIn();
+	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
+		//myFont.animateOut();
+		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+		passiveScene5.animateIn(timeline());
 	}
 
 
+		//trigger the text animation
+	if (textAnimationTimer.getSeconds() > 20 && textAnimationTimer.getSeconds() < 22){
+		//myFont.animateOut();
+		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+		passiveScene5.animateOut(timeline());
+		textAnimationTimer = Timer();
+		textAnimationTimer.start();
+	}
+	
+	
 
-	myFont.draw();
+	//iconRenderers.back().xPos = iconRenderers.back().xPos + 1;
+	//iconRenderers.back().xScale = iconRenderers.back().xScale + 0.1;
+	//iconRenderers.back().yScale = iconRenderers.back().yScale + 0.1;
+
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
@@ -419,6 +449,7 @@ void TextTestApp::draw()
 {
 	mbackground.draw();
 
+
 	drawSkeleton();
 	gl::enableAlphaBlending();
 
@@ -432,6 +463,9 @@ void TextTestApp::draw()
 
 	gl::color( Color( 1, 1, 1 ) );
 
+	
+	passiveScene5.draw();
+
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 	//	p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 	//	p->draw();
@@ -439,6 +473,13 @@ void TextTestApp::draw()
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 
 	}
+
+	/*
+	for( vector<IconRenderer>::iterator p = iconRenderers.begin(); p != iconRenderers.end(); ++p ){
+		p->draw();
+	}*/
+
+
 }
 
 

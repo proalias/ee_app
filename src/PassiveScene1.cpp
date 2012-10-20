@@ -18,16 +18,15 @@ void PassiveScene1::setup( FontRenderer &thefont )
 	//_signal( this );
 
 	animationTimer.start();
+	
 }
 
 void PassiveScene1::update()
 {
-	//font->clear();
-	//font->addLine( "UPDATE RUNS", 2 );
-
 	if(animationTimer.getSeconds()>7){
 		// test dispatching event
 		animationTimer.stop();
+		animateOut();
 		animationTimer = Timer(); // reset the timer
 		_signal( this );
 	}
@@ -35,11 +34,11 @@ void PassiveScene1::update()
 
 
 void PassiveScene1::animateIn(){
-
+	font->animateIn();
 }
 
 void PassiveScene1::animateOut(){
-
+	font->animateOut();
 }
 
 

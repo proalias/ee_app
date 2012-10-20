@@ -4,6 +4,7 @@ FontRenderer::FontRenderer(void)
 {
 	font = NobleeBold();
 	animationInProgress = false;
+	mGridPointInc = 0;
 }
 
 // goes through all points and gets the widest
@@ -255,7 +256,7 @@ void FontRenderer::addLine( const std::string &copy, int size )
 		{
 			float x = character[i][0]+xPosition;
 			float y = character[i][1];//+yPosition;
-			newline.push_back( TweenParticle(  x*size, y*size , size ) );
+			newline.push_back( TweenParticle(  x*size, y*size , size*2.5 ) );
 			
 		}
 
@@ -290,6 +291,7 @@ void FontRenderer::animateIn(){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOffscreen(),3.0,getElapsedSeconds(),p->rad);
+				p->rad = 0;
 			}
 		}
 	}
@@ -312,18 +314,32 @@ void FontRenderer::animateOut(){
 
 
 ci::Vec2f FontRenderer::getRandomPointOffscreen(){
-	float x = randFloat(-2000,2000);
-	float y = randFloat(-2000,2000);
+	
+	int SPACING = 40;
 
-	if (x > 0 && x < getWindowHeight()){
-		x+=getWindowHeight();
-	}
+	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
+	float ROWS = cinder::app::getWindowHeight()/SPACING;
+	
+	//fieldLayerContainer.clear();
 
-	if (y > 0 && y < getWindowWidth()){
-		y+=getWindowWidth();
-	}
+	float pX = randInt(-COLUMNS, COLUMNS)*SPACING;
+	float pY = randInt(-ROWS, ROWS)*SPACING;
+	return ci::Vec2f(pX,pY);
 
-	return ci::Vec2f(x,y);
+	/*
+	mGridPointInc += 1;
+
+	for( int j=0; j<ROWS; j++ ){
+		for( int i=0; i<COLUMNS; i++ ){
+			if (i+j*ROWS == mGridPointInc){
+				return ci::Vec2f(i*SPACING,j*SPACING);
+			}
+		}
+	}*/
+
+	
+
+	
 }
 
 void FontRenderer::draw()

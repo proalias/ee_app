@@ -42,7 +42,7 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 }
 
 void TweenParticle::draw(){
-	gl::drawSolidCircle(ci::Vec2f(xpos, ypos) ,rad*2.5);
+	gl::drawSolidCircle(ci::Vec2f(xpos, ypos) ,rad);
 }
 
 void TweenParticle::update(double t){

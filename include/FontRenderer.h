@@ -58,4 +58,6 @@ public:
 
 	bool animationInProgress;
 	float lineHeight;
+private:
+	int mGridPointInc;
 };
