@@ -79,9 +79,6 @@ class TextTestApp : public AppNative {
 	
 	//mode definitions
 
-
-	PassiveScene5 passiveScene5;
-
 	int mGestureMode;
 	static const int GESTUREMODE_TEXT_PROMPT_WAVE = 0;
 	static const int GESTUREMODE_WAVE = 1;
@@ -141,34 +138,23 @@ void TextTestApp::onPassiveSceneComplete()
 {
 	myFont.addLine( "CALL BACK WORKS", 2 );
 
+	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont );
-
 }
 
 
 void TextTestApp::setup()
 {
-	mbackground.setup();// = Background();
-	particleImg = loadImage(loadAsset( "particle.png" ) );
+	mbackground.setup();
+
+	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
 	
-	// TODO - might be used for rubrik font later.. so leave here
-
-	// Create a custom font by loading it from a resource
-	//	Font customFont( Font( loadResource( RES_CUSTOM_FONT ), 72 ) );
-	//console() << "This font is called " << customFont.getFullName() << std::endl;
-	//TextLayout simple;
-	//simple.setFont( customFont );
-	//simple.setColor( Color( 1, 1, 1 ) );
-	//simple.setColor( ColorConstants::TEAL );
-	//simple.addLine( "4GEE IS HERE" );
-	//simple.addLine( "SIMPLE TEXT TEST 1" );
-	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
-
 	myFont = FontRenderer();
 	myFont.addLine( "FONTRENDERER CREATED", 2 );
 
+	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont );
@@ -178,7 +164,6 @@ void TextTestApp::setup()
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
 
-
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
 		repelClips.push_back(cinderClip);
@@ -186,13 +171,8 @@ void TextTestApp::setup()
 
 	mbackground.setRepelClips( repelClips );
 
-	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
-	// TODO - text needs to centre align
 	for( int i=0; i<100; i++ )
 	{
-			//float x = //character[i][0]+xPosition;
-			//float y = //character[i][1]+yPosition;
-
 		ParticleA particle = ParticleA();
 		particle.init();
 
@@ -380,7 +360,7 @@ void TextTestApp::update()
 	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
 		//myFont.animateOut();
 		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
-		passiveScene5.animateIn(timeline());
+//		passiveScene5.animateIn(timeline());
 	}
 
 
@@ -388,7 +368,7 @@ void TextTestApp::update()
 	if (textAnimationTimer.getSeconds() > 20 && textAnimationTimer.getSeconds() < 22){
 		//myFont.animateOut();
 		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
-		passiveScene5.animateOut(timeline());
+		//passiveScene5.animateOut(timeline());
 		textAnimationTimer = Timer();
 		textAnimationTimer.start();
 	}
@@ -449,36 +429,19 @@ void TextTestApp::draw()
 {
 	mbackground.draw();
 
-
 	drawSkeleton();
 	gl::enableAlphaBlending();
 
 	gl::color( Color::white() );
-	//gl::draw( mSimpleTexture, Vec2f( 10, getWindowHeight() - mSimpleTexture.getHeight() - 5 ) );
-	//gl::draw( mSimpleTexture, Vec2f( 10, 10 ) );
 
-	//TODO - dont think i have to keep calling this.
-	// tell the font to draw?
 	myFont.draw();
 
 	gl::color( Color( 1, 1, 1 ) );
 
-	
-	passiveScene5.draw();
-
+	// TODO - may be passing foreground particles into scenes. but still probs drawn here
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-	//	p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-	//	p->draw();
-
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-
 	}
-
-	/*
-	for( vector<IconRenderer>::iterator p = iconRenderers.begin(); p != iconRenderers.end(); ++p ){
-		p->draw();
-	}*/
-
 
 }
 
