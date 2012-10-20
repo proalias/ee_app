@@ -144,7 +144,6 @@ void TextTestApp::prepareSettings( Settings *settings )
 void TextTestApp::onPassiveSceneComplete()
 {
 	std::cout << "PassiveScene1 instance is talking to me!" << std::endl;
-	myFont.addLine( "CUNTY BOLOX", 3 );
 	myFont.addLine( "CALL BACK WORKS", 2 );
 }
 
@@ -354,6 +353,9 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
+
+	sceneTest.update();
+
 	mbackground.update();
 
 	updateSkeleton();

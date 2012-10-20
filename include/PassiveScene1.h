@@ -5,7 +5,7 @@
 //#include "cinder/Vector.h"
 //#include <vector>
 
-//#include "cinder/Cinder.h"
+#include "cinder/Cinder.h"
 #include <boost/signals2.hpp>
 #include <iostream>
 
@@ -16,6 +16,7 @@ class PassiveScene1 {
  public:
 
 	void setup( FontRenderer &font );
+	void update();
 	void draw();
 
 	void animateIn();
@@ -39,6 +40,8 @@ class PassiveScene1 {
  private:
 	std::string _id;
 	PassiveSignal    _signal;
+
+	Timer animationTimer;
 
 };
 
