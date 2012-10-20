@@ -13,16 +13,16 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	//font = FontRenderer();
 	font->addLine( "PREPARE TO GO", 3 );
-	font->addLine( "   SUPERFAST", 5 );
+	font->addLine( "              SUPERFAST", 3 );
 
 	// TODO - then clear then says...
 
 	//
 	// TODO - font animate out. clear on complete maybe?
-	font->clear();
-	font->addLine( "WITH SUPERFAST", 3 );
-	font->addLine( "   4GEE AND", 3 );
-	font->addLine( "   FIBRE BROADBAND", 3 );
+	//font->clear();
+	//font->addLine( "WITH SUPERFAST", 2 );
+	//font->addLine( "      4GEE AND", 2 );
+	//font->addLine( "      FIBRE BROADBAND", 2 );
 
 	iconFactory =  &theIconFactory;
 	//_signal( this );
@@ -35,16 +35,20 @@ void PassiveScene3::update()
 	//font->clear();
 	//font->addLine( "UPDATE RUNS SCENE 2", 2 );
 
-	if(animationTimer.getSeconds()>7){
+	if(animationTimer.getSeconds()>20){
 		// test dispatching event
-		animationTimer.stop();
-		animationTimer = Timer(); // reset the timer
 		//_signal( this );
 
 		font->clear();
-
-		font->addLine( "COOL THEN SCENES ARE SORTED", 3 );
+		font->addLine( "end scene 3", 3 );
 	}
+	if(animationTimer.getSeconds()>30){
+		animationTimer.stop();
+		animationTimer = Timer(); // reset the timer
+		
+		_signal( this );
+	}
+	
 }
 
 
