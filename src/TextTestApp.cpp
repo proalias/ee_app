@@ -9,12 +9,33 @@
 #include "cinder/Utilities.h"
 #include "Kinect.h"
 
+
+
+#include "cinder/app/AppBasic.h"
+#include "cinder/gl/gl.h"
+#include "cinder/Vector.h"
+#include "cinder/app/MouseEvent.h"
+#include "cinder/Rand.h"
+//#include "gl.h"
+ 
+//#include "Button.h"
+//#include "boost/bind.hpp"
+
+
+#include "boost/bind.hpp"
+
+#include "Background.h"
 #include "FontRenderer.h"
 #include "Particle.h"
 #include "CinderClip.h"
 #include "ParticleA.h"
 #include "TweenParticle.h"
 #include "IconFactory.h"
+
+#include "PassiveScene1.h"
+//#include "PassiveScene1.h"
+//#include "PassiveScene1.h"
+//#include "PassiveScene1.h"
 
 #include <list>
 
@@ -41,21 +62,14 @@ class TextTestApp : public AppNative {
 	void draw();
 	void drawSkeleton();
 	void drawParticle(float tx, float ty, float scale);
-
-
 	void toggleAnimation();
 
-
-	gl::Texture bgImage;
 	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
 
 	FontRenderer myFont;
  
 	std::list<ParticleA>	mParticles;
-
-	std::vector<ParticleA>	gridParticles;
-	void drawGrid();
 
 	std::vector<CinderClip> repelClips;
 
@@ -99,12 +113,22 @@ private:
 
 	bool trackingRightHand;
 	bool tweeningPointsIn;
+
+protected:
+	Background mbackground;
+
+	PassiveScene1 sceneTest;
+	void onPassiveSceneComplete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	// TODO also couldnt get the parameter working
+	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
+
 };
 
 
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
+	// TODO - turn on for the live app
 	//setAlwaysOnTop();
 	//setBorderless();
 	//setFullScreen(true);
@@ -116,12 +140,19 @@ void TextTestApp::prepareSettings( Settings *settings )
 }
 
 
+
+void TextTestApp::onPassiveSceneComplete()
+{
+	std::cout << "PassiveScene1 instance is talking to me!" << std::endl;
+	myFont.addLine( "CUNTY BOLOX", 3 );
+	myFont.addLine( "CALL BACK WORKS", 2 );
+}
+
+
+
 void TextTestApp::setup()
 {
-	//console() << "scoopfullhd.png lives at: " << getAssetPath( "scoopfullhd.png" ) << std::endl;
-
-	// TODO - fit to screen?...
-	bgImage = loadImage( loadAsset( "scoopfullhd.png" ) );
+	mbackground.setup();// = Background();
 	particleImg = loadImage(loadAsset( "particle.png" ) );
 	
 	// TODO - might be used for rubrik font later.. so leave here
@@ -137,12 +168,15 @@ void TextTestApp::setup()
 	//simple.addLine( "SIMPLE TEXT TEST 1" );
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
-	// draw the grid. TODO - create a class for this and just add a grid instance
-	TextTestApp::drawGrid();
-
 	myFont = FontRenderer();
 	myFont.addLine( "EE APP START TEST TEXT", 2 );
-	
+
+	// Get the signal instance
+	// Use boost::bind, to bind our class's function, to our (this) specific instnace
+	// _1 is a typedef for boost::arg - So we're creating a spot for the first argument in the function
+	sceneTest.getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	sceneTest.setup( myFont );
+
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
 
@@ -151,9 +185,11 @@ void TextTestApp::setup()
 		repelClips.push_back(cinderClip);
 	}
 
+	mbackground.setRepelClips( repelClips );
+
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
-	for( int i=0; i<1000; i++ )
+	for( int i=0; i<100; i++ )
 	{
 			//float x = //character[i][0]+xPosition;
 			//float y = //character[i][1]+yPosition;
@@ -191,7 +227,7 @@ void TextTestApp::setup()
 
 	iconFactory.init();
 
-	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::ICON_FACTORY_AIR_GUITAR);
+	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
 	toggleAnimation();
 }
 
@@ -203,7 +239,6 @@ void TextTestApp::toggleAnimation(){
 		int reassigned = 0;
 			
 		if (!trackingRightHand){
-
 
 			trackingRightHand = true;//!trackingRightHand;
 			for (int i=0; i <pointsContainer.size();i++){
@@ -319,6 +354,8 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
+	mbackground.update();
+
 	updateSkeleton();
 	
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
@@ -382,87 +419,10 @@ void TextTestApp::updateSkeleton()
 
 }
 
-void TextTestApp::drawGrid()
-{
-	int SPACING = 70;
-
-	float COLUMNS = getWindowWidth()/SPACING;
-	float ROWS = getWindowHeight()/SPACING;
-	
-	int LAYERS = 1;
-
-	int totalParticles = COLUMNS*ROWS;
-	int psize = mParticles.size();
-
-	gridParticles.clear();
-
-	for (int l = 0; l < LAYERS; l++){
-		//gl::pushMatrices();
-
-		//gl::translate(0,0,-l*mDepth);
-
-		for( int j=0; j<ROWS; j++ ){
-			for( int i=0; i<COLUMNS; i++ ){
-
-				ParticleA particle = ParticleA();
-				particle.init();
-				particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-				particle.width = 2;
-	
-				particle.x = i*SPACING;
-				particle.y = j*SPACING;
-
-				//particle.setBounce(-1);
-				//particle.setMaxSpeed(2);
-				//particle.setEdgeBehavior("wrap");
-
-				//particle.setWander(3);
-				particle.setGrav(0);
-
-				//particle.addRepelPoint( 200,300,100,100 );
-
-				particle.addSpringPoint( i*SPACING, j*SPACING, 100 ); // FORCES THE PARTICLE INTO POSITION
-
-				gridParticles.push_back( particle );
-			}
-		}
-
-	
-//		gl::color(ColorA(1.0,1.0,1.0,1.0 - (1.0/mLayers) * l));
-
-
-
-		//gl::popMatrices();
-	}
-
-}
-
-
-
-
-
 
 void TextTestApp::draw()
 {
-	// this pair of lines is the standard way to clear the screen in OpenGL
-	glClearColor( 0,0,0,1 );
-	glClear( GL_COLOR_BUFFER_BIT );
-	
-	//gl::setMatricesWindow( getWindowSize() );
-
-	gl::draw( bgImage );
-	
-	//for (int l = 0; l < 3; l++){
-	//	gl::pushMatrices();
-	//	gl::translate(0,0,-l*20);
-		// draw the grid
-		for( vector<ParticleA>::iterator p = gridParticles.begin(); p != gridParticles.end(); ++p ){
-			gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-		}
-	//	gl::popMatrices();
-	//}
-
-
+	mbackground.draw();
 
 	drawSkeleton();
 	gl::enableAlphaBlending();
@@ -629,7 +589,7 @@ void TextTestApp::drawSkeleton(){
 
 
 
-
+// TODO - is this being used anymore?
 void TextTestApp::drawParticle(float tx, float ty, float scale){
 	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
 	gl::draw(particleImg,rect);

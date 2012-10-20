@@ -1,3 +1,6 @@
+#ifndef REPELPOINT_H
+#define REPELPOINT_H
+
 #include "cinder\Cinder.h"
 #include "cinder\Vector.h"
 #include "cinder\gl\gl.h"
@@ -18,3 +21,5 @@ public:
 	float minDist;
 	float k;
 };
+
+#endif

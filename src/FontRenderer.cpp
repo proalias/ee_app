@@ -1,7 +1,5 @@
 #include "FontRenderer.h"
 
-
-
 FontRenderer::FontRenderer(void)
 {
 	font = NobleeBold();
@@ -323,7 +321,11 @@ ci::Vec2f FontRenderer::getRandomPointOffscreen(){
 }
 
 void FontRenderer::draw()
-{	
+{
+	// DO NOT REMOVE THIS CODE
+	// IT CENTRES TEXT AND WE MAY NEED TO ROLL IT BACK LATER
+
+	/*
 	float yPos = 100;
 	float xPos = 0;//(getWindowWidth()/2);
 
@@ -335,7 +337,30 @@ void FontRenderer::draw()
 
 		gl::translate( xPos, yPos, 0 );
 
-		
+		for( vector<Particle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
+			p->draw();
+		}
+	
+		yPos += FontRenderer::getLineHeight(j)+10;
+
+		gl::popMatrices();
+	}
+
+	*/
+
+
+	float yPos = 100;
+	float xPos = 0;//(getWindowWidth()/2);
+
+	for (int j=0;j<lines.size();j++){
+
+		gl::pushMatrices();
+
+		xPos = 300;//(getWindowWidth()/2) - (getLineWidth(j)/2);
+
+		gl::translate( xPos, yPos, 0 );
+
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
@@ -351,7 +376,6 @@ void FontRenderer::draw()
 		gl::popMatrices();
 	}
 
-	
 }
 
 void FontRenderer::clear()

@@ -1,3 +1,6 @@
+#ifndef PARTICLEA_H
+#define PARTICLEA_H
+
 #include "cinder\Cinder.h"
 #include "cinder\Vector.h"
 #include "cinder\gl\gl.h"
@@ -119,3 +122,5 @@ public:
 	std::string __edgeBehavior;
 	ci::Rectf __bounds;
 };
+
+#endif
