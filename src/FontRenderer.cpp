@@ -4,6 +4,7 @@ FontRenderer::FontRenderer(void)
 {
 	font = NobleeBold();
 	animationInProgress = false;
+	mGridPointInc = 0;
 }
 
 // goes through all points and gets the widest
@@ -290,6 +291,7 @@ void FontRenderer::animateIn(){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOffscreen(),3.0,getElapsedSeconds(),p->rad);
+				p->rad = 0;
 			}
 		}
 	}
@@ -312,12 +314,32 @@ void FontRenderer::animateOut(){
 
 
 ci::Vec2f FontRenderer::getRandomPointOffscreen(){
-	float x = randFloat( 0,10) * 40;
-	float y = randFloat( 0,10) * 30;
+	
+	int SPACING = 40;
+
+	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
+	float ROWS = cinder::app::getWindowHeight()/SPACING;
+	
+	//fieldLayerContainer.clear();
+
+	float pX = randInt(-COLUMNS, COLUMNS)*SPACING;
+	float pY = randInt(-ROWS, ROWS)*SPACING;
+	return ci::Vec2f(pX,pY);
+
+	/*
+	mGridPointInc += 1;
+
+	for( int j=0; j<ROWS; j++ ){
+		for( int i=0; i<COLUMNS; i++ ){
+			if (i+j*ROWS == mGridPointInc){
+				return ci::Vec2f(i*SPACING,j*SPACING);
+			}
+		}
+	}*/
 
 	
 
-	return ci::Vec2f(x,y);
+	
 }
 
 void FontRenderer::draw()
