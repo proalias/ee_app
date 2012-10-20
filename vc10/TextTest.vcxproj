@@ -103,6 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
+    <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
     <ClCompile Include="..\src\IconFactory.cpp" />
@@ -111,6 +112,10 @@
     <ClCompile Include="..\src\Particle.cpp" />
     <ClCompile Include="..\src\FontRenderer.cpp" />
     <ClCompile Include="..\src\ParticleA.cpp" />
+    <ClCompile Include="..\src\PassiveScene1.cpp" />
+    <ClCompile Include="..\src\PassiveScene2.cpp" />
+    <ClCompile Include="..\src\PassiveScene3.cpp" />
+    <ClCompile Include="..\src\PassiveScene4.cpp" />
     <ClCompile Include="..\src\RepelPoint.cpp" />
     <ClCompile Include="..\src\SVGtoParticleParser.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
@@ -118,14 +123,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
+    <ClInclude Include="..\include\Background.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
+    <ClInclude Include="..\include\Icon.h" />
     <ClInclude Include="..\include\IconFactory.h" />
     <ClInclude Include="..\include\NobleeBold.h" />
     <ClInclude Include="..\include\NobleeRegular.h" />
     <ClInclude Include="..\include\Particle.h" />
     <ClInclude Include="..\include\FontRenderer.h" />
     <ClInclude Include="..\include\ParticleA.h" />
+    <ClInclude Include="..\include\PassiveScene1.h" />
+    <ClInclude Include="..\include\PassiveScene2.h" />
+    <ClInclude Include="..\include\PassiveScene3.h" />
+    <ClInclude Include="..\include\PassiveScene4.h" />
     <ClInclude Include="..\include\RepelPoint.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\SVGtoParticleParser.h" />

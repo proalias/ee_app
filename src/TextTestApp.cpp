@@ -9,6 +9,7 @@
 #include "cinder/Utilities.h"
 #include "Kinect.h"
 
+#include "Background.h"
 #include "FontRenderer.h"
 #include "Particle.h"
 #include "CinderClip.h"
@@ -41,21 +42,14 @@ class TextTestApp : public AppNative {
 	void draw();
 	void drawSkeleton();
 	void drawParticle(float tx, float ty, float scale);
-
-
 	void toggleAnimation();
 
-
-	gl::Texture bgImage;
 	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
 
 	FontRenderer myFont;
  
 	std::list<ParticleA>	mParticles;
-
-	std::vector<ParticleA>	gridParticles;
-	void drawGrid();
 
 	std::vector<CinderClip> repelClips;
 
@@ -99,12 +93,17 @@ private:
 
 	bool trackingRightHand;
 	bool tweeningPointsIn;
+
+protected:
+	Background mbackground;
+
 };
 
 
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
+	// TODO - turn on for the live app
 	//setAlwaysOnTop();
 	//setBorderless();
 	//setFullScreen(true);
@@ -118,10 +117,7 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 void TextTestApp::setup()
 {
-	//console() << "scoopfullhd.png lives at: " << getAssetPath( "scoopfullhd.png" ) << std::endl;
-
-	// TODO - fit to screen?...
-	bgImage = loadImage( loadAsset( "scoopfullhd.png" ) );
+	mbackground.setup();// = Background();
 	particleImg = loadImage(loadAsset( "particle.png" ) );
 	
 	// TODO - might be used for rubrik font later.. so leave here
@@ -137,9 +133,6 @@ void TextTestApp::setup()
 	//simple.addLine( "SIMPLE TEXT TEST 1" );
 	//mSimpleTexture = gl::Texture( simple.render( true, PREMULT ) );
 
-	// draw the grid. TODO - create a class for this and just add a grid instance
-	TextTestApp::drawGrid();
-
 	myFont = FontRenderer();
 	myFont.addLine( "EE APP START TEST TEXT", 2 );
 	
@@ -150,6 +143,8 @@ void TextTestApp::setup()
 		CinderClip cinderClip = CinderClip();
 		repelClips.push_back(cinderClip);
 	}
+
+	mbackground.setRepelClips( repelClips );
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
@@ -191,7 +186,7 @@ void TextTestApp::setup()
 
 	iconFactory.init();
 
-	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::ICON_FACTORY_AIR_GUITAR);
+	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
 	toggleAnimation();
 }
 
@@ -319,6 +314,8 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
+	mbackground.update();
+
 	updateSkeleton();
 	
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
@@ -382,87 +379,10 @@ void TextTestApp::updateSkeleton()
 
 }
 
-void TextTestApp::drawGrid()
-{
-	int SPACING = 70;
-
-	float COLUMNS = getWindowWidth()/SPACING;
-	float ROWS = getWindowHeight()/SPACING;
-	
-	int LAYERS = 1;
-
-	int totalParticles = COLUMNS*ROWS;
-	int psize = mParticles.size();
-
-	gridParticles.clear();
-
-	for (int l = 0; l < LAYERS; l++){
-		//gl::pushMatrices();
-
-		//gl::translate(0,0,-l*mDepth);
-
-		for( int j=0; j<ROWS; j++ ){
-			for( int i=0; i<COLUMNS; i++ ){
-
-				ParticleA particle = ParticleA();
-				particle.init();
-				particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-				particle.width = 2;
-	
-				particle.x = i*SPACING;
-				particle.y = j*SPACING;
-
-				//particle.setBounce(-1);
-				//particle.setMaxSpeed(2);
-				//particle.setEdgeBehavior("wrap");
-
-				//particle.setWander(3);
-				particle.setGrav(0);
-
-				//particle.addRepelPoint( 200,300,100,100 );
-
-				particle.addSpringPoint( i*SPACING, j*SPACING, 100 ); // FORCES THE PARTICLE INTO POSITION
-
-				gridParticles.push_back( particle );
-			}
-		}
-
-	
-//		gl::color(ColorA(1.0,1.0,1.0,1.0 - (1.0/mLayers) * l));
-
-
-
-		//gl::popMatrices();
-	}
-
-}
-
-
-
-
-
 
 void TextTestApp::draw()
 {
-	// this pair of lines is the standard way to clear the screen in OpenGL
-	glClearColor( 0,0,0,1 );
-	glClear( GL_COLOR_BUFFER_BIT );
-	
-	//gl::setMatricesWindow( getWindowSize() );
-
-	gl::draw( bgImage );
-	
-	//for (int l = 0; l < 3; l++){
-	//	gl::pushMatrices();
-	//	gl::translate(0,0,-l*20);
-		// draw the grid
-		for( vector<ParticleA>::iterator p = gridParticles.begin(); p != gridParticles.end(); ++p ){
-			gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-		}
-	//	gl::popMatrices();
-	//}
-
-
+	mbackground.draw();
 
 	drawSkeleton();
 	gl::enableAlphaBlending();
