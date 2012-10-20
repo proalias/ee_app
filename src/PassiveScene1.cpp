@@ -15,7 +15,7 @@ void PassiveScene1::setup( FontRenderer &thefont )
 	font->addLine( "          FOR YOUR", 2 );
 	font->addLine( "          DIGITAL LIFE", 2 );
 
-	font->animateIn();
+	//font->animateIn(); // TODO - animate in is broken
 
 	//_signal( this );
 

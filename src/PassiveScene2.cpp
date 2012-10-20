@@ -8,9 +8,10 @@ PassiveScene2::PassiveScene2()
 
 void PassiveScene2::setup( FontRenderer &thefont )
 {
+	// show pin icons
+
 	font = &thefont;
 	font->clear();
-
 	font->addLine( "4GEE IS HERE", 3 );
 	font->addLine( "   IS HERE", 4 );
 
@@ -21,16 +22,11 @@ void PassiveScene2::setup( FontRenderer &thefont )
 
 void PassiveScene2::update()
 {
-	//font->clear();
-	//font->addLine( "UPDATE RUNS SCENE 2", 2 );
-
 	if(animationTimer.getSeconds()>7){
 		// test dispatching event
 		animationTimer.stop();
 		animationTimer = Timer(); // reset the timer
 		//_signal( this );
-
-
 
 		font->clear();
 
