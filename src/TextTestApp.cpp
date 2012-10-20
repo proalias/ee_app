@@ -154,7 +154,7 @@ void TextTestApp::setup()
 	myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene2();
+	currentScene = new PassiveScene3();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont );
 
