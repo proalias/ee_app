@@ -189,7 +189,7 @@ void TextTestApp::setup()
 
 	// myFont.addLine( "some test", 10 ); TODO - addline increments y position by previous text height
 	// TODO - text needs to centre align
-	for( int i=0; i<1000; i++ )
+	for( int i=0; i<100; i++ )
 	{
 			//float x = //character[i][0]+xPosition;
 			//float y = //character[i][1]+yPosition;
