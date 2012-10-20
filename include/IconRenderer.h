@@ -1,3 +1,7 @@
+#ifndef IconRenderer_H
+#define IconRenderer_H
+
+
 #include "cinder/Cinder.h"
 #include "cinder/Timeline.h"
 #include <stdio.h>
@@ -18,3 +22,4 @@ public :
 
 	std::vector<TweenParticle> mPoints;
 };
+#endif

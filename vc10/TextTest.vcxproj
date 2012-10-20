@@ -117,6 +117,7 @@
     <ClCompile Include="..\src\PassiveScene2.cpp" />
     <ClCompile Include="..\src\PassiveScene3.cpp" />
     <ClCompile Include="..\src\PassiveScene4.cpp" />
+    <ClCompile Include="..\src\PassiveScene5.cpp" />
     <ClCompile Include="..\src\RepelPoint.cpp" />
     <ClCompile Include="..\src\SVGtoParticleParser.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="..\include\PassiveScene2.h" />
     <ClInclude Include="..\include\PassiveScene3.h" />
     <ClInclude Include="..\include\PassiveScene4.h" />
+    <ClInclude Include="..\include\PassiveScene5.h" />
     <ClInclude Include="..\include\RepelPoint.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\SVGtoParticleParser.h" />

@@ -37,7 +37,8 @@
 #include "PassiveScene1.h"
 //#include "PassiveScene1.h"
 //#include "PassiveScene1.h"
-//#include "PassiveScene1.h"
+#include "PassiveScene5.h"
+
 
 #include <list>
 
@@ -85,8 +86,11 @@ class TextTestApp : public AppNative {
 	
 	IconFactory iconFactory;
 	std::vector<IconRenderer> iconRenderers;
-
+	
 	//mode definitions
+
+
+	PassiveScene5 passiveScene5;
 
 	int mGestureMode;
 	static const int GESTUREMODE_TEXT_PROMPT_WAVE = 0;
@@ -173,6 +177,9 @@ void TextTestApp::setup()
 	myFont = FontRenderer();
 	myFont.addLine( "EE APP START TEST TEXT", 2 );
 
+	
+	iconFactory.init();
+	
 	// Get the signal instance
 	// Use boost::bind, to bind our class's function, to our (this) specific instnace
 	// _1 is a typedef for boost::arg - So we're creating a spot for the first argument in the function
@@ -181,6 +188,12 @@ void TextTestApp::setup()
 
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
+
+
+	passiveScene5.getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	passiveScene5.setup( myFont, timeline(), iconFactory);
+
+
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
@@ -227,7 +240,6 @@ void TextTestApp::setup()
 
 	animationInProgress = false;
 
-	iconFactory.init();
 
 	std::vector<TweenParticle> airGuitarPoints = iconFactory.getPointsForIcon(IconFactory::AIR_GUITAR);
 	IconRenderer airGuitarRenderer = IconRenderer(airGuitarPoints);
@@ -366,6 +378,8 @@ void TextTestApp::update()
 {
 
 	sceneTest.update();
+	passiveScene5.update();
+
 
 	mbackground.update();
 
@@ -379,18 +393,31 @@ void TextTestApp::update()
 		textAnimationTimer.start();
 	}
 
+
+	
 	//trigger the text animation
-	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 13){
-		myFont.animateOut();
-		iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
+		//myFont.animateOut();
+		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+		passiveScene5.animateIn(timeline());
 	}
 
+
+		//trigger the text animation
+	if (textAnimationTimer.getSeconds() > 20 && textAnimationTimer.getSeconds() < 22){
+		//myFont.animateOut();
+		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+		passiveScene5.animateOut(timeline());
+		textAnimationTimer = Timer();
+		textAnimationTimer.start();
+	}
+	
+	
 
 	//iconRenderers.back().xPos = iconRenderers.back().xPos + 1;
 	//iconRenderers.back().xScale = iconRenderers.back().xScale + 0.1;
 	//iconRenderers.back().yScale = iconRenderers.back().yScale + 0.1;
 
-	myFont.draw();
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
@@ -441,6 +468,7 @@ void TextTestApp::draw()
 {
 	mbackground.draw();
 
+
 	drawSkeleton();
 	gl::enableAlphaBlending();
 
@@ -454,6 +482,9 @@ void TextTestApp::draw()
 
 	gl::color( Color( 1, 1, 1 ) );
 
+	
+	passiveScene5.draw();
+
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 	//	p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 	//	p->draw();
@@ -462,10 +493,10 @@ void TextTestApp::draw()
 
 	}
 
-	
+	/*
 	for( vector<IconRenderer>::iterator p = iconRenderers.begin(); p != iconRenderers.end(); ++p ){
 		p->draw();
-	}
+	}*/
 
 
 }
