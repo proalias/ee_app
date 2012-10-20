@@ -1,23 +1,30 @@
+#ifndef PassiveScene2_H_
+#define PassiveScene2_H_
+
 #include "FontRenderer.h"
-#include "cinder/Vector.h"
-#include <vector>
+#include "SceneBase.h"
 
 using namespace std;
 using namespace ci;
 
-class PassiveScene2 {
- public:
+class PassiveScene2: public SceneBase {
+ 
+public:
 
-	void setup();
+	// inherited and overridden
+	void setup( FontRenderer &font );
+	void update();
 	void draw();
 
 	void animateIn();
 	void animateOut();
-	
-	//std::vector<Vec2f> refToParticlesMaybe?;
 
-	FontRenderer font;
-	
-	PassiveScene2( const FontRenderer &font );
+	PassiveScene2(void);
 	//~PassiveScene2(void);
+
+ private:
+	Timer animationTimer;
+
 };
+
+#endif /* PASSIVESCENE2_H_ */

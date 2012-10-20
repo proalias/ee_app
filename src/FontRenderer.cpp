@@ -137,7 +137,7 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 		points = font.L;
 	}else if( character == *"M" || character == *"m" ){
 		points = font.M;
-	}else if( character == *"N" || character == *"m" ){
+	}else if( character == *"N" || character == *"n" ){
 		points = font.N;
 	}else if( character == *"O" || character == *"o" ){
 		points = font.O;

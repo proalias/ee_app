@@ -15,11 +15,16 @@ void PassiveScene1::setup( FontRenderer &thefont )
 	font->addLine( "          FOR YOUR", 2 );
 	font->addLine( "          DIGITAL LIFE", 2 );
 
+	//_signal( this );
+
 	animationTimer.start();
 }
 
 void PassiveScene1::update()
 {
+	//font->clear();
+	//font->addLine( "UPDATE RUNS", 2 );
+
 	if(animationTimer.getSeconds()>7){
 		// test dispatching event
 		animationTimer.stop();

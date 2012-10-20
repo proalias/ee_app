@@ -1,29 +1,19 @@
-
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppNative.h"
 #include "cinder/Camera.h"
-
 #include "cinder/gl/Texture.h"
 #include "cinder/ImageIo.h"
 #include "cinder/params/Params.h"
 #include "cinder/Utilities.h"
-#include "Kinect.h"
-
-
-
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
 #include "cinder/app/MouseEvent.h"
 #include "cinder/Rand.h"
-//#include "gl.h"
- 
-//#include "Button.h"
-//#include "boost/bind.hpp"
-
 
 #include "boost/bind.hpp"
 
+#include "Kinect.h"
 #include "Background.h"
 #include "FontRenderer.h"
 #include "Particle.h"
@@ -32,8 +22,9 @@
 #include "TweenParticle.h"
 #include "IconFactory.h"
 
+#include "SceneBase.h"
 #include "PassiveScene1.h"
-//#include "PassiveScene1.h"
+#include "PassiveScene2.h"
 //#include "PassiveScene1.h"
 //#include "PassiveScene1.h"
 
@@ -117,12 +108,14 @@ private:
 protected:
 	Background mbackground;
 
-	PassiveScene1 sceneTest;
+	//PassiveScene1 sceneTest;
 	void onPassiveSceneComplete(void); // TODO - shared interfaces or data types so can do all scenes as one 
 	// TODO also couldnt get the parameter working
 	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
 
+	SceneBase* currentScene;
 };
+
 
 
 
@@ -140,11 +133,14 @@ void TextTestApp::prepareSettings( Settings *settings )
 }
 
 
-
 void TextTestApp::onPassiveSceneComplete()
 {
-	std::cout << "PassiveScene1 instance is talking to me!" << std::endl;
 	myFont.addLine( "CALL BACK WORKS", 2 );
+
+	currentScene = new PassiveScene2();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	currentScene->setup( myFont );
+
 }
 
 
@@ -170,11 +166,9 @@ void TextTestApp::setup()
 	myFont = FontRenderer();
 	myFont.addLine( "EE APP START TEST TEXT", 2 );
 
-	// Get the signal instance
-	// Use boost::bind, to bind our class's function, to our (this) specific instnace
-	// _1 is a typedef for boost::arg - So we're creating a spot for the first argument in the function
-	sceneTest.getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
-	sceneTest.setup( myFont );
+	currentScene = new PassiveScene1();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	currentScene->setup( myFont );
 
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
@@ -353,8 +347,7 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
-
-	sceneTest.update();
+	currentScene->update();
 
 	mbackground.update();
 
