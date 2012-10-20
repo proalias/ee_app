@@ -137,17 +137,13 @@
     <ClInclude Include="..\include\Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="..\include\SceneBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SceneFactory.h">
-=======
     <ClInclude Include="..\include\IconRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\PassiveScene5.h">
->>>>>>> 0cfb6cf534b841db821513becf30a74550093860
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
