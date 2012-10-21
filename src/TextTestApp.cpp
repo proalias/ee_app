@@ -113,20 +113,15 @@ private:
 protected:
 	Background mbackground;
 
-//	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
 	
+	// TODO also couldnt get the parameter working . were writing each one out now above until fixed
+	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
+
 	void onPassiveScene1Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
 	void onPassiveScene2Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
 	void onPassiveScene3Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
 	void onPassiveScene4Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
-	
-	// TODO also couldnt get the parameter working looks like were writing each one out now above until fixed
-	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
-
-
-
-
-
 
 	SceneBase* currentScene;
 };
@@ -147,11 +142,10 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 
 
-// TODO - ok so this is why we needed the parameter from the signal..  
+// TODO - parameter from the signal..  
 
 void TextTestApp::onPassiveSceneComplete()// SceneBase* sceneInstance )
 {
-	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont, iconFactory );
@@ -159,7 +153,6 @@ void TextTestApp::onPassiveSceneComplete()// SceneBase* sceneInstance )
 
 void TextTestApp::onPassiveScene1Complete()
 {
-	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
 	currentScene->setup( myFont, iconFactory );
@@ -168,7 +161,6 @@ void TextTestApp::onPassiveScene1Complete()
 
 void TextTestApp::onPassiveScene2Complete()
 {
-	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene3();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
 	currentScene->setup( myFont, iconFactory );
@@ -177,16 +169,13 @@ void TextTestApp::onPassiveScene2Complete()
 
 void TextTestApp::onPassiveScene3Complete()
 {
-	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene4();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
 	currentScene->setup( myFont, iconFactory );
-
 }
 
 void TextTestApp::onPassiveScene4Complete()
 {
-	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
 	currentScene->setup( myFont, iconFactory );
