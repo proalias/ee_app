@@ -295,6 +295,7 @@ void FontRenderer::animateIn(){
 			}
 		}
 	//}
+	
 }
 
 void FontRenderer::animateOut(){

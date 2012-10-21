@@ -27,9 +27,10 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	iconFactory =  &theIconFactory;
 	//_signal( this );
 
-	animationTimer.start();
 	
 	phase = 0;
+
+	animationTimer.start();
 }
 
 void PassiveScene3::update()
@@ -38,7 +39,7 @@ void PassiveScene3::update()
 	//font->addLine( "UPDATE RUNS SCENE 2", 2 );
 
 
-	if(animationTimer.getSeconds()>5 && phase == 0){
+	if(phase == 0){
 		phase = 1;
 		font->animateIn();
 	}

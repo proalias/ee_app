@@ -49,11 +49,7 @@ void PassiveScene5::update()
 
 	if(animationTimer.getSeconds()>20 && phase == 1){
 		phase = 2;
-		// test dispatching event
-		//_signal( this );
 		font->animateOut();
-		//font->clear();
-		//font->addLine( "end scene 3", 3 );
 	}
 	if(animationTimer.getSeconds()>25 && phase ==2){
 		phase = 3;

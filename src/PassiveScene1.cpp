@@ -30,12 +30,12 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 void PassiveScene1::update()
 {
 
-	if(animationTimer.getSeconds()>5 && phase != 1){
+	if(phase == 0){
 		phase = 1;
 		font->animateIn();
 	}
 
-	if(animationTimer.getSeconds()>20 && phase != 2){
+	if(animationTimer.getSeconds()>20 && phase == 1){
 		phase = 2;
 		// test dispatching event
 		//_signal( this );
@@ -43,7 +43,7 @@ void PassiveScene1::update()
 		//font->clear();
 		//font->addLine( "end scene 3", 3 );
 	}
-	if(animationTimer.getSeconds()>30 && phase !=3){
+	if(animationTimer.getSeconds()>25 && phase ==2){
 		phase = 3;
 		animationTimer.stop();
 		animationTimer = Timer(); // reset the timer

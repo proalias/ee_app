@@ -43,6 +43,12 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 
 void TweenParticle::draw(){
 	gl::drawSolidCircle(ci::Vec2f(xpos, ypos) ,rad);
+	
+	/* TODO - get particles drawing with textures
+	float halfRad = rad * 0.5;
+	Rectf rect = Rectf(xpos - halfRad,ypos - halfRad,xpos+halfRad, ypos+halfRad);
+	gl::draw(,rect);
+	*/
 }
 
 void TweenParticle::update(double t){

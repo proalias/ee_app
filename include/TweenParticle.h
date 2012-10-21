@@ -6,13 +6,13 @@
 #include "cinder\Vector.h"
 #include "cinder\gl\gl.h"
 #include "cinder\Rand.h"
-
+//#include "ParticleImageContainer.h"
 
 using namespace cinder;
 
 class TweenParticle {
 public:
-	TweenParticle(float px,float py,float prad);
+	TweenParticle(float pX,float pY,float pRad);
 	void update(double t);
 	void draw();
 

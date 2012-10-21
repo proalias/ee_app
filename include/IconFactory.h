@@ -21,11 +21,11 @@ public:
 	static const int AIR_GUITAR = 1;
 	static const int SWOOSH = 2;
 	static const int DIAL = 3;
+	static const int LOCATION_PIN = 4;
 	static const int ARROW = 5;
 	
 	// TODO - these are missing ones
-	static const int LOCATION_PIN = 4;// TODO - can not be strings for debugging?
-	static const int BUTTON = 6;
+	static const int BUTTON = 6;// TODO - can not be strings for debugging?
 	static const int ROCKET = 7;
 
 private:
