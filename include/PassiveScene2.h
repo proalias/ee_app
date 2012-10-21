@@ -11,7 +11,7 @@ class PassiveScene2: public SceneBase {
 public:
 
 	// inherited and overridden
-	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
+	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles );
 	void update();
 	void draw();
 

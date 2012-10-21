@@ -6,7 +6,7 @@ PassiveScene3::PassiveScene3()
 	_id = 3; // for boost signal
 }
 
-void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
+void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
 {
 	font = &thefont;
 	font->clear();

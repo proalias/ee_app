@@ -10,7 +10,7 @@ PassiveScene2::PassiveScene2()
 	_id = 2; // for boost signal
 }
 
-void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
+void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
 {
 	font = &thefont;
 	

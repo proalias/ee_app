@@ -23,11 +23,15 @@ using namespace std;
 
 using std::list;
 
-
-void ForegroundParticles::setup()
+ForegroundParticles::ForegroundParticles(void)
 {
-	//particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
-	
+
+}
+
+void ForegroundParticles::setup( int howMany )
+{
+	//particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - can we use image? - or sequence
+
 	/*- Leave this for now, textures can be added to the particle later.
 	//load particle textures
 	pTextures.init();
@@ -48,7 +52,11 @@ void ForegroundParticles::setup()
 
 	// iconFactory.init(); // = maybe put one in here ? ... or a drawIcon method?
 
-	for( int i=0; i<100; i++ )
+	// destroy all the old ones
+	
+	mParticles.clear();
+
+	for( int i=0; i<howMany; i++ )
 	{
 		ParticleA particle = ParticleA();
 		particle.init();
@@ -68,12 +76,13 @@ void ForegroundParticles::setup()
 		particle.setWander(3);
 		particle.setGrav(0);
 		
-		for (int i=0; i<20; i++){
-			particle.addRepelClip( repelClips[i],500,200 );
-		}
+		// (int i=0; i<20; i++){
+		//	particle.addRepelClip( repelClips[i],500,200 );
+		//}
 		
 		mParticles.push_back( particle );
 	}
+
 }
 
 void ForegroundParticles::update()

@@ -6,7 +6,7 @@ PassiveScene4::PassiveScene4()
 	_id = 4; // for boost signal
 }
 
-void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
+void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
 {
 	font = &thefont;
 	font->clear();
@@ -15,7 +15,6 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	font->addLine( "COME IN", 3 );
 	font->addLine( "      AND SEE US", 3 );
-
 	
 	iconFactory =  &theIconFactory;
 

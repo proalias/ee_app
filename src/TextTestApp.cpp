@@ -22,7 +22,7 @@
 #include "IconFactory.h"
 #include "IconRenderer.h"
 //#include "ParticleImageContainer.h"
-//#include "ForegroundParticles.h"
+#include "ForegroundParticles.h"
 #include "SceneBase.h"
 #include "PassiveScene1.h"
 #include "PassiveScene2.h"
@@ -64,7 +64,7 @@ class TextTestApp : public AppNative {
 
 	FontRenderer myFont;
  
-	//ForegroundParticles fgParticles; // ones flying around the screen
+	ForegroundParticles fgParticles; // ones flying around the screen
 
 	std::vector<CinderClip> repelClips;
 
@@ -113,16 +113,7 @@ private:
 protected:
 	Background mbackground;
 
-	void onPassiveSceneComplete( SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
-	
-	// TODO also couldnt get the parameter working . were writing each one out now above until fixed
-	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
-
-	void onPassiveScene1Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
-	void onPassiveScene2Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
-	void onPassiveScene3Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
-	void onPassiveScene4Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
-
+	void onPassiveSceneComplete( SceneBase* sceneInstance  );
 	SceneBase* currentScene;
 };
 
@@ -141,35 +132,30 @@ void TextTestApp::prepareSettings( Settings *settings )
 }
 
 
-
-// TODO - parameter from the signal..  
-
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
-
-
 	int sceneId = sceneInstance->getId();
 	switch(sceneId){
 	case 1:
 		currentScene = new PassiveScene2();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory );
+		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
 	case 2:
 		currentScene = new PassiveScene3();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory );
+		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
 	case 3:
 		currentScene = new PassiveScene4();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory );
+		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
 	case 4:
 		break;
 		currentScene = new PassiveScene1();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory );
+		currentScene->setup( myFont, iconFactory, fgParticles );
 	}
 
 
@@ -186,6 +172,7 @@ void TextTestApp::setup()
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
+	fgParticles.setup( 100 );
 
 	/*- Leave this for now, textures can be added to the particle later.
 	//load particle textures
@@ -208,8 +195,8 @@ void TextTestApp::setup()
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));//, _1 )); // cant get param to work
-	currentScene->setup( myFont , iconFactory );
+	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->setup( myFont, iconFactory, fgParticles );
 
 	iconFactory.init();
 	
@@ -257,7 +244,7 @@ void TextTestApp::update()
 
 	mbackground.update();
 
-//	fgParticles.update();
+	fgParticles.update();
 
 	updateSkeleton();
 
@@ -340,7 +327,7 @@ void TextTestApp::draw()
 
 	drawSkeleton();
 
-	//fgParticles.draw();
+	fgParticles.draw();
 
 	gl::enableAlphaBlending();
 	gl::color( Color::white() ); // TODO - move the color into the font?

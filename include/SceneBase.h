@@ -1,24 +1,27 @@
 #pragma once
 
-//#include "cinder/Cinder.h"
+#include "cinder/Cinder.h"
 #include <boost/signals2.hpp>
 #include <iostream>
+
 #include "FontRenderer.h" 
 #include "IconFactory.h"
 #include "IconRenderer.h"
-#include "cinder/Cinder.h"
+#include "ForegroundParticles.h"
 
 class SceneBase {
 
 public:
-	virtual void setup( FontRenderer &thefont, IconFactory &theIconFactory )
+	virtual void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
 	{
 		font = &thefont;
 		font->clear();
 		font->setPosition(0.0,0.0);
-		font->addLine( "BASE CLASS ERROR", 2 );
+		font->addLine( "BASE CLASS ERROR - OVERRIDE SETUP", 2 );
 
 		iconFactory =  &theIconFactory;
+
+		fgParticles = &thefgParticles;
 	}
 	virtual void update(Timeline &timeline){}
 	virtual void draw(){}
@@ -32,12 +35,14 @@ public:
 	SceneSignal* getSignal() { return &_signal; }; // Notice we return a pointer to the signal
 
 protected:
-	FontRenderer * font; // just a pointer to the one on the stage
-	IconFactory * iconFactory; // just a pointer to the one in the main app
+
+	// these are just pointers to the instances on main
+	FontRenderer * font;
+	IconFactory * iconFactory;
+	ForegroundParticles * fgParticles;
+
+	// signal stuff
 	int _id;
 	SceneSignal _signal;
 
-private:
-//	std::string _id;
-//	SceneSignal _signal;
 };

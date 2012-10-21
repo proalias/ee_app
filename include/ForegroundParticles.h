@@ -19,11 +19,16 @@ using std::list;
 class ForegroundParticles {
 public:
 
-	void setup();
+	void setup( int howMany );
 	void update();
 	void draw();
+
+	void destroy(); // destroy all the particles
+	void hide(); // make them all invisible
+	void show(); // make them all invisible
+
 	
-	std::list<ParticleA>	mParticles;
+	std::list<ParticleA>	mParticles; // TODO - getter?... really be fine to just get the whole array and change behaviours from scenes.
 
 	// gl::Texture bgImage; // = TODO potentially have textures on them
 	
