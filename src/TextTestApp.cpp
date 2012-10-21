@@ -147,46 +147,33 @@ void TextTestApp::prepareSettings( Settings *settings )
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
 
-	myFont.clear();
-	myFont.addLine( sceneInstance->getId(), 2 );
-	myFont.animateIn();
-	//currentScene = new PassiveScene2();
-	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
-	//currentScene->setup( myFont, iconFactory );
 
-	//currentScene = new PassiveScene1();
-	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
-	//currentScene->setup( myFont, iconFactory );
+	int sceneId = sceneInstance->getId();
+	switch(sceneId){
+	case 1:
+		currentScene = new PassiveScene2();
+		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+		currentScene->setup( myFont, iconFactory );
+		break;
+	case 2:
+		currentScene = new PassiveScene3();
+		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+		currentScene->setup( myFont, iconFactory );
+		break;
+	case 3:
+		currentScene = new PassiveScene4();
+		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+		currentScene->setup( myFont, iconFactory );
+		break;
+	case 4:
+		break;
+		currentScene = new PassiveScene1();
+		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+		currentScene->setup( myFont, iconFactory );
+	}
 
-}
 
-void TextTestApp::onPassiveScene1Complete()
-{
- 	currentScene = new PassiveScene2();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
-	currentScene->setup( myFont, iconFactory );
-}
 
-void TextTestApp::onPassiveScene2Complete()
-{
-	currentScene = new PassiveScene3();
-	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
-	currentScene->setup( myFont, iconFactory );
-
-}
-
-void TextTestApp::onPassiveScene3Complete()
-{
-	currentScene = new PassiveScene4();
-//	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
-	currentScene->setup( myFont, iconFactory );
-}
-
-void TextTestApp::onPassiveScene4Complete()
-{
-	currentScene = new PassiveScene1();
-	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
-	currentScene->setup( myFont, iconFactory );
 }
 
 

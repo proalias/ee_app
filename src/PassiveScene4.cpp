@@ -3,13 +3,14 @@
 
 PassiveScene4::PassiveScene4()
 {
-	_id = "PassiveScene4"; // for boost signal
+	_id = 4; // for boost signal
 }
 
 void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
 	font->clear();
+	font->setPosition(200.0,100.0);
 	font->addLine( " ", 3 );
 	font->addLine( "COME IN", 3 );
 	font->addLine( "      AND SEE US", 3 );
@@ -49,7 +50,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	arrows.push_back(&arrow4);
 
 
-	mCue = timeline().add( bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() );
 }
 
 

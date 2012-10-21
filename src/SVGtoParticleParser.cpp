@@ -29,7 +29,7 @@ void SVGtoParticleParser::recursiveParse(cinder::XmlTree node, std::vector<Tween
 				}
 				//circ.vx = Rand::randFloat(-2.0f, 2.0f );
 				//circ.vy = Rand::randFloat(-2.0f, 2.0f);
-				TweenParticle p = TweenParticle(cx,cy,rad);
+				TweenParticle p = TweenParticle(cx,cy,rad, true);
 				p.color = Color(0.0,1.0,0.0);
 				pointsContainer.push_back( p );
 				//Vec3f v = Vec3f(attributes.getValue( "size" ), attributes[1].getValue(), attributes["cX"]);
@@ -147,7 +147,7 @@ void SVGtoParticleParser::recursiveParse(cinder::XmlTree node, std::vector<Tween
 
 						
 
-						TweenParticle p = TweenParticle( (p0.x + p1.x)/2 ,(p0.y + p1.y)/2 , r/2);
+						TweenParticle p = TweenParticle( (p0.x + p1.x)/2 ,(p0.y + p1.y)/2 , r/2, true);
 						p.color = ci::Color(1.0/100 * float(pointsContainer.size()),0.0,0.0);
 						pointsContainer.push_back(p);
 

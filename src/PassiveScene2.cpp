@@ -3,17 +3,17 @@
 #include "cinder/Timeline.h"
 #include "cinder/Tween.h"
 #include "cinder/Easing.h"
+#include "ColorConstants.h"
 
 PassiveScene2::PassiveScene2()
 {
-	_id = "PassiveScene2"; // for boost signal
+	_id = 2; // for boost signal
 }
 
 void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
-	font->clear();
-
+	
 	iconFactory =  &theIconFactory;
 
 
@@ -61,6 +61,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 void PassiveScene2::showFrame2()
 {
 	font->clear();
+	font->setPosition(200.0,200.0);
 	font->addLine( "4GEE IS HERE", 3 );
 	font->addLine( "   IS HERE", 4 );
 	font->animateIn();
@@ -83,6 +84,9 @@ void PassiveScene2::showFrame3()
 void PassiveScene2::showFrame4()
 {
 	font->clear();
+	font->setPosition(200.0,100.0);
+
+	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
 	// TODO - yellow
 	// TODO - get the actual city name from the config
 	font->addLine( "LONDON", 3 );
@@ -99,6 +103,7 @@ void PassiveScene2::showFrame5()
 void PassiveScene2::showFrame6()
 {
 	font->clear();
+	font->setPosition(200.0,100.0);
 	font->addLine( "SUPERFAST", 3 );
 	font->addLine( "      MOBILE #4GEE", 3 );
 	font->addLine( "ONLY ON EE", 3 );

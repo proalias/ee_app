@@ -3,7 +3,7 @@
 
 PassiveScene3::PassiveScene3()
 {
-	_id = "PassiveScene3"; // for boost signal
+	_id = 3; // for boost signal
 }
 
 void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
@@ -27,7 +27,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	iconFactory =  &theIconFactory;
 	//_signal( this );
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() );
 }
 
 void PassiveScene3::showFrame2(){
