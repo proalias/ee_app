@@ -1,17 +1,18 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppNative.h"
+#include "cinder/app/AppBasic.h"
 #include "cinder/Camera.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/ImageIo.h"
 #include "cinder/params/Params.h"
 #include "cinder/Utilities.h"
-#include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
 
-#include "boost/bind.hpp"
+#include "boost/lambda/bind.hpp"
+//#include "boost/bind.hpp"
 
 #include "Kinect.h"
 #include "Background.h"
@@ -39,6 +40,9 @@ using namespace ci::app;
 using namespace std;
 using namespace KinectSdk;
 using std::list;
+
+    using boost::lambda::_1;
+    using boost::lambda::bind; 
 
 static const bool PREMULT = false;
 
@@ -113,7 +117,7 @@ private:
 protected:
 	Background mbackground;
 
-	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveSceneComplete( SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
 	
 	// TODO also couldnt get the parameter working . were writing each one out now above until fixed
 	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
@@ -144,17 +148,20 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 // TODO - parameter from the signal..  
 
-void TextTestApp::onPassiveSceneComplete()// SceneBase* sceneInstance )
+void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
-	currentScene = new PassiveScene2();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
-	currentScene->setup( myFont, iconFactory );
+	myFont.clear();
+	myFont.addLine( sceneInstance->getId(), 2 );
+	myFont.animateIn();
+	//currentScene = new PassiveScene2();
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	//currentScene->setup( myFont, iconFactory );
 }
 
 void TextTestApp::onPassiveScene1Complete()
 {
 	currentScene = new PassiveScene2();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 
 }
@@ -162,7 +169,7 @@ void TextTestApp::onPassiveScene1Complete()
 void TextTestApp::onPassiveScene2Complete()
 {
 	currentScene = new PassiveScene3();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 
 }
@@ -170,14 +177,14 @@ void TextTestApp::onPassiveScene2Complete()
 void TextTestApp::onPassiveScene3Complete()
 {
 	currentScene = new PassiveScene4();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
+//	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 }
 
 void TextTestApp::onPassiveScene4Complete()
 {
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 }
 
@@ -210,9 +217,11 @@ void TextTestApp::setup()
 	*/
 
 
+	
+
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));//, _1 )); // cant get param to work
 	currentScene->setup( myFont , iconFactory );
 
 	iconFactory.init();
