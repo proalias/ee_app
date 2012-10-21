@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cinder/Cinder.h"
+//#include "cinder/Cinder.h"
 #include <boost/signals2.hpp>
 #include <iostream>
 #include "FontRenderer.h" 

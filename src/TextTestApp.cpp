@@ -5,13 +5,12 @@
 #include "cinder/ImageIo.h"
 #include "cinder/params/Params.h"
 #include "cinder/Utilities.h"
-#include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
 
-#include "boost/bind.hpp"
+#include "boost/lambda/bind.hpp"
 
 #include "Kinect.h"
 #include "Background.h"
@@ -23,8 +22,7 @@
 #include "IconFactory.h"
 #include "IconRenderer.h"
 //#include "ParticleImageContainer.h"
-
-
+//#include "ForegroundParticles.h"
 #include "SceneBase.h"
 #include "PassiveScene1.h"
 #include "PassiveScene2.h"
@@ -38,6 +36,9 @@ using namespace ci::app;
 using namespace std;
 using namespace KinectSdk;
 using std::list;
+
+using boost::lambda::_1;
+using boost::lambda::bind; 
 
 static const bool PREMULT = false;
 
@@ -63,7 +64,7 @@ class TextTestApp : public AppNative {
 
 	FontRenderer myFont;
  
-	std::list<ParticleA>	mParticles;
+	//ForegroundParticles fgParticles; // ones flying around the screen
 
 	std::vector<CinderClip> repelClips;
 
@@ -112,7 +113,7 @@ private:
 protected:
 	Background mbackground;
 
-	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveSceneComplete( SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
 	
 	// TODO also couldnt get the parameter working . were writing each one out now above until fixed
 	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
@@ -143,11 +144,20 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 // TODO - parameter from the signal..  
 
-void TextTestApp::onPassiveSceneComplete()// SceneBase* sceneInstance )
+void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
-	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
-	currentScene->setup( myFont, iconFactory );
+
+	myFont.clear();
+	myFont.addLine( sceneInstance->getId(), 2 );
+	myFont.animateIn();
+	//currentScene = new PassiveScene2();
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	//currentScene->setup( myFont, iconFactory );
+
+	//currentScene = new PassiveScene1();
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
+	//currentScene->setup( myFont, iconFactory );
+
 }
 
 void TextTestApp::onPassiveScene1Complete()
@@ -155,13 +165,12 @@ void TextTestApp::onPassiveScene1Complete()
  	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
 	currentScene->setup( myFont, iconFactory );
-
 }
 
 void TextTestApp::onPassiveScene2Complete()
 {
 	currentScene = new PassiveScene3();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 
 }
@@ -169,14 +178,14 @@ void TextTestApp::onPassiveScene2Complete()
 void TextTestApp::onPassiveScene3Complete()
 {
 	currentScene = new PassiveScene4();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
+//	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 }
 
 void TextTestApp::onPassiveScene4Complete()
 {
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 }
 
@@ -191,7 +200,7 @@ void TextTestApp::setup()
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 
-	/* - Leave this for now, textures can be added to the particle later.
+	/*- Leave this for now, textures can be added to the particle later.
 	//load particle textures
 	pTextures.init();
 	gl::Texture texture1 = loadImage(loadAsset( "ParticleFullON.png") );
@@ -206,12 +215,13 @@ void TextTestApp::setup()
 	pTextures.addTexture(texture5);
 	gl::Texture texture6 = loadImage(loadAsset( "ParticlePatial05.png") );
 	pTextures.addTexture(texture6);
+	
 	*/
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
+	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));//, _1 )); // cant get param to work
 	currentScene->setup( myFont , iconFactory );
 
 	iconFactory.init();
@@ -226,32 +236,7 @@ void TextTestApp::setup()
 
 	mbackground.setRepelClips( repelClips );
 
-	for( int i=0; i<100; i++ )
-	{
-		ParticleA particle = ParticleA();
-		particle.init();
-
-		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-
-		particle.width = randFloat(3,10);
-	
-		particle.x=randFloat(getWindowWidth());
-		particle.y=randFloat(getWindowHeight());
-
-		//particle.setBounce(-1);
-		particle.setMaxSpeed(5);
-
-		//particle.setEdgeBehavior("wrap");
-
-		particle.setWander(3);
-		particle.setGrav(0);
-		
-		for (int i=0; i<20; i++){
-			particle.addRepelClip( repelClips[i],500,200 );
-		}
-		
-		mParticles.push_back( particle );
-	}
+	//fgParticles.setup();
 
 	setupSkeletonTracker();
 }
@@ -285,11 +270,38 @@ void TextTestApp::update()
 
 	mbackground.update();
 
+//	fgParticles.update();
+
 	updateSkeleton();
-	
-	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		p->update();
+
+	// TODO - is all this old?/// ,,, can be removed?
+	if (textAnimationTimer.isStopped()){
+		textAnimationTimer.start();
 	}
+	
+	//trigger the text animation
+	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
+		//myFont.animateOut();
+		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+//		passiveScene5.animateIn(timeline());
+	}
+
+
+		//trigger the text animation
+	if (textAnimationTimer.getSeconds() > 20 && textAnimationTimer.getSeconds() < 22){
+		//myFont.animateOut();
+		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
+		//passiveScene5.animateOut(timeline());
+		textAnimationTimer = Timer();
+		textAnimationTimer.start();
+	}
+	
+	
+
+	//iconRenderers.back().xPos = iconRenderers.back().xPos + 1;
+	//iconRenderers.back().xScale = iconRenderers.back().xScale + 0.1;
+	//iconRenderers.back().yScale = iconRenderers.back().yScale + 0.1;
+
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
@@ -324,7 +336,6 @@ void TextTestApp::updateAnimatingParticles(){
 
 void TextTestApp::updateSkeleton()
 {
-
 	if ( mKinect->isCapturing() ) {
 		mKinect->update();
 	} else {
@@ -333,7 +344,6 @@ void TextTestApp::updateSkeleton()
 			mKinect->start();
 		}
 	}
-
 }
 
 
@@ -342,25 +352,16 @@ void TextTestApp::draw()
 	mbackground.draw();
 
 	drawSkeleton();
+
+	//fgParticles.draw();
+
 	gl::enableAlphaBlending();
-
-	gl::color( Color::white() );
-
+	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
 	currentScene->draw();
 
 	gl::color( Color( 1, 1, 1 ) );
-
-	// TODO - may be passing foreground particles into scenes. but still probs drawn here
-	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-		
-		Rectf rect = Rectf(p->x,p->y,p->x + p->width, p->y + p->width);
-		gl::draw(particleImg,rect);
-	}
-
-
 }
 
 
