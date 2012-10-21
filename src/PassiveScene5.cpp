@@ -24,32 +24,44 @@ void PassiveScene5::setup( FontRenderer &thefont, IconFactory &theIconFactory)
 
 	arrow = IconRenderer();
 	arrow.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
-	arrow.xPos = 400;
+	arrow.xPos = ci::app::getWindowWidth() + 100;
 	arrow.yPos = 600;
 	
-	arrow.xScale = arrow.yScale = 0.5;
+	arrow.xScale = arrow.yScale = 1;
 
 	animationTimer.start();
+
+	phase = 0;
 }
 
 void PassiveScene5::update()
 {
-	if(animationTimer.getSeconds()>10){
-		// test dispatching event
+	if(animationTimer.getSeconds()>5 && phase == 0){
+		phase = 1;
+		font->animateIn();
+	}
+
+	if(animationTimer.getSeconds()>20 && phase == 1){
+		phase = 2;
+		font->animateOut();
+	}
+	if(animationTimer.getSeconds()>25 && phase ==2){
+		phase = 3;
 		animationTimer.stop();
 		animationTimer = Timer(); // reset the timer
+		
 		_signal( this );
 	}
 }
 
 void PassiveScene5::animateIn(ci::Timeline &timeline){
 	font->animateIn();
-	airGuitar.tweenTo(timeline,100.0,600.0,10.0);
+	arrow.tweenTo(timeline,-100.0,600.0,10.0);
 }
 
 void PassiveScene5::animateOut(ci::Timeline &timeline){
 	font->animateOut();
-	airGuitar.tweenTo(timeline,30.0,30.0,10.0);
+	arrow.tweenTo(timeline,-100.0,600.0,10.0);
 }
 
 void PassiveScene5::draw()

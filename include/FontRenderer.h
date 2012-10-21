@@ -39,7 +39,7 @@ public:
 	void setup();
 	void draw();
 	void clear();
-	ci::Vec2f getRandomPointOffscreen();
+	ci::Vec2f getRandomPointOnGrid();
 
 	void animateIn();
 	void animateOut();

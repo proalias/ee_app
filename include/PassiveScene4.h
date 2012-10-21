@@ -20,6 +20,11 @@ public:
 	//~PassiveScene4(void);
 
  private:
+
+	IconRenderer arrow1, arrow2, arrow3, arrow4;
+
+	std::vector<IconRenderer*> arrows;
+
 	Timer animationTimer;
 
 	void animateIn();

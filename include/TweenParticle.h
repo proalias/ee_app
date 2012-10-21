@@ -6,13 +6,15 @@
 #include "cinder\Vector.h"
 #include "cinder\gl\gl.h"
 #include "cinder\Rand.h"
-
+#include "cinder\Perlin.h"
+#include "cinder\CinderMath.h"
+//#include "ParticleImageContainer.h"
 
 using namespace cinder;
 
 class TweenParticle {
 public:
-	TweenParticle(float px,float py,float prad);
+	TweenParticle(float pX,float pY,float pRad);
 	void update(double t);
 	void draw();
 
@@ -26,6 +28,7 @@ public:
 	Color color;
 	bool moving;
 
+	
 	//ci::Timeline	&mTimeline;
 	float mDuration;
 	float mStartTime;
@@ -37,6 +40,13 @@ public:
 	ci::Vec2f mBegin;
 
 	float snapback;
+
+	//jitter values
+	Perlin mPerlin;
+	float noise;
+	float xJitter;
+	float yJitter;
+	float jitterSpeed;
 
 };
 #endif

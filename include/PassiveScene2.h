@@ -20,6 +20,9 @@ public:
 	//~PassiveScene2(void);
 
  private:
+
+	std::vector<IconRenderer*> placeMarks;
+	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4;
 	Timer animationTimer;
 
 	void animateIn();

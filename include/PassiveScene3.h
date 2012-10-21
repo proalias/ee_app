@@ -24,7 +24,7 @@ public:
 
 	void animateIn();
 	void animateOut();
-
+	int phase;
 };
 
 #endif /* PASSIVESCENE3_H_ */

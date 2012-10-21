@@ -17,8 +17,8 @@ void IconRenderer::setPoints( std::vector<TweenParticle> &points){
 
 void IconRenderer::tweenTo( Timeline &timeline, float xPosDest, float yPosDest, float duration )
 {
-	timeline.apply( &xPos, xPosDest, duration, EaseOutAtan( 20 ) );
-	timeline.apply( &yPos, yPosDest, duration, EaseOutAtan( 20 ) );
+	timeline.apply( &xPos, xPosDest, duration, EaseOutBack( 0.3 ) );
+	timeline.apply( &yPos, yPosDest, duration, EaseOutBack( 0.3 ) );
 }
 
 void IconRenderer::draw(){
@@ -26,6 +26,7 @@ void IconRenderer::draw(){
 	gl::translate(this->xPos, this->yPos, 0.0);
 	gl::scale(this->xScale, this->yScale, 1.0);
 	for( std::vector<TweenParticle>::iterator p = mPoints.begin(); p != mPoints.end(); ++p ){
+		p->update(cinder::app::getElapsedSeconds());
 		p->draw();
 	}
 	gl::popMatrices();

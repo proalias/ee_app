@@ -25,6 +25,10 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	
 	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 5 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
+
+	phase = 0;
+
+	animationTimer.start();
 }
 
 void PassiveScene1::showFrame2()
@@ -35,11 +39,25 @@ void PassiveScene1::showFrame2()
 
 void PassiveScene1::update()
 {
-	if(animationTimer.getSeconds()>15 && animationTimer.getSeconds()>16 ){
+
+	if(phase == 0){
+		phase = 1;
+		font->animateIn();
+	}
+
+	if(animationTimer.getSeconds()>20 && phase == 1){
+		phase = 2;
 		// test dispatching event
+		//_signal( this );
+		font->animateOut();
+		//font->clear();
+		//font->addLine( "end scene 3", 3 );
+	}
+	if(animationTimer.getSeconds()>25 && phase ==2){
+		phase = 3;
 		animationTimer.stop();
-		animateOut();
 		animationTimer = Timer(); // reset the timer
+		
 		_signal( this );
 	}
 }

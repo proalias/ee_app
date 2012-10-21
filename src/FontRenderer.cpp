@@ -286,10 +286,12 @@ void FontRenderer::addLine( const std::string &copy, int size )
 void FontRenderer::animateIn(){
 	//if (animationInProgress == false){
 		animationInProgress = true;
+		float t = 0;
+
 		for (int j=0;j<lines.size();j++){
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOffscreen(),3.0,getElapsedSeconds(),p->rad);
+				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOnGrid(),3.0,getElapsedSeconds()+t,p->rad);
 				p->rad = 0;
 			}
 		}
@@ -297,22 +299,21 @@ void FontRenderer::animateIn(){
 }
 
 void FontRenderer::animateOut(){
-	if (animationInProgress == false){
-		animationInProgress = true;
+	//if (animationInProgress == false){
+	//	animationInProgress = true;
 		for (int j=0;j<lines.size();j++){
 
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-				p->animateTo(getRandomPointOffscreen(), ci::Vec2f(p->xpos,p->ypos),3.0,getElapsedSeconds(),p->rad);
+				p->animateTo(getRandomPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),3.0,getElapsedSeconds(),2);
 			}
-	
 		}
-	}
+	//}
 }
 
 
 
-ci::Vec2f FontRenderer::getRandomPointOffscreen(){
+ci::Vec2f FontRenderer::getRandomPointOnGrid(){
 	
 	int SPACING = 40;
 
@@ -337,9 +338,10 @@ ci::Vec2f FontRenderer::getRandomPointOffscreen(){
 	}*/
 
 	
-
-	
 }
+
+
+
 
 void FontRenderer::draw()
 {

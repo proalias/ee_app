@@ -22,6 +22,8 @@
 #include "TweenParticle.h"
 #include "IconFactory.h"
 #include "IconRenderer.h"
+//#include "ParticleImageContainer.h"
+
 
 #include "SceneBase.h"
 #include "PassiveScene1.h"
@@ -88,7 +90,7 @@ class TextTestApp : public AppNative {
 
 
 	Timer textAnimationTimer;
-
+	//ParticleImageContainer pTextures;
 
 private:
 	// Kinect
@@ -111,10 +113,20 @@ private:
 protected:
 	Background mbackground;
 
-	//PassiveScene1 sceneTest;
-	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
-	// TODO also couldnt get the parameter working
+//	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
+	
+	void onPassiveScene1Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveScene2Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveScene3Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveScene4Complete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	
+	// TODO also couldnt get the parameter working looks like were writing each one out now above until fixed
 	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
+
+
+
+
+
 
 	SceneBase* currentScene;
 };
@@ -134,15 +146,49 @@ void TextTestApp::prepareSettings( Settings *settings )
 }
 
 
+
+// TODO - ok so this is why we needed the parameter from the signal..  
+
 void TextTestApp::onPassiveSceneComplete()// SceneBase* sceneInstance )
 {
-	myFont.addLine( "CALL BACK WORKS", 2 );
-
-	//myFont.addLine( sceneInstance->getId(), 2 );
-
 	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
+	currentScene->setup( myFont, iconFactory );
+}
+
+void TextTestApp::onPassiveScene1Complete()
+{
+	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
+	currentScene = new PassiveScene2();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
+	currentScene->setup( myFont, iconFactory );
+
+}
+
+void TextTestApp::onPassiveScene2Complete()
+{
+	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
+	currentScene = new PassiveScene3();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene3Complete, this ));
+	currentScene->setup( myFont, iconFactory );
+
+}
+
+void TextTestApp::onPassiveScene3Complete()
+{
+	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
+	currentScene = new PassiveScene4();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene4Complete, this ));
+	currentScene->setup( myFont, iconFactory );
+
+}
+
+void TextTestApp::onPassiveScene4Complete()
+{
+	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
+	currentScene = new PassiveScene1();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
 	currentScene->setup( myFont, iconFactory );
 }
 
@@ -155,6 +201,25 @@ void TextTestApp::setup()
 	
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
+
+
+	/* - Leave this for now, textures can be added to the particle later.
+	//load particle textures
+	pTextures.init();
+	gl::Texture texture1 = loadImage(loadAsset( "ParticleFullON.png") );
+	pTextures.addTexture(texture1);
+	gl::Texture texture2 = loadImage(loadAsset( "ParticlePatial01.png") );
+	pTextures.addTexture(texture2);
+	gl::Texture texture3 = loadImage(loadAsset( "ParticlePatial02.png") );
+	pTextures.addTexture(texture3);
+	gl::Texture texture4 = loadImage(loadAsset( "ParticlePatial03.png") );
+	pTextures.addTexture(texture4);
+	gl::Texture texture5 = loadImage(loadAsset( "ParticlePatial04.png") );
+	pTextures.addTexture(texture5);
+	gl::Texture texture6 = loadImage(loadAsset( "ParticlePatial05.png") );
+	pTextures.addTexture(texture6);
+	*/
+
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
@@ -238,11 +303,12 @@ void TextTestApp::update()
 		p->update();
 	}
 
+	// TODO - is all this text anim stuff below old now????
+
+
 	if (textAnimationTimer.isStopped()){
 		textAnimationTimer.start();
 	}
-
-
 	
 	//trigger the text animation
 	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
@@ -332,6 +398,8 @@ void TextTestApp::draw()
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 	}
+
+
 
 }
 
@@ -480,8 +548,8 @@ void TextTestApp::drawSkeleton(){
 
 // TODO - is this being used anymore?
 void TextTestApp::drawParticle(float tx, float ty, float scale){
-	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
-	gl::draw(particleImg,rect);
+	//Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
+	//gl::draw(pTextures.getTexture(3),rect);
 }
 
 

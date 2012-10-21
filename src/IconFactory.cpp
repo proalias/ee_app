@@ -32,7 +32,12 @@ void IconFactory::init(){
 	svgParser.recursiveParse(xmlDoc3,icons[DIAL]);
 
 	cinder::XmlTree xmlDoc4( ci::app::loadAsset( "arrow.svg" ) );
-	svgParser.recursiveParse(xmlDoc3,icons[ARROW]);
+	svgParser.recursiveParse(xmlDoc4,icons[ARROW]);
+
+	cinder::XmlTree xmlDoc5( ci::app::loadAsset( "location.svg" ) );
+	svgParser.recursiveParse(xmlDoc5,icons[LOCATION_PIN]);
+
+
 }
 
 std::vector<TweenParticle> IconFactory::getPointsForIcon(int iconConstant){
