@@ -13,7 +13,7 @@ public:
 
 	// inherited and overridden
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
-	void update(ci::Timeline &timeline);
+	void update();
 	void draw();
 
 	PassiveScene4(void);
@@ -25,10 +25,12 @@ public:
 
 	std::vector<IconRenderer*> arrows;
 
-	Timer animationTimer;
-
-	void animateIn();
-	void animateOut();
+	
+	CueRef mCue;
+	// keyframes
+	void showFrame2();
+	void showFrame3();
+	void showFrame4();
 
 };
 

@@ -13,18 +13,19 @@ public:
 
 	// inherited and overridden
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory );
-	void update(ci::Timeline &timeline);
+	void update();
 	void draw();
 
 	PassiveScene3(void);
 	//~PassiveScene2(void);
 
  private:
-	Timer animationTimer;
-
-	void animateIn();
-	void animateOut();
-	int phase;
+	private:
+	CueRef mCue;
+	// keyframes
+	void showFrame2();
+	void showFrame3();
+	void showFrame4();
 };
 
 #endif /* PASSIVESCENE3_H_ */

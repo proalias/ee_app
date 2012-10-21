@@ -10,59 +10,42 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
 	font->clear();
+
+	iconFactory =  &theIconFactory;
+
+	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 10 );
+	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
+}
+
+void PassiveScene1::showFrame2()
+{
+	// font->addLine( "timer works", 2 );
+	font->clear();
 	font->addLine( "WELCOME TO", 2 );
 	font->addLine( "THE NEW NETWORK", 2 );
 	font->addLine( "          FOR YOUR", 2 );
 	font->addLine( "          DIGITAL LIFE", 2 );
 
-	iconFactory =  &theIconFactory;
-
-	//font->animateIn(); // TODO - animate in is broken
-
-	//_signal( this );
-
-	phase = 0;
-
-	animationTimer.start();
-
-}
-
-void PassiveScene1::update(ci::Timeline &timeline)
-{
-
-	if(phase == 0){
-		phase = 1;
-		font->animateIn();
-	}
-
-	if(animationTimer.getSeconds()>20 && phase == 1){
-		phase = 2;
-		// test dispatching event
-		//_signal( this );
-		font->animateOut();
-		//font->clear();
-		//font->addLine( "end scene 3", 3 );
-	}
-	if(animationTimer.getSeconds()>25 && phase ==2){
-		phase = 3;
-		animationTimer.stop();
-		animationTimer = Timer(); // reset the timer
-		
-		_signal( this );
-	}
-}
-
-
-void PassiveScene1::animateIn(){
 	font->animateIn();
+
+	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 12 );
 }
 
-void PassiveScene1::animateOut(){
+void PassiveScene1::showFrame3()
+{
 	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
 }
 
+void PassiveScene1::showFrame4()
+{
+	_signal( this );
+}
+
+void PassiveScene1::update()
+{
+}
 
 void PassiveScene1::draw()
 {
-	//font.draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
 }

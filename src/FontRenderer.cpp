@@ -324,11 +324,11 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 }
 
-
 void FontRenderer::animateIn(){
 	//if (animationInProgress == false){
-	//	animationInProgress = true;
+		animationInProgress = true;
 		float t = 0;
+
 		for (int j=0;j<lines.size();j++){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
@@ -338,7 +338,6 @@ void FontRenderer::animateIn(){
 			}
 		}
 	//}
-	
 }
 
 void FontRenderer::animateOut(){

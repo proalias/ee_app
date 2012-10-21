@@ -12,7 +12,7 @@ public:
 
 	// inherited and overridden
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
-	void update(ci::Timeline &timeline);
+	void update();
 	void draw();
 
 	PassiveScene2(void);
@@ -22,10 +22,16 @@ public:
 
 	std::vector<IconRenderer*> placeMarks;
 	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4;
-	Timer animationTimer;
-	FontRenderer locationLabel;
-	void animateIn();
-	void animateOut();
+
+	CueRef mCue;
+	// keyframes
+	void showFrame2();
+	void showFrame3();
+	void showFrame4();
+	void showFrame5();
+	void showFrame6();
+	void showFrame7();
+	void showFrame8();
 
 };
 

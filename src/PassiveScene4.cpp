@@ -49,56 +49,44 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	arrows.push_back(&arrow4);
 
 
-
-	phase = 0;
-	animationTimer.start();
+	mCue = timeline().add( bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 10 );
 }
 
-void PassiveScene4::update(ci::Timeline &timeline)
-{
-	if(phase == 0){
-		phase = 1;
-		font->animateIn();
-		
+
+void PassiveScene4::showFrame2(){
 	
-		cinder::app::timeline().apply(&arrow1.pos,Vec2f(1400,400),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo());
-		cinder::app::timeline().apply(&arrow2.pos,Vec2f(1400,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo());
-		cinder::app::timeline().apply(&arrow3.pos,Vec2f(1200,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo());
-		cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo());
-	}
-
-	if(animationTimer.getSeconds()>20 && phase == 1){
-		phase = 2;
-
-		cinder::app::timeline().apply(&arrow1.pos,Vec2f(1400,400),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo());
-		cinder::app::timeline().apply(&arrow2.pos,Vec2f(1400,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo());
-		cinder::app::timeline().apply(&arrow3.pos,Vec2f(1200,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo());
-		cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo());
-
-
-		// test dispatching event
-		//_signal( this );
-		font->animateOut();
-		//font->clear();
-		//font->addLine( "end scene 3", 3 );
-	}
-	if(animationTimer.getSeconds()>25 && phase ==2){
-		phase = 3;
-		animationTimer.stop();
-		animationTimer = Timer(); // reset the timer
+	font->animateIn();
 		
-		_signal( this );
-	}
-}
+	cinder::app::timeline().apply(&arrow1.pos,Vec2f(1400,400),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo());
+	cinder::app::timeline().apply(&arrow2.pos,Vec2f(1400,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo());
+	cinder::app::timeline().apply(&arrow3.pos,Vec2f(1200,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo());
+	cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo());
 
-
-void PassiveScene4::animateIn(){
-
-}
-
-void PassiveScene4::animateOut(){
+	mCue = timeline().add( bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 10 );
 
 }
+
+void PassiveScene4::showFrame3(){
+
+	cinder::app::timeline().apply(&arrow1.pos,Vec2f(1400,400),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo());
+	cinder::app::timeline().apply(&arrow2.pos,Vec2f(1400,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo());
+	cinder::app::timeline().apply(&arrow3.pos,Vec2f(1200,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo());
+	cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo());
+
+
+	// test dispatching event
+	//_signal( this );
+	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene4::showFrame4, this), timeline().getCurrentTime() + 10 );
+
+}
+
+void PassiveScene4::showFrame4(){
+
+	_signal( this );
+	
+}
+
 
 
 void PassiveScene4::draw()
