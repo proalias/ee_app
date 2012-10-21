@@ -18,14 +18,11 @@ public:
 	PassiveScene5(void);
 	//~PassiveScene4(void);
 
-	
 	std::map<string,IconRenderer> icons;
 
 	//icon renderers
 	IconRenderer airGuitar;
 	IconRenderer arrow;
-
-
 
  private:
 	Timer animationTimer;

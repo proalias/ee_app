@@ -1,7 +1,6 @@
 #ifndef IconFactory_H
 #define IconFactory_H
 
-
 #include "SVGtoParticleParser.h"
 #include "cinder/Cinder.h"
 #include "cinder/app/AppBasic.h"

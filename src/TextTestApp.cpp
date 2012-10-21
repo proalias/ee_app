@@ -112,7 +112,7 @@ protected:
 	Background mbackground;
 
 	//PassiveScene1 sceneTest;
-	void onPassiveSceneComplete(void); // TODO - shared interfaces or data types so can do all scenes as one 
+	void onPassiveSceneComplete();// SceneBase* sceneInstance  ); // TODO - shared interfaces or data types so can do all scenes as one 
 	// TODO also couldnt get the parameter working
 	// http://onedayitwillmake.com/blog/2011/08/simple-example-using-boost-signals-with-cinder/
 
@@ -134,17 +134,16 @@ void TextTestApp::prepareSettings( Settings *settings )
 }
 
 
-void TextTestApp::onPassiveSceneComplete()
+void TextTestApp::onPassiveSceneComplete()// SceneBase* sceneInstance )
 {
 	myFont.addLine( "CALL BACK WORKS", 2 );
 
-	currentScene->animateOut(timeline());
+	//myFont.addLine( sceneInstance->getId(), 2 );
+
 	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
-	currentScene = new PassiveScene5();
+	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont, iconFactory );
-
-	currentScene->animateIn(timeline());
 }
 
 
@@ -155,12 +154,12 @@ void TextTestApp::setup()
 	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
 	
 	myFont = FontRenderer();
-	myFont.addLine( "FONTRENDERER CREATED", 2 );
+	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
-	currentScene->setup( myFont , iconFactory);
+	currentScene->setup( myFont , iconFactory );
 
 	iconFactory.init();
 	
@@ -202,8 +201,6 @@ void TextTestApp::setup()
 	}
 
 	setupSkeletonTracker();
-
-	
 }
 
 
@@ -286,7 +283,7 @@ void TextTestApp::update()
 
 }
 
-void TextTestApp::updateAnimatingParticles(){
+void TextTestApp::updateAnimatingParticles(){ // TODO - is this being used?
 	double time = getElapsedSeconds();
 	
 	for (int i=0;i<animatingParticles.size();i++){  

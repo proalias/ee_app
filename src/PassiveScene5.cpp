@@ -7,7 +7,6 @@ PassiveScene5::PassiveScene5()
 
 void PassiveScene5::setup( FontRenderer &thefont, IconFactory &theIconFactory)
 {
-
 	font = &thefont;
 	font->clear();
 	font->addLine( "WELCOME TO", 2 );
@@ -23,21 +22,14 @@ void PassiveScene5::setup( FontRenderer &thefont, IconFactory &theIconFactory)
 	airGuitar.yPos = 300;
 	airGuitar.xScale = airGuitar.yScale = 0.5;
 
-	
 	arrow = IconRenderer();
 	arrow.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
 	arrow.xPos = 400;
 	arrow.yPos = 600;
 	
 	arrow.xScale = arrow.yScale = 0.5;
-	
-
-	
 
 	animationTimer.start();
-
-
-	
 }
 
 void PassiveScene5::update()
@@ -50,7 +42,6 @@ void PassiveScene5::update()
 	}
 }
 
-
 void PassiveScene5::animateIn(ci::Timeline &timeline){
 	font->animateIn();
 	airGuitar.tweenTo(timeline,100.0,600.0,10.0);
@@ -61,11 +52,10 @@ void PassiveScene5::animateOut(ci::Timeline &timeline){
 	airGuitar.tweenTo(timeline,30.0,30.0,10.0);
 }
 
-
 void PassiveScene5::draw()
 {
 	//font.draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
 
-		airGuitar.draw();
-		arrow.draw();
+	airGuitar.draw();
+	arrow.draw();
 }

@@ -17,7 +17,7 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	iconFactory =  &theIconFactory;
 
-	//font->animateIn(); // TODO - animate in is broken
+	animateIn(); // TODO - animate in is broken
 
 	//_signal( this );
 
@@ -53,8 +53,7 @@ void PassiveScene1::animateOut(){
 	font->animateOut();
 }
 
-
 void PassiveScene1::draw()
 {
-	//font.draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
+	font->draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
 }

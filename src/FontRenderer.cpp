@@ -283,9 +283,8 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 }
 
-
 void FontRenderer::animateIn(){
-	if (animationInProgress == false){
+	//if (animationInProgress == false){
 		animationInProgress = true;
 		for (int j=0;j<lines.size();j++){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
@@ -294,7 +293,7 @@ void FontRenderer::animateIn(){
 				p->rad = 0;
 			}
 		}
-	}
+	//}
 }
 
 void FontRenderer::animateOut(){
