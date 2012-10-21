@@ -1,6 +1,6 @@
 #include "TweenParticle.h"
 
-TweenParticle::TweenParticle( float pX,float pY,float pRad)
+TweenParticle::TweenParticle( float pX,float pY,float pRad, bool jitters)
 {
 	moving = false;
 	xpos = pX;
@@ -13,7 +13,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad)
 	mStartRad = pRad;
 	
 	mPerlin = Perlin();
-	
+	this->jitters = jitters;
 	jitterSpeed = randFloat(-10,10);
 	xJitter = 0;
 	yJitter = 0;
@@ -76,11 +76,12 @@ void TweenParticle::update(double t){
 			moving = false;
 		}
 	}
+	if (jitters==true){
+		noise =  mPerlin.fBm( xpos, ypos, t * 0.1f ) * 10;
 	
-	noise =  mPerlin.fBm( xpos, ypos, t * 0.1f ) * 10;
-	
-	xJitter = cinder::math<float>::sin(t*jitterSpeed) * noise;
-	yJitter = cinder::math<float>::cos(t*jitterSpeed) * noise;
+		xJitter = cinder::math<float>::sin(t*jitterSpeed) * noise;
+		yJitter = cinder::math<float>::cos(t*jitterSpeed) * noise;
+	}
 	
 }
 float TweenParticle::ease(float time,float begin,float change,float duration,float snapback = 1.70158){

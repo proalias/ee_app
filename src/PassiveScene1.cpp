@@ -3,13 +3,12 @@
 
 PassiveScene1::PassiveScene1()
 {
-	_id = "PassiveScene1"; // for boost signal
+	_id = 1; // for boost signal
 }
 
 void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
-	font->clear();
 
 	iconFactory =  &theIconFactory;
 
@@ -21,6 +20,9 @@ void PassiveScene1::showFrame2()
 {
 	// font->addLine( "timer works", 2 );
 	font->clear();
+	font->setPosition(200.0,100.0);
+	font->setColor(Color(1.0,1.0,1.0));
+
 	font->addLine( "WELCOME TO", 2 );
 	font->addLine( "THE NEW NETWORK", 2 );
 	font->addLine( "          FOR YOUR", 2 );

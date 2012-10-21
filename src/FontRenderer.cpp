@@ -6,17 +6,22 @@ FontRenderer::FontRenderer(void)
 	animationInProgress = false;
 	mGridPointInc = 0;
 
-	//populateGridPoints();
+	layoutXPos = 0;
+	layoutYPos = 0;
 
+	particleCount = 0;
+
+	populateGridPoints();
+
+	currentColor =  Color(1.0,1.0,1.0);
 }
 
 //creates a lookup table of grid points.
 void FontRenderer::populateGridPoints(){
 
 	int SPACING = 40;
-
-	float COLUMNS = 1024/SPACING;
-	float ROWS = 768/SPACING;
+	float COLUMNS = 1280/SPACING;
+	float ROWS = 800/SPACING;
 	
 	//fieldLayerContainer.clear();
 
@@ -30,8 +35,14 @@ void FontRenderer::populateGridPoints(){
 
 //This gets a sequential point on the grid. However, the effect doesn't look very good, so I've commented out the calling function.
 ci::Vec2f FontRenderer::getNextPointOnGrid(){
-	mGridPointInc +=1;
-	return gridPoints[mGridPointInc % gridPoints.size()];
+
+	
+	float incSize = particleCount / float(gridPoints.size()) ;
+	mGridPointInc += 1;
+
+	int pointIndex = ci::math<float>::floor(incSize * mGridPointInc);
+
+	return gridPoints[pointIndex % gridPoints.size()];
 }
 
 
@@ -75,6 +86,25 @@ float FontRenderer::getLineHeight( float index )
 	}
 	return longestPoint;
 }
+
+// goes through all points and gets the highest
+ci::Vec2f FontRenderer::getLineVerticalBounds( float index )
+{
+	std::vector<TweenParticle> line = lines[index];
+	float highestPoint = 0.0;
+	float lowestPoint = 1200.0;
+	float pointLength = line.size();
+	for( int i=0; i<pointLength; i++ ){
+		if(line[i].ypos>highestPoint){
+			highestPoint = line[i].ypos;
+		}
+		if(line[i].ypos<lowestPoint){
+			lowestPoint = line[i].ypos;
+		}
+	}
+	return ci::Vec2f(lowestPoint,highestPoint);
+}
+
 
 
 // sorts the leading per character
@@ -294,9 +324,9 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 		for( int i=0; i<pointLength; i++ )
 		{
-			float x = character[i][0]+xPosition;
-			float y = character[i][1];//+yPosition;
-			newline.push_back( TweenParticle(  x*size, y*size , size*2.5 ) );
+			float x = character[i][0]+xPosition + layoutXPos;
+			float y = character[i][1]+layoutYPos;
+			newline.push_back( TweenParticle(  x*size, y*size , size*2.5 , false) );
 			
 		}
 
@@ -317,40 +347,44 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 	}
 	
-	lines.push_back(newline);
 	
+	lines.push_back(newline);
+	particleCount += newline.size();
 
+	//this doesn't quite work yet...
+	ci::Vec2f verticalBounds = this->getLineVerticalBounds(lines.size()-1);
+	layoutYPos += verticalBounds.y - verticalBounds.x; //;
+	
 
 }
 
+void FontRenderer::setColor(ci::Color color){
+	currentColor = color;
+}
+
 void FontRenderer::animateIn(){
-	//if (animationInProgress == false){
-		animationInProgress = true;
-		float t = 0;
+		mGridPointInc = 0;
+		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
-				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOnGrid(),3.0,getElapsedSeconds()+t,p->rad);
+				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.0,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
 			}
 		}
-	//}
 }
 
 void FontRenderer::animateOut(){
-	//if (animationInProgress == false){
-	//	animationInProgress = true;
+		mGridPointInc = 0;
+		float t = 0;//offset each time value slightly
 		for (int j=0;j<lines.size();j++){
 
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-				p->animateTo(getRandomPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),2.0,getElapsedSeconds(),0);
+				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),1.0,getElapsedSeconds(),0);
 				p->update(ci::app::getElapsedSeconds());
 			}
 		}
-	//}
 }
 
 
@@ -385,16 +419,18 @@ void FontRenderer::draw()
 	*/
 
 
-	float yPos = 100;
-	float xPos = 0;//(getWindowWidth()/2);
+	//float yPos = 100;
+	//float xPos = 300;//(getWindowWidth()/2);
+	
+	gl::color(currentColor);
 
 	for (int j=0;j<lines.size();j++){
 
-		gl::pushMatrices();
+		//gl::pushMatrices();
 
-		xPos = 300;//(getWindowWidth()/2) - (getLineWidth(j)/2);
+		//xPos = 300;//(getWindowWidth()/2) - (getLineWidth(j)/2);
 
-		gl::translate( xPos, yPos, 0 );
+		//gl::translate( xPos, yPos, 0 );
 
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
@@ -406,16 +442,25 @@ void FontRenderer::draw()
 			}
 		}
 	
-		yPos += FontRenderer::getLineHeight(j)+10;
 
-		gl::popMatrices();
+		//gl::popMatrices();
 	}
 
+	gl::color(Color(1.0,1.0,1.0));
+}
+
+
+void FontRenderer::setPosition(float x, float y){
+	layoutXPos = x;
+	layoutYPos = y;
 }
 
 void FontRenderer::clear()
 {
 	mParticles.clear();
+	layoutXPos = 0;
+	layoutYPos = 0;
+	mGridPointInc = 0;
 
 	lines.clear();
 }

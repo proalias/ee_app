@@ -15,6 +15,7 @@ public:
 	{
 		font = &thefont;
 		font->clear();
+		font->setPosition(0.0,0.0);
 		font->addLine( "BASE CLASS ERROR", 2 );
 
 		iconFactory =  &theIconFactory;
@@ -27,13 +28,13 @@ public:
 	typedef boost::signals2::signal<void( SceneBase* )> SceneSignal;
 
 	// ACCESSORS
-	std::string getId() { return _id; };
+	int getId() { return _id; };
 	SceneSignal* getSignal() { return &_signal; }; // Notice we return a pointer to the signal
 
 protected:
 	FontRenderer * font; // just a pointer to the one on the stage
 	IconFactory * iconFactory; // just a pointer to the one in the main app
-	std::string _id;
+	int _id;
 	SceneSignal _signal;
 
 private:

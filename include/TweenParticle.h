@@ -15,7 +15,7 @@ using namespace cinder;
 
 class TweenParticle {
 public:
-	TweenParticle(float pX,float pY,float pRad);
+	TweenParticle( float pX,float pY,float pRad, bool jitters);
 	void update(double t);
 	void draw();
 
@@ -29,6 +29,7 @@ public:
 	Color color;
 	bool moving;
 
+	bool jitters;
 	
 	//ci::Timeline	&mTimeline;
 	float mDuration;

@@ -43,8 +43,7 @@ public:
 	ci::Vec2f getRandomPointOnGrid();
 	void animateIn();
 	void animateOut();
-
-	void populateGridPoints();
+	void setPosition(float x, float y);
 	// TODO - this one should actually be private
 	// TODO - also for now its a massive switch, I read can do some kind of hash map to function pointers instead
 	// essentially you pass in a string and it will give you the points for that character
@@ -54,13 +53,24 @@ public:
 
 	float getLineWidth( float ); // gets the width of a line by index
 	float getLineHeight( float ); // gets the height of a line by index
+	
+	ci::Vec2f FontRenderer::getLineVerticalBounds( float index );
 
 	FontRenderer(void);
 	//~FontRenderer(void);
 
+	void setColor(ci::Color);
+
 	bool animationInProgress;
 	float lineHeight;
 private:
+	int particleCount;
+	void populateGridPoints();
 	int mGridPointInc;
 	std::vector<Vec2f> gridPoints;
+
+	ci::Color currentColor;
+
+	float layoutXPos;
+	float layoutYPos;
 };
