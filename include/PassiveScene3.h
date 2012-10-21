@@ -12,7 +12,7 @@ class PassiveScene3: public SceneBase {
 public:
 
 	// inherited and overridden
-	void setup( FontRenderer &font );
+	void setup( FontRenderer &thefont, IconFactory &theIconFactory );
 	void update();
 	void draw();
 

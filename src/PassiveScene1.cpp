@@ -6,7 +6,7 @@ PassiveScene1::PassiveScene1()
 	_id = "PassiveScene1"; // for boost signal
 }
 
-void PassiveScene1::setup( FontRenderer &thefont )
+void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
 	font->clear();
@@ -14,6 +14,8 @@ void PassiveScene1::setup( FontRenderer &thefont )
 	font->addLine( "THE NEW NETWORK", 2 );
 	font->addLine( "          FOR YOUR", 2 );
 	font->addLine( "          DIGITAL LIFE", 2 );
+
+	iconFactory =  &theIconFactory;
 
 	//font->animateIn(); // TODO - animate in is broken
 

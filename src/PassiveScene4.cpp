@@ -6,7 +6,7 @@ PassiveScene4::PassiveScene4()
 	_id = "PassiveScene4"; // for boost signal
 }
 
-void PassiveScene4::setup( FontRenderer &thefont )
+void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
 	font->clear();
@@ -15,6 +15,9 @@ void PassiveScene4::setup( FontRenderer &thefont )
 	font->addLine( "      AND SEE US", 3 );
 
 //	font->animateIn();
+
+	
+	iconFactory =  &theIconFactory;
 
 	animationTimer.start();
 }

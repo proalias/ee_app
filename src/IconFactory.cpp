@@ -30,6 +30,9 @@ void IconFactory::init(){
 	
 	cinder::XmlTree xmlDoc3( ci::app::loadAsset( "superfast-dial.svg" ) );
 	svgParser.recursiveParse(xmlDoc3,icons[DIAL]);
+
+	cinder::XmlTree xmlDoc4( ci::app::loadAsset( "arrow.svg" ) );
+	svgParser.recursiveParse(xmlDoc3,icons[ARROW]);
 }
 
 std::vector<TweenParticle> IconFactory::getPointsForIcon(int iconConstant){

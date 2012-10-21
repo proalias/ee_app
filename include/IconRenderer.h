@@ -9,8 +9,8 @@
 
 class IconRenderer{
 public :
-	IconRenderer( std::vector<TweenParticle> &points);
-
+	IconRenderer( void ); 
+	void setPoints( std::vector<TweenParticle> &points);
 	void draw();
 	void update();
 	void	tweenTo( ci::Timeline &timeline,  float xPosDest, float yPosDest, float duration );

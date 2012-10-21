@@ -1,58 +1,38 @@
 #ifndef PassiveScene5_H_
 #define PassiveScene5_H_
 
-#include "FontRenderer.h"
-#include "IconFactory.h"
-#include "IconRenderer.h"
-
-
-#include "cinder/Cinder.h"
-#include "cinder/Timeline.h"
-
-
-#include <boost/signals2.hpp>
-#include <iostream>
+#include "SceneBase.h"
 
 using namespace std;
 using namespace ci;
 
-class PassiveScene5 {
- public:
+class PassiveScene5: public SceneBase {
+ 
+public:
 
-	void setup( FontRenderer &font, Timeline &timeline, IconFactory &iconFactory );
+	// inherited and overridden
+	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
 	void update();
 	void draw();
 
-	void animateIn(ci::Timeline &timeline);
-	void animateOut(ci::Timeline &timeline);
-	
-	//std::vector<Vec2f> refToParticlesMaybe?;
-
-	FontRenderer * font; // just a pointer to the one on the stage
-	
 	PassiveScene5(void);
-	//~PassiveScene5(void);
+	//~PassiveScene4(void);
 
-	// this typedef creates a simple shorthand, so that ButtonSignal refers to boost::signals2::signal<void( Button* )>
-	// If you wanted you could use the long name instead, but its easier to typo
-	typedef boost::signals2::signal<void( PassiveScene5* )> PassiveSignal;
+	
+	std::map<string,IconRenderer> icons;
 
-	// ACCESSORS
-	std::string getId() { return _id; };
-	PassiveSignal* getSignal() { return &_signal; }; // Notice we return a pointer to the signal
+	//icon renderers
+	IconRenderer airGuitar;
+	IconRenderer arrow;
 
-	IconFactory iconFactory;
 
-	std::vector<IconRenderer> icons;
 
  private:
-	std::string _id;
-	PassiveSignal    _signal;
-
 	Timer animationTimer;
 
-
+	void animateIn(ci::Timeline &timeline);
+	void animateOut(ci::Timeline &timeline);
 
 };
 
-#endif /* PassiveScene5_H_ */
+#endif /* PASSIVESCENE4_H_ */
