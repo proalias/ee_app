@@ -154,9 +154,9 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	//currentScene->setup( myFont, iconFactory );
 
-	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
-	currentScene->setup( myFont, iconFactory );
+	//currentScene = new PassiveScene1();
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
+	//currentScene->setup( myFont, iconFactory );
 
 }
 
