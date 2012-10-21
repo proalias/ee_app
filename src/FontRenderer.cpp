@@ -22,7 +22,6 @@ void FontRenderer::populateGridPoints(){
 
 	for( int j=0; j<ROWS; j++ ){
 		for( int i=0; i<COLUMNS; i++ ){
-			
 			gridPoints.push_back(Vec2f( i*SPACING , j*SPACING ));
 		}
 	}
