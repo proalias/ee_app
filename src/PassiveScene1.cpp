@@ -19,9 +19,17 @@ void PassiveScene1::setup( FontRenderer &thefont )
 
 	//_signal( this );
 
-	animationTimer.start();
+	//animationTimer.start();
 	
+	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 5 );
+	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 }
+
+void PassiveScene1::showFrame2()
+{
+	font->addLine( "timer works", 2 );
+}
+
 
 void PassiveScene1::update()
 {

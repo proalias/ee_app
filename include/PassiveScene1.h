@@ -3,6 +3,7 @@
 
 #include "FontRenderer.h"
 #include "SceneBase.h"
+#include "cinder/Timeline.h"
 
 using namespace std;
 using namespace ci;
@@ -24,6 +25,10 @@ public:
 
 	void animateIn();
 	void animateOut();
+
+	CueRef mCue;
+
+	void showFrame2();
 
 };
 
