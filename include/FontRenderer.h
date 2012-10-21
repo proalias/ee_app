@@ -64,7 +64,7 @@ public:
 	bool animationInProgress;
 	float lineHeight;
 private:
-	
+	int particleCount;
 	void populateGridPoints();
 	int mGridPointInc;
 	std::vector<Vec2f> gridPoints;

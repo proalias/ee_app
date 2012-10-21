@@ -80,9 +80,7 @@ void PassiveScene2::showFrame4()
 {
 	font->clear();
 	font->setPosition(200.0,100.0);
-
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
-	// TODO - yellow
 	// TODO - get the actual city name from the config
 	font->addLine( "LONDON", 3 );
 	font->animateIn();
@@ -99,6 +97,7 @@ void PassiveScene2::showFrame6()
 {
 	font->clear();
 	font->setPosition(200.0,100.0);
+	font->setColor(Color(1.0,1.0,1.0));
 	font->addLine( "SUPERFAST", 3 );
 	font->addLine( "      MOBILE #4GEE", 3 );
 	font->addLine( "ONLY ON EE", 3 );

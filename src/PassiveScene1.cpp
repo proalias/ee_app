@@ -21,7 +21,8 @@ void PassiveScene1::showFrame2()
 	// font->addLine( "timer works", 2 );
 	font->clear();
 	font->setPosition(200.0,100.0);
-	
+	font->setColor(Color(1.0,1.0,1.0));
+
 	font->addLine( "WELCOME TO", 2 );
 	font->addLine( "THE NEW NETWORK", 2 );
 	font->addLine( "          FOR YOUR", 2 );

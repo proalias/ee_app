@@ -15,6 +15,7 @@ public:
 	{
 		font = &thefont;
 		font->clear();
+		font->setPosition(0.0,0.0);
 		font->addLine( "BASE CLASS ERROR", 2 );
 
 		iconFactory =  &theIconFactory;

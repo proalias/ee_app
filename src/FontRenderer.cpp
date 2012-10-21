@@ -9,6 +9,8 @@ FontRenderer::FontRenderer(void)
 	layoutXPos = 0;
 	layoutYPos = 0;
 
+	particleCount = 0;
+
 	populateGridPoints();
 
 	currentColor =  Color(1.0,1.0,1.0);
@@ -18,9 +20,8 @@ FontRenderer::FontRenderer(void)
 void FontRenderer::populateGridPoints(){
 
 	int SPACING = 40;
-
-	float COLUMNS = 1024/SPACING;
-	float ROWS = 768/SPACING;
+	float COLUMNS = 1280/SPACING;
+	float ROWS = 800/SPACING;
 	
 	//fieldLayerContainer.clear();
 
@@ -35,8 +36,14 @@ void FontRenderer::populateGridPoints(){
 
 //This gets a sequential point on the grid. However, the effect doesn't look very good, so I've commented out the calling function.
 ci::Vec2f FontRenderer::getNextPointOnGrid(){
-	mGridPointInc +=1;
-	return gridPoints[mGridPointInc % gridPoints.size()];
+
+	
+	float incSize = particleCount / float(gridPoints.size()) ;
+	mGridPointInc += 1;
+
+	int pointIndex = ci::math<float>::floor(incSize * mGridPointInc);
+
+	return gridPoints[pointIndex % gridPoints.size()];
 }
 
 
@@ -343,17 +350,10 @@ void FontRenderer::addLine( const std::string &copy, int size )
 	
 	
 	lines.push_back(newline);
-	
-	float lastLineHeight;
+	particleCount += newline.size();
 
-	if (lines.size() > 0){
-		lastLineHeight = this->getLineHeight(lines.size()-1) - this->getLineHeight(lines.size()-2) ;
-	}else{
-		lastLineHeight = this->getLineHeight(lines.size()-1);
-	}
-
+	//this doesn't quite work yet...
 	ci::Vec2f verticalBounds = this->getLineVerticalBounds(lines.size()-1);
-
 	layoutYPos += verticalBounds.y - verticalBounds.x; //;
 	
 
@@ -364,33 +364,28 @@ void FontRenderer::setColor(ci::Color color){
 }
 
 void FontRenderer::animateIn(){
-	//if (animationInProgress == false){
-		animationInProgress = true;
-		float t = 0;
+		mGridPointInc = 0;
+		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
-				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.0,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
 			}
 		}
-	//}
 }
 
 void FontRenderer::animateOut(){
-	//if (animationInProgress == false){
-	//	animationInProgress = true;
+		mGridPointInc = 0;
+		float t = 0;//offset each time value slightly
 		for (int j=0;j<lines.size();j++){
 
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),1.0,getElapsedSeconds(),0);
 				p->update(ci::app::getElapsedSeconds());
 			}
 		}
-	//}
 }
 
 

@@ -11,7 +11,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	font = &thefont;
 	font->clear();
 	font->setPosition(200,100);
-
+	font->setColor(Color(1.0,1.0,1.0));
 	//font = FontRenderer();
 	font->addLine( "PREPARE TO GO", 3 );
 	font->addLine( "              SUPERFAST", 3 );
@@ -42,6 +42,8 @@ void PassiveScene3::showFrame4(){
 	
 	font->clear();
 	font->setPosition(200,100);
+	font->setColor(Color(1.0,1.0,1.0));
+
 	font->addLine( "WITH SUPERFAST", 2 );
 	font->addLine( "      4GEE AND", 2 );
 	font->addLine( "      FIBRE BROADBAND", 2 );
