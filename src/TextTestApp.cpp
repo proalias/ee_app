@@ -1,6 +1,5 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/app/AppNative.h"
-#include "cinder/app/AppBasic.h"
 #include "cinder/Camera.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/ImageIo.h"
@@ -12,7 +11,6 @@
 #include "cinder/Timeline.h"
 
 #include "boost/lambda/bind.hpp"
-//#include "boost/bind.hpp"
 
 #include "Kinect.h"
 #include "Background.h"
@@ -24,8 +22,7 @@
 #include "IconFactory.h"
 #include "IconRenderer.h"
 //#include "ParticleImageContainer.h"
-
-
+//#include "ForegroundParticles.h"
 #include "SceneBase.h"
 #include "PassiveScene1.h"
 #include "PassiveScene2.h"
@@ -41,8 +38,8 @@ using namespace std;
 using namespace KinectSdk;
 using std::list;
 
-    using boost::lambda::_1;
-    using boost::lambda::bind; 
+using boost::lambda::_1;
+using boost::lambda::bind; 
 
 static const bool PREMULT = false;
 
@@ -68,7 +65,7 @@ class TextTestApp : public AppNative {
 
 	FontRenderer myFont;
  
-	std::list<ParticleA>	mParticles;
+	//ForegroundParticles fgParticles; // ones flying around the screen
 
 	std::vector<CinderClip> repelClips;
 
@@ -199,7 +196,7 @@ void TextTestApp::setup()
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 
-	/* - Leave this for now, textures can be added to the particle later.
+	/*- Leave this for now, textures can be added to the particle later.
 	//load particle textures
 	pTextures.init();
 	gl::Texture texture1 = loadImage(loadAsset( "ParticleFullON.png") );
@@ -214,8 +211,8 @@ void TextTestApp::setup()
 	pTextures.addTexture(texture5);
 	gl::Texture texture6 = loadImage(loadAsset( "ParticlePatial05.png") );
 	pTextures.addTexture(texture6);
+	
 	*/
-
 
 	
 
@@ -236,32 +233,7 @@ void TextTestApp::setup()
 
 	mbackground.setRepelClips( repelClips );
 
-	for( int i=0; i<100; i++ )
-	{
-		ParticleA particle = ParticleA();
-		particle.init();
-
-		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-
-		particle.width = randFloat(3,10);
-	
-		particle.x=randFloat(getWindowWidth());
-		particle.y=randFloat(getWindowHeight());
-
-		//particle.setBounce(-1);
-		particle.setMaxSpeed(5);
-
-		//particle.setEdgeBehavior("wrap");
-
-		particle.setWander(3);
-		particle.setGrav(0);
-		
-		for (int i=0; i<20; i++){
-			particle.addRepelClip( repelClips[i],500,200 );
-		}
-		
-		mParticles.push_back( particle );
-	}
+	//fgParticles.setup();
 
 	setupSkeletonTracker();
 }
@@ -295,15 +267,12 @@ void TextTestApp::update()
 
 	mbackground.update();
 
+//	fgParticles.update();
+
 	updateSkeleton();
 	
-	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		p->update();
-	}
 
-	// TODO - is all this text anim stuff below old now????
-
-
+	// TODO - is all this old?/// ,,, can be removed?
 	if (textAnimationTimer.isStopped()){
 		textAnimationTimer.start();
 	}
@@ -382,22 +351,16 @@ void TextTestApp::draw()
 	mbackground.draw();
 
 	drawSkeleton();
+
+	//fgParticles.draw();
+
 	gl::enableAlphaBlending();
-
-	gl::color( Color::white() );
-
+	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
 	currentScene->draw();
 
-	gl::color( Color( 1, 1, 1 ) );
-
-	// TODO - may be passing foreground particles into scenes. but still probs drawn here
-	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-	}
-
-
+	gl::color( Color( 1, 1, 1 ) ); // NEEDDED?
 
 }
 

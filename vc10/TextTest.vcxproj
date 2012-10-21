@@ -106,6 +106,7 @@
     <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
+    <ClCompile Include="..\src\ForegroundParticles.cpp" />
     <ClCompile Include="..\src\IconFactory.cpp" />
     <ClCompile Include="..\src\IconRenderer.cpp" />
     <ClCompile Include="..\src\NobleeBold.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="..\include\Background.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
+    <ClInclude Include="..\include\ForegroundParticles.h" />
     <ClInclude Include="..\include\Icon.h" />
     <ClInclude Include="..\include\IconFactory.h" />
     <ClInclude Include="..\include\IconRenderer.h" />
