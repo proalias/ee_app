@@ -8,18 +8,9 @@ PassiveScene2::PassiveScene2()
 
 void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
-	// show pin icons
-
 	font = &thefont;
 	font->clear();
-	//font->addLine( "4GEE IS HERE", 3 );
-	//font->addLine( "   IS HERE", 4 );
 
-	font->addLine( "SUPERFAST", 3 );
-	font->addLine( "      MOBILE #4GEE", 3 );
-	font->addLine( "ONLY ON EE", 3 );
-
-	//_signal( this );
 	iconFactory =  &theIconFactory;
 
 	placeMark1 = IconRenderer();
@@ -57,52 +48,66 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	
 	placeMarks.push_back(&placeMark4);
 
-
-	// TODO - get the name of the city from the config file
-	// font->addLine( "LONDON", 3 );
-
-
-
-	phase = 0;
-
-	animationTimer.start();
-
 	
+	mCue = timeline().add( bind(&PassiveScene2::showFrame2, this), timeline().getCurrentTime() + 5 );
+}
+
+void PassiveScene2::showFrame2()
+{
+	font->clear();
+	font->addLine( "4GEE IS HERE", 3 );
+	font->addLine( "   IS HERE", 4 );
+	font->animateIn();
+
+	mCue = timeline().add( bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
+}
+
+void PassiveScene2::showFrame3()
+{
+	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 3 );
+}
+
+void PassiveScene2::showFrame4()
+{
+	font->clear();
+	// TODO - yellow
+	// TODO - get the actual city name from the config
+	font->addLine( "LONDON", 3 );
+	font->animateIn();
+	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 3 );
+}
+
+void PassiveScene2::showFrame5()
+{
+	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene2::showFrame6, this), timeline().getCurrentTime() + 3 );
+}
+
+void PassiveScene2::showFrame6()
+{
+	font->clear();
+	font->addLine( "SUPERFAST", 3 );
+	font->addLine( "      MOBILE #4GEE", 3 );
+	font->addLine( "ONLY ON EE", 3 );
+	font->animateIn();
+	mCue = timeline().add( bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 10 );
+}
+
+void PassiveScene2::showFrame7()
+{
+	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene2::showFrame8, this), timeline().getCurrentTime() + 3 );
+}
+
+void PassiveScene2::showFrame8()
+{
+	_signal( this );
 }
 
 void PassiveScene2::update()
 {
-	if(phase == 0){
-		phase = 1;
-		font->animateIn();
-	}
-
-	if(animationTimer.getSeconds()>20 && phase == 1){
-		phase = 2;
-		// test dispatching event
-		//_signal( this );
-		font->animateOut();
-		//font->clear();
-		//font->addLine( "end scene 3", 3 );
-	}
-	if(animationTimer.getSeconds()>25 && phase ==2){
-		phase = 3;
-		animationTimer.stop();
-		animationTimer = Timer(); // reset the timer
-		
-		_signal( this );
-	}
 }
-
-
-void PassiveScene2::animateIn(){
-
-}
-
-void PassiveScene2::animateOut(){
-
-}
-
 
 void PassiveScene2::draw()
 {

@@ -1,7 +1,4 @@
-
 #include "TweenParticle.h"
-
-
 
 TweenParticle::TweenParticle( float pX,float pY,float pRad)
 {

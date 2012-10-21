@@ -13,7 +13,7 @@ class PassiveScene1: public SceneBase {
 public:
 
 	// inherited and overridden
-	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
+	void setup( FontRenderer &thefont, IconFactory &theIconFactory );
 	void update();
 	void draw();
 
@@ -21,15 +21,11 @@ public:
 	//~PassiveScene1(void);
 
  private:
-	Timer animationTimer;
-
-	void animateIn();
-	void animateOut();
-
 	CueRef mCue;
-
+	// keyframes
 	void showFrame2();
-
+	void showFrame3();
+	void showFrame4();
 };
 
 #endif /* PASSIVESCENE1_H_ */

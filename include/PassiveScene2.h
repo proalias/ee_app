@@ -23,10 +23,16 @@ public:
 
 	std::vector<IconRenderer*> placeMarks;
 	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4;
-	Timer animationTimer;
 
-	void animateIn();
-	void animateOut();
+	CueRef mCue;
+	// keyframes
+	void showFrame2();
+	void showFrame3();
+	void showFrame4();
+	void showFrame5();
+	void showFrame6();
+	void showFrame7();
+	void showFrame8();
 
 };
 
