@@ -38,6 +38,7 @@ protected:
 	IconFactory * iconFactory; // just a pointer to the one in the main app
 	std::string _id;
 	SceneSignal _signal;
+	int phase;
 
 private:
 //	std::string _id;

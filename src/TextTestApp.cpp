@@ -138,13 +138,11 @@ void TextTestApp::onPassiveSceneComplete()
 {
 	myFont.addLine( "CALL BACK WORKS", 2 );
 
-	currentScene->animateOut(timeline());
 	//  TODO - check the id of each scene or just increment by index. will sort later. for now first 2 are rotating nicely.
 	currentScene = new PassiveScene5();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont, iconFactory );
 
-	currentScene->animateIn(timeline());
 }
 
 

@@ -21,17 +21,33 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	//_signal( this );
 
+	phase = 0;
+
 	animationTimer.start();
-	
+
 }
 
 void PassiveScene1::update()
 {
-	if(animationTimer.getSeconds()>15 && animationTimer.getSeconds()>16 ){
+
+	if(animationTimer.getSeconds()>5 && phase != 1){
+		phase = 1;
+		font->animateIn();
+	}
+
+	if(animationTimer.getSeconds()>20 && phase != 2){
+		phase = 2;
 		// test dispatching event
+		//_signal( this );
+		font->animateOut();
+		//font->clear();
+		//font->addLine( "end scene 3", 3 );
+	}
+	if(animationTimer.getSeconds()>30 && phase !=3){
+		phase = 3;
 		animationTimer.stop();
-		animateOut();
 		animationTimer = Timer(); // reset the timer
+		
 		_signal( this );
 	}
 }

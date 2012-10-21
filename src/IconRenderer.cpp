@@ -17,8 +17,8 @@ void IconRenderer::setPoints( std::vector<TweenParticle> &points){
 
 void IconRenderer::tweenTo( Timeline &timeline, float xPosDest, float yPosDest, float duration )
 {
-	timeline.apply( &xPos, xPosDest, duration, EaseOutAtan( 20 ) );
-	timeline.apply( &yPos, yPosDest, duration, EaseOutAtan( 20 ) );
+	timeline.apply( &xPos, xPosDest, duration, EaseOutBack( 0.3 ) );
+	timeline.apply( &yPos, yPosDest, duration, EaseOutBack( 0.3 ) );
 }
 
 void IconRenderer::draw(){
