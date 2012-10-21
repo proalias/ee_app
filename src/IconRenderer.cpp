@@ -26,6 +26,7 @@ void IconRenderer::draw(){
 	gl::translate(this->xPos, this->yPos, 0.0);
 	gl::scale(this->xScale, this->yScale, 1.0);
 	for( std::vector<TweenParticle>::iterator p = mPoints.begin(); p != mPoints.end(); ++p ){
+		p->update(cinder::app::getElapsedSeconds());
 		p->draw();
 	}
 	gl::popMatrices();

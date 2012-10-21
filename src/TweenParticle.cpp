@@ -14,6 +14,12 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad)
 
 	mDestRad = pRad;
 	mStartRad = pRad;
+	
+	mPerlin = Perlin();
+	
+	jitterSpeed = randFloat(-10,10);
+	xJitter = 0;
+	yJitter = 0;
 }
 
 
@@ -29,6 +35,10 @@ void TweenParticle::animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, f
 	mStartRad = rad;
 	mDestRad = newrad;
 	moving = true;
+
+	noise = 0;
+	xJitter = 0;
+	yJitter = 0;
 }
 
 void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, float newrad){
@@ -42,8 +52,13 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 }
 
 void TweenParticle::draw(){
-	gl::drawSolidCircle(ci::Vec2f(xpos, ypos) ,rad);
+
 	
+
+	gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
+	
+	
+
 	/* TODO - get particles drawing with textures
 	float halfRad = rad * 0.5;
 	Rectf rect = Rectf(xpos - halfRad,ypos - halfRad,xpos+halfRad, ypos+halfRad);
@@ -64,6 +79,12 @@ void TweenParticle::update(double t){
 			moving = false;
 		}
 	}
+	
+	noise =  mPerlin.fBm( xpos, ypos, t * 0.1f ) * 10;
+	
+	xJitter = cinder::math<float>::sin(t*jitterSpeed) * noise;
+	yJitter = cinder::math<float>::cos(t*jitterSpeed) * noise;
+	
 }
 float TweenParticle::ease(float time,float begin,float change,float duration,float snapback = 1.70158){
 	return change*((time=time/duration-1)*time*((snapback+1)*time + snapback) + 1) + begin;
