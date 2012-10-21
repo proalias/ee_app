@@ -1,5 +1,8 @@
 #include "PassiveScene2.h"
 #include "boost/bind.hpp"
+#include "cinder/Timeline.h"
+#include "cinder/Tween.h"
+#include "cinder/Easing.h"
 
 PassiveScene2::PassiveScene2()
 {
@@ -13,42 +16,45 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	iconFactory =  &theIconFactory;
 
+
+	// show pin icons
 	placeMark1 = IconRenderer();
 	placeMark1.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
-	placeMark1.xPos = 200;
-	placeMark1.yPos = 800;
-	placeMark1.xScale = placeMark1.yScale = 2;
+	placeMark1.pos = Vec2f(150.0,-200);
+	placeMark1.scale  = 2;
 	
 	placeMarks.push_back(&placeMark1);
 
 
 	placeMark2 = IconRenderer();
 	placeMark2.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
-	placeMark2.xPos = 100;
-	placeMark2.yPos = 600;
-	placeMark2.xScale = placeMark2.yScale = 1;
+	placeMark2.pos = Vec2f(400.0,-200);
+	placeMark2.scale = 1;
 	
 	placeMarks.push_back(&placeMark2);
 
 	
 	placeMark3 = IconRenderer();
 	placeMark3.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
-	placeMark3.xPos = 500;
-	placeMark3.yPos = 700;
-	placeMark3.xScale = placeMark3.yScale = 0.5;
+	placeMark3.pos = Vec2f(750.0,-200.0);
+	placeMark3.scale = 0.5;
 	
 	placeMarks.push_back(&placeMark3);
 
 	
 	placeMark4 = IconRenderer();
 	placeMark4.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
-	placeMark4.xPos = 800;
-	placeMark4.yPos = 600;
-	placeMark4.xScale = placeMark4.yScale = 1.2;
+	placeMark4.pos = Vec2f(900,-200);
+	placeMark4.scale = 1.2;
 	
 	placeMarks.push_back(&placeMark4);
 
-	
+	// TODO - get the name of the city from the config file
+	FontRenderer locationLabel =  FontRenderer();
+	locationLabel.addLine("LONDON",3);
+	// font->addLine( "LONDON", 3 );
+
+
 	mCue = timeline().add( bind(&PassiveScene2::showFrame2, this), timeline().getCurrentTime() + 5 );
 }
 
@@ -59,6 +65,12 @@ void PassiveScene2::showFrame2()
 	font->addLine( "   IS HERE", 4 );
 	font->animateIn();
 
+	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,604.0), 3.0f ,cinder::EaseOutBounce());
+	cinder::app::timeline().apply(&placeMark2.pos,ci::Vec2f(placeMark2.pos.value().x,500.0), 2.0f ,cinder::EaseOutBounce());
+	cinder::app::timeline().apply(&placeMark3.pos,ci::Vec2f(placeMark3.pos.value().x,550.0), 4.5f ,cinder::EaseOutBounce());
+	cinder::app::timeline().apply(&placeMark4.pos,ci::Vec2f(placeMark4.pos.value().x,600.0), 5.0f ,cinder::EaseOutBounce());
+
+	
 	mCue = timeline().add( bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
 }
 
@@ -114,4 +126,5 @@ void PassiveScene2::draw()
 	for (int i = 0; i < placeMarks.size(); i++){
 		placeMarks[i]->draw();
 	}
+	//locationLabel.draw();
 }

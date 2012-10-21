@@ -28,7 +28,6 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
-#include "PassiveScene5.h"
 
 #include <list>
 
@@ -147,20 +146,25 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
+
 	myFont.clear();
 	myFont.addLine( sceneInstance->getId(), 2 );
 	myFont.animateIn();
 	//currentScene = new PassiveScene2();
 	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	//currentScene->setup( myFont, iconFactory );
+
+	currentScene = new PassiveScene1();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene1Complete, this ));
+	currentScene->setup( myFont, iconFactory );
+
 }
 
 void TextTestApp::onPassiveScene1Complete()
 {
-	currentScene = new PassiveScene2();
-	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
+ 	currentScene = new PassiveScene2();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveScene2Complete, this ));
 	currentScene->setup( myFont, iconFactory );
-
 }
 
 void TextTestApp::onPassiveScene2Complete()
@@ -214,7 +218,6 @@ void TextTestApp::setup()
 	
 	*/
 
-	
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
@@ -263,14 +266,13 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
-	currentScene->update();
+	currentScene->update(timeline());
 
 	mbackground.update();
 
 //	fgParticles.update();
 
 	updateSkeleton();
-	
 
 	// TODO - is all this old?/// ,,, can be removed?
 	if (textAnimationTimer.isStopped()){
@@ -316,7 +318,8 @@ void TextTestApp::update()
 
 }
 
-void TextTestApp::updateAnimatingParticles(){ // TODO - is this being used?
+
+void TextTestApp::updateAnimatingParticles(){
 	double time = getElapsedSeconds();
 	
 	for (int i=0;i<animatingParticles.size();i++){  
@@ -333,7 +336,6 @@ void TextTestApp::updateAnimatingParticles(){ // TODO - is this being used?
 
 void TextTestApp::updateSkeleton()
 {
-
 	if ( mKinect->isCapturing() ) {
 		mKinect->update();
 	} else {
@@ -342,7 +344,6 @@ void TextTestApp::updateSkeleton()
 			mKinect->start();
 		}
 	}
-
 }
 
 
@@ -360,8 +361,7 @@ void TextTestApp::draw()
 
 	currentScene->draw();
 
-	gl::color( Color( 1, 1, 1 ) ); // NEEDDED?
-
+	gl::color( Color( 1, 1, 1 ) );
 }
 
 
@@ -509,8 +509,8 @@ void TextTestApp::drawSkeleton(){
 
 // TODO - is this being used anymore?
 void TextTestApp::drawParticle(float tx, float ty, float scale){
-	//Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
-	//gl::draw(pTextures.getTexture(3),rect);
+	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
+	gl::draw(particleImg,rect);
 }
 
 

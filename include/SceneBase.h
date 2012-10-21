@@ -19,12 +19,9 @@ public:
 
 		iconFactory =  &theIconFactory;
 	}
-	virtual void update(){}
+	virtual void update(Timeline &timeline){}
 	virtual void draw(){}
 	
-	virtual void animateIn(ci::Timeline &Timeline){}
-	virtual void animateOut(ci::Timeline &Timeline){}
-
 	// this typedef creates a simple shorthand, so that ButtonSignal refers to boost::signals2::signal<void( Button* )>
 	// If you wanted you could use the long name instead, but its easier to typo
 	typedef boost::signals2::signal<void( SceneBase* )> SceneSignal;
@@ -38,7 +35,6 @@ protected:
 	IconFactory * iconFactory; // just a pointer to the one in the main app
 	std::string _id;
 	SceneSignal _signal;
-	int phase;
 
 private:
 //	std::string _id;

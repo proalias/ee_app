@@ -1,7 +1,6 @@
 #ifndef PassiveScene2_H_
 #define PassiveScene2_H_
 
-#include "FontRenderer.h"
 #include "SceneBase.h"
 
 using namespace std;

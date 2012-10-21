@@ -25,10 +25,12 @@ public:
 
 	std::vector<IconRenderer*> arrows;
 
-	Timer animationTimer;
-
-	void animateIn();
-	void animateOut();
+	
+	CueRef mCue;
+	// keyframes
+	void showFrame2();
+	void showFrame3();
+	void showFrame4();
 
 };
 

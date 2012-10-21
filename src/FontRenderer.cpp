@@ -5,6 +5,47 @@ FontRenderer::FontRenderer(void)
 	font = NobleeBold();
 	animationInProgress = false;
 	mGridPointInc = 0;
+
+	//populateGridPoints();
+
+}
+
+//creates a lookup table of grid points.
+void FontRenderer::populateGridPoints(){
+
+	int SPACING = 40;
+
+	float COLUMNS = 1024/SPACING;
+	float ROWS = 768/SPACING;
+	
+	//fieldLayerContainer.clear();
+
+	for( int j=0; j<ROWS; j++ ){
+		for( int i=0; i<COLUMNS; i++ ){
+			
+			gridPoints.push_back(Vec2f( i*SPACING , j*SPACING ));
+		}
+	}
+
+}
+
+//This gets a sequential point on the grid. However, the effect doesn't look very good, so I've commented out the calling function.
+ci::Vec2f FontRenderer::getNextPointOnGrid(){
+	mGridPointInc +=1;
+	return gridPoints[mGridPointInc % gridPoints.size()];
+}
+
+
+ci::Vec2f FontRenderer::getRandomPointOnGrid(){
+	
+	int SPACING = 40;
+
+	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
+	float ROWS = cinder::app::getWindowHeight()/SPACING;
+	
+	float pX = randInt(-COLUMNS, COLUMNS)*SPACING;
+	float pY = randInt(-ROWS, ROWS)*SPACING;
+	return ci::Vec2f(pX,pY);	
 }
 
 // goes through all points and gets the widest
@@ -292,6 +333,7 @@ void FontRenderer::animateIn(){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOnGrid(),3.0,getElapsedSeconds()+t,p->rad);
+				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
 			}
 		}
@@ -305,41 +347,12 @@ void FontRenderer::animateOut(){
 
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
 				//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-				p->animateTo(getRandomPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),3.0,getElapsedSeconds(),2);
+				p->animateTo(getRandomPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),2.0,getElapsedSeconds(),0);
+				p->update(ci::app::getElapsedSeconds());
 			}
 		}
 	//}
 }
-
-
-
-ci::Vec2f FontRenderer::getRandomPointOnGrid(){
-	
-	int SPACING = 40;
-
-	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
-	float ROWS = cinder::app::getWindowHeight()/SPACING;
-	
-	//fieldLayerContainer.clear();
-
-	float pX = randInt(-COLUMNS, COLUMNS)*SPACING;
-	float pY = randInt(-ROWS, ROWS)*SPACING;
-	return ci::Vec2f(pX,pY);
-
-	/*
-	mGridPointInc += 1;
-
-	for( int j=0; j<ROWS; j++ ){
-		for( int i=0; i<COLUMNS; i++ ){
-			if (i+j*ROWS == mGridPointInc){
-				return ci::Vec2f(i*SPACING,j*SPACING);
-			}
-		}
-	}*/
-
-	
-}
-
 
 
 

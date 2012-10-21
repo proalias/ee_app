@@ -8,6 +8,7 @@
 #include "cinder\Rand.h"
 #include "cinder\Perlin.h"
 #include "cinder\CinderMath.h"
+#include "cinder\app\AppBasic.h"
 //#include "ParticleImageContainer.h"
 
 using namespace cinder;

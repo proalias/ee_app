@@ -39,10 +39,12 @@ public:
 	void setup();
 	void draw();
 	void clear();
+	ci::Vec2f getNextPointOnGrid();
 	ci::Vec2f getRandomPointOnGrid();
-
 	void animateIn();
 	void animateOut();
+
+	void populateGridPoints();
 	// TODO - this one should actually be private
 	// TODO - also for now its a massive switch, I read can do some kind of hash map to function pointers instead
 	// essentially you pass in a string and it will give you the points for that character
@@ -60,4 +62,5 @@ public:
 	float lineHeight;
 private:
 	int mGridPointInc;
+	std::vector<Vec2f> gridPoints;
 };
