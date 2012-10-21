@@ -19,36 +19,32 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	arrow1 = IconRenderer();
 	arrow1.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
-	arrow1.xPos = 300;
-	arrow1.yPos = 400;
-	arrow1.xScale = arrow1.yScale = 2;
+	arrow1.pos = Vec2f(1400,400);
+	arrow1.scale = 2;
 	
 	arrows.push_back(&arrow1);
 
 
 	arrow2 = IconRenderer();
 	arrow2.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
-	arrow2.xPos = 100;
-	arrow2.yPos = 600;
-	arrow2.xScale = arrow2.yScale = 1;
+	arrow2.pos = Vec2f(1400,600);
+	arrow2.scale = 1;
 	
 	arrows.push_back(&arrow2);
 
 	
 	arrow3 = IconRenderer();
 	arrow3.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
-	arrow3.xPos = 500;
-	arrow3.yPos = 700;
-	arrow3.xScale = arrow3.yScale = 0.5;
+	arrow3.pos = Vec2f(1200,700);
+	arrow3.scale = 0.5;
 	
 	arrows.push_back(&arrow3);
 
 	
 	arrow4 = IconRenderer();
 	arrow4.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
-	arrow4.xPos = ci::app::getWindowWidth() + 100;
-	arrow4.yPos = 600;
-	arrow4.xScale = arrow4.yScale = 1.2;
+	arrow4.pos = Vec2f(1600,600);
+	arrow4.scale = 1.2;
 	
 	arrows.push_back(&arrow4);
 
@@ -58,15 +54,28 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	animationTimer.start();
 }
 
-void PassiveScene4::update()
+void PassiveScene4::update(ci::Timeline &timeline)
 {
 	if(phase == 0){
 		phase = 1;
 		font->animateIn();
+		
+	
+		cinder::app::timeline().apply(&arrow1.pos,Vec2f(1400,400),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo());
+		cinder::app::timeline().apply(&arrow2.pos,Vec2f(1400,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo());
+		cinder::app::timeline().apply(&arrow3.pos,Vec2f(1200,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo());
+		cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo());
 	}
 
 	if(animationTimer.getSeconds()>20 && phase == 1){
 		phase = 2;
+
+		cinder::app::timeline().apply(&arrow1.pos,Vec2f(1400,400),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo());
+		cinder::app::timeline().apply(&arrow2.pos,Vec2f(1400,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo());
+		cinder::app::timeline().apply(&arrow3.pos,Vec2f(1200,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo());
+		cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo());
+
+
 		// test dispatching event
 		//_signal( this );
 		font->animateOut();

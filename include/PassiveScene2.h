@@ -1,7 +1,6 @@
 #ifndef PassiveScene2_H_
 #define PassiveScene2_H_
 
-#include "FontRenderer.h"
 #include "SceneBase.h"
 
 using namespace std;
@@ -13,7 +12,7 @@ public:
 
 	// inherited and overridden
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
-	void update();
+	void update(ci::Timeline &timeline);
 	void draw();
 
 	PassiveScene2(void);
@@ -24,7 +23,7 @@ public:
 	std::vector<IconRenderer*> placeMarks;
 	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4;
 	Timer animationTimer;
-
+	FontRenderer locationLabel;
 	void animateIn();
 	void animateOut();
 

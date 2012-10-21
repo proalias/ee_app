@@ -103,6 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
+    <ClCompile Include="..\include\TextureGlobals.cpp" />
     <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
@@ -117,7 +118,6 @@
     <ClCompile Include="..\src\PassiveScene2.cpp" />
     <ClCompile Include="..\src\PassiveScene3.cpp" />
     <ClCompile Include="..\src\PassiveScene4.cpp" />
-    <ClCompile Include="..\src\PassiveScene5.cpp" />
     <ClCompile Include="..\src\RepelPoint.cpp" />
     <ClCompile Include="..\src\SVGtoParticleParser.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
@@ -140,12 +140,12 @@
     <ClInclude Include="..\include\PassiveScene2.h" />
     <ClInclude Include="..\include\PassiveScene3.h" />
     <ClInclude Include="..\include\PassiveScene4.h" />
-    <ClInclude Include="..\include\PassiveScene5.h" />
     <ClInclude Include="..\include\RepelPoint.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\SceneBase.h" />
     <ClInclude Include="..\include\SceneFactory.h" />
     <ClInclude Include="..\include\SVGtoParticleParser.h" />
+    <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
   </ItemGroup>
   <ItemGroup>

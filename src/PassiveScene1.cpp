@@ -27,7 +27,7 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 }
 
-void PassiveScene1::update()
+void PassiveScene1::update(ci::Timeline &timeline)
 {
 
 	if(phase == 0){

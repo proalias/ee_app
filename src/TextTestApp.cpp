@@ -30,7 +30,6 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
-#include "PassiveScene5.h"
 
 #include <list>
 
@@ -288,7 +287,7 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
-	currentScene->update();
+	currentScene->update(timeline());
 
 	mbackground.update();
 
@@ -298,36 +297,7 @@ void TextTestApp::update()
 		p->update();
 	}
 
-	if (textAnimationTimer.isStopped()){
-		textAnimationTimer.start();
-	}
-
-
 	
-	//trigger the text animation
-	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
-		//myFont.animateOut();
-		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
-//		passiveScene5.animateIn(timeline());
-	}
-
-
-		//trigger the text animation
-	if (textAnimationTimer.getSeconds() > 20 && textAnimationTimer.getSeconds() < 22){
-		//myFont.animateOut();
-		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
-		//passiveScene5.animateOut(timeline());
-		textAnimationTimer = Timer();
-		textAnimationTimer.start();
-	}
-	
-	
-
-	//iconRenderers.back().xPos = iconRenderers.back().xPos + 1;
-	//iconRenderers.back().xScale = iconRenderers.back().xScale + 0.1;
-	//iconRenderers.back().yScale = iconRenderers.back().yScale + 0.1;
-
-
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
 	
@@ -342,6 +312,7 @@ void TextTestApp::update()
 	updateAnimatingParticles();
 
 }
+
 
 void TextTestApp::updateAnimatingParticles(){
 	double time = getElapsedSeconds();
@@ -390,9 +361,11 @@ void TextTestApp::draw()
 
 	// TODO - may be passing foreground particles into scenes. but still probs drawn here
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
+		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
+		
+		Rectf rect = Rectf(p->x,p->y,p->x + p->width, p->y + p->width);
+		gl::draw(particleImg,rect);
 	}
-
 
 
 }
@@ -542,8 +515,8 @@ void TextTestApp::drawSkeleton(){
 
 // TODO - is this being used anymore?
 void TextTestApp::drawParticle(float tx, float ty, float scale){
-	//Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
-	//gl::draw(pTextures.getTexture(3),rect);
+	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
+	gl::draw(particleImg,rect);
 }
 
 

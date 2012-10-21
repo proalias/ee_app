@@ -13,7 +13,7 @@ public:
 
 	// inherited and overridden
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
-	void update();
+	void update(ci::Timeline &timeline);
 	void draw();
 
 	PassiveScene1(void);

@@ -33,7 +33,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 	animationTimer.start();
 }
 
-void PassiveScene3::update()
+void PassiveScene3::update(ci::Timeline &timeline)
 {
 	//font->clear();
 	//font->addLine( "UPDATE RUNS SCENE 2", 2 );

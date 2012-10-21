@@ -14,12 +14,9 @@ public :
 	void setPoints( std::vector<TweenParticle> &points);
 	void draw();
 	void update();
-	void	tweenTo( ci::Timeline &timeline,  float xPosDest, float yPosDest, float duration );
 	
-	ci::Anim<float> xPos;
-	ci::Anim<float> yPos;
-	ci::Anim<float> xScale;
-	ci::Anim<float> yScale;
+	ci::Anim<Vec2f> pos;
+	ci::Anim<float> scale;
 
 	std::vector<TweenParticle> mPoints;
 };
