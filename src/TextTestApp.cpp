@@ -248,34 +248,6 @@ void TextTestApp::update()
 
 	updateSkeleton();
 
-	// TODO - is all this old?/// ,,, can be removed?
-	if (textAnimationTimer.isStopped()){
-		textAnimationTimer.start();
-	}
-	
-	//trigger the text animation
-	if (textAnimationTimer.getSeconds() > 10 && textAnimationTimer.getSeconds() < 11){
-		//myFont.animateOut();
-		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
-//		passiveScene5.animateIn(timeline());
-	}
-
-
-		//trigger the text animation
-	if (textAnimationTimer.getSeconds() > 20 && textAnimationTimer.getSeconds() < 22){
-		//myFont.animateOut();
-		//iconRenderers.back().tweenTo(timeline(),1000.0,1000.0,10.0);
-		//passiveScene5.animateOut(timeline());
-		textAnimationTimer = Timer();
-		textAnimationTimer.start();
-	}
-	
-	
-
-	//iconRenderers.back().xPos = iconRenderers.back().xPos + 1;
-	//iconRenderers.back().xScale = iconRenderers.back().xScale + 0.1;
-	//iconRenderers.back().yScale = iconRenderers.back().yScale + 0.1;
-
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);

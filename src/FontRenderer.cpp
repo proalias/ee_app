@@ -102,6 +102,8 @@ ci::Vec2f FontRenderer::getLineVerticalBounds( float index )
 			lowestPoint = line[i].ypos;
 		}
 	}
+
+	float lineHeight = highestPoint - lowestPoint;
 	return ci::Vec2f(lowestPoint,highestPoint);
 }
 
@@ -324,10 +326,10 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 		for( int i=0; i<pointLength; i++ )
 		{
-			float x = character[i][0]+xPosition + layoutXPos;
-			float y = character[i][1]+layoutYPos;
-			newline.push_back( TweenParticle(  x*size, y*size , size*2.5 , false) );
-			
+			float x = ((character[i][0] + xPosition) * size ) + layoutXPos;
+			float y = (character[i][1] * size ) + layoutYPos;
+			newline.push_back( TweenParticle( x , y , size*2.5 , false) );
+
 		}
 
 		char theNextChar = *"";
@@ -335,7 +337,7 @@ void FontRenderer::addLine( const std::string &copy, int size )
 			theNextChar = copy[i+1];
 		}
 
-		xPosition += FontRenderer::getCharWidth( theChar, theNextChar );//20;
+		xPosition += FontRenderer::getCharWidth( theChar, theNextChar ) ;//20;
 
 		// TODO - add leading var . for now its this
 		xPosition += 2;//1.5;
@@ -353,9 +355,9 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 	//this doesn't quite work yet...
 	ci::Vec2f verticalBounds = this->getLineVerticalBounds(lines.size()-1);
-	layoutYPos += verticalBounds.y - verticalBounds.x; //;
+	float lineHeight = verticalBounds.y - verticalBounds.x; //x is actaully another y, representing the 
 	
-
+	layoutYPos += lineHeight * 2;
 }
 
 void FontRenderer::setColor(ci::Color color){
@@ -419,31 +421,18 @@ void FontRenderer::draw()
 	*/
 
 
-	//float yPos = 100;
-	//float xPos = 300;//(getWindowWidth()/2);
-	
+
 	gl::color(currentColor);
 
 	for (int j=0;j<lines.size();j++){
-
-		//gl::pushMatrices();
-
-		//xPos = 300;//(getWindowWidth()/2) - (getLineWidth(j)/2);
-
-		//gl::translate( xPos, yPos, 0 );
-
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 			p->update(getElapsedSeconds());
 			p->draw();
 			if (p->moving){
 				animationInProgress = true;
 			}
 		}
-	
-
-		//gl::popMatrices();
 	}
 
 	gl::color(Color(1.0,1.0,1.0));
@@ -457,7 +446,6 @@ void FontRenderer::setPosition(float x, float y){
 
 void FontRenderer::clear()
 {
-	mParticles.clear();
 	layoutXPos = 0;
 	layoutYPos = 0;
 	mGridPointInc = 0;

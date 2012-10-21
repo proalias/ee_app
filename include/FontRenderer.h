@@ -21,7 +21,6 @@ using std::list;
 class FontRenderer {
  
 public:
-	std::list<TweenParticle>	mParticles;
 
 	// TODO - pass in one of the 3 noblees to use
 	// void setFont();

@@ -23,13 +23,10 @@ void PassiveScene1::showFrame2()
 	font->setPosition(200.0,100.0);
 	font->setColor(Color(1.0,1.0,1.0));
 
-	//font->addLine( "WELCOME TO", 2 );
-	//font->addLine( "THE NEW NETWORK", 2 );
-	//font->addLine( "          FOR YOUR", 2 );
-	//font->addLine( "          DIGITAL LIFE", 2 );
-
-	font->addLine( "CHUM", 3 );
-	font->addLine( "	IS FUM", 3 );
+	font->addLine( "WELCOME TO", 2 );
+	font->addLine( "THE NEW NETWORK", 2 );
+	font->addLine( "          FOR YOUR", 2 );
+	font->addLine( "          DIGITAL LIFE", 2 );
 
 	font->animateIn();
 
