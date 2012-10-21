@@ -10,6 +10,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 {
 	font = &thefont;
 	font->clear();
+	font->setPosition(200,100);
 
 	//font = FontRenderer();
 	font->addLine( "PREPARE TO GO", 3 );
@@ -17,12 +18,6 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory )
 
 	// TODO - then clear then says...
 
-	//
-	// TODO - font animate out. clear on complete maybe?
-	//font->clear();
-	//font->addLine( "WITH SUPERFAST", 2 );
-	//font->addLine( "      4GEE AND", 2 );
-	//font->addLine( "      FIBRE BROADBAND", 2 );
 
 	iconFactory =  &theIconFactory;
 	//_signal( this );
@@ -42,7 +37,22 @@ void PassiveScene3::showFrame3(){
 
 }
 
+
 void PassiveScene3::showFrame4(){
+	
+	font->clear();
+	font->setPosition(200,100);
+	font->addLine( "WITH SUPERFAST", 2 );
+	font->addLine( "      4GEE AND", 2 );
+	font->addLine( "      FIBRE BROADBAND", 2 );
+
+	mCue = timeline().add( bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 10 );
+
+
+
+}
+
+void PassiveScene3::showFrame5(){
 	_signal(this);
 }
 

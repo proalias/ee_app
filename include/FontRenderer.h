@@ -53,6 +53,8 @@ public:
 
 	float getLineWidth( float ); // gets the width of a line by index
 	float getLineHeight( float ); // gets the height of a line by index
+	
+	ci::Vec2f FontRenderer::getLineVerticalBounds( float index );
 
 	FontRenderer(void);
 	//~FontRenderer(void);

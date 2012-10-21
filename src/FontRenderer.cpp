@@ -81,6 +81,25 @@ float FontRenderer::getLineHeight( float index )
 	return longestPoint;
 }
 
+// goes through all points and gets the highest
+ci::Vec2f FontRenderer::getLineVerticalBounds( float index )
+{
+	std::vector<TweenParticle> line = lines[index];
+	float highestPoint = 0.0;
+	float lowestPoint = 1200.0;
+	float pointLength = line.size();
+	for( int i=0; i<pointLength; i++ ){
+		if(line[i].ypos>highestPoint){
+			highestPoint = line[i].ypos;
+		}
+		if(line[i].ypos<lowestPoint){
+			lowestPoint = line[i].ypos;
+		}
+	}
+	return ci::Vec2f(lowestPoint,highestPoint);
+}
+
+
 
 // sorts the leading per character
 float FontRenderer::getCharWidth( char char1, char char2 )
@@ -325,7 +344,17 @@ void FontRenderer::addLine( const std::string &copy, int size )
 	
 	lines.push_back(newline);
 	
-	layoutYPos += 15 * size; //getLineHeight(lines.size()-1);
+	float lastLineHeight;
+
+	if (lines.size() > 0){
+		lastLineHeight = this->getLineHeight(lines.size()-1) - this->getLineHeight(lines.size()-2) ;
+	}else{
+		lastLineHeight = this->getLineHeight(lines.size()-1);
+	}
+
+	ci::Vec2f verticalBounds = this->getLineVerticalBounds(lines.size()-1);
+
+	layoutYPos += verticalBounds.y - verticalBounds.x; //;
 	
 
 }
@@ -437,5 +466,7 @@ void FontRenderer::clear()
 	mParticles.clear();
 	layoutXPos = 0;
 	layoutYPos = 0;
+	mGridPointInc = 0;
+
 	lines.clear();
 }
