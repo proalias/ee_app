@@ -6,7 +6,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool jitters)
 	xpos = pX;
 	ypos = pY;
 	rad = pRad;
-	snapback = ci::randFloat(0.4);
+	snapback = ci::randFloat(1.3);
 	color = Color(1.0,1.0,1.0);
 
 	mDestRad = pRad;
@@ -17,6 +17,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool jitters)
 	jitterSpeed = randFloat(-10,10);
 	xJitter = 0;
 	yJitter = 0;
+	alpha = randFloat (0.8,1.0);
 }
 
 
@@ -51,7 +52,7 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 void TweenParticle::draw(){
 
 	
-
+	gl::color(ColorA(1.0,1.0,1.0,alpha));
 	gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 	
 	

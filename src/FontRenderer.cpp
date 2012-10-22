@@ -14,6 +14,8 @@ FontRenderer::FontRenderer(void)
 	populateGridPoints();
 
 	currentColor =  Color(1.0,1.0,1.0);
+
+	tickCued = false;
 }
 
 //creates a lookup table of grid points.
@@ -102,6 +104,8 @@ ci::Vec2f FontRenderer::getLineVerticalBounds( float index )
 			lowestPoint = line[i].ypos;
 		}
 	}
+
+	float lineHeight = highestPoint - lowestPoint;
 	return ci::Vec2f(lowestPoint,highestPoint);
 }
 
@@ -174,6 +178,65 @@ float FontRenderer::getCharWidth( char char1, char char2 )
 
 	return totalWidth;
 }
+
+
+void FontRenderer::tick(){
+	int lineIndex = randInt(lines.size()-1);
+	int tickRange = 80;
+	int particleIndexA = randInt(lines[lineIndex].size());
+	int particleIndexB = particleIndexA + randInt(tickRange);; 
+
+	if (particleIndexB > lines[lineIndex].size()){
+		particleIndexB = lines[lineIndex].size() - 5;
+	}
+
+
+	//ensure A is lower than B
+	if (particleIndexA > particleIndexB){
+		int temp = particleIndexA;
+		particleIndexA = particleIndexB;
+		particleIndexB = temp;
+	}
+
+	//loop through the particles
+	for (int i = particleIndexA; i<=particleIndexB; i++){
+		
+		if (i==particleIndexA){
+
+			float aPosX = lines[lineIndex][particleIndexA].xpos;
+			float aPosY = lines[lineIndex][particleIndexA].ypos;
+
+
+			float bPosX = lines[lineIndex][particleIndexB].xpos;
+			float bPosY = lines[lineIndex][particleIndexB].ypos;
+
+			float rad = lines[lineIndex][particleIndexA].rad;
+
+			//lines[lineIndex][particleIndexB].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+			lines[lineIndex][particleIndexA].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
+
+			bPosX = lines[lineIndex][i+1].xpos;
+			bPosY = lines[lineIndex][i+1].ypos;
+
+			lines[lineIndex][i+1].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+
+		}
+
+		if (i>particleIndexA+1){
+
+			float bPosX = lines[lineIndex][i-1].xpos;
+			float bPosY = lines[lineIndex][i-1].ypos;
+
+			float rad = lines[lineIndex][particleIndexA].rad;
+
+			lines[lineIndex][i].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
+		}
+	}
+
+
+
+}
+
 
 // TODO - get someone to look at this cos i dont really know what im doing with the pointer crap
 // on strings like this. I just did it and it semeed to work : /
@@ -309,7 +372,6 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 void FontRenderer::addLine( const std::string &copy, int size )
 {
 	std::vector<TweenParticle> newline = vector<TweenParticle>();
-
 	// current characters postition 
 	int xPosition = 0;
 	//int yPosition = 0;
@@ -324,10 +386,10 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 		for( int i=0; i<pointLength; i++ )
 		{
-			float x = character[i][0]+xPosition + layoutXPos;
-			float y = character[i][1]+layoutYPos;
-			newline.push_back( TweenParticle(  x*size, y*size , size*2.5 , false) );
-			
+			float x = ((character[i][0] + xPosition) * size ) + layoutXPos;
+			float y = (character[i][1] * size ) + layoutYPos;
+			newline.push_back( TweenParticle( x , y , size*2.5 , false) );
+
 		}
 
 		char theNextChar = *"";
@@ -335,7 +397,7 @@ void FontRenderer::addLine( const std::string &copy, int size )
 			theNextChar = copy[i+1];
 		}
 
-		xPosition += FontRenderer::getCharWidth( theChar, theNextChar );//20;
+		xPosition += FontRenderer::getCharWidth( theChar, theNextChar ) ;//20;
 
 		// TODO - add leading var . for now its this
 		xPosition += 2;//1.5;
@@ -353,9 +415,9 @@ void FontRenderer::addLine( const std::string &copy, int size )
 
 	//this doesn't quite work yet...
 	ci::Vec2f verticalBounds = this->getLineVerticalBounds(lines.size()-1);
-	layoutYPos += verticalBounds.y - verticalBounds.x; //;
+	float lineHeight = verticalBounds.y - verticalBounds.x; //x is actaully another y, representing the 
 	
-
+	layoutYPos += lineHeight * 2;
 }
 
 void FontRenderer::setColor(ci::Color color){
@@ -367,7 +429,7 @@ void FontRenderer::animateIn(){
 		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.001){
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.0,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
@@ -376,11 +438,13 @@ void FontRenderer::animateIn(){
 }
 
 void FontRenderer::animateOut(){
+	
+		tickingCue->removeSelf();
 		mGridPointInc = 0;
 		float t = 0;//offset each time value slightly
 		for (int j=0;j<lines.size();j++){
 
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p, t+=0.001 ){
 				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),1.0,getElapsedSeconds(),0);
 				p->update(ci::app::getElapsedSeconds());
 			}
@@ -391,59 +455,30 @@ void FontRenderer::animateOut(){
 
 void FontRenderer::draw()
 {
-	// DO NOT REMOVE THIS CODE
-	// IT CENTRES TEXT AND WE MAY NEED TO ROLL IT BACK LATER
 
-	/*
-	float yPos = 100;
-	float xPos = 0;//(getWindowWidth()/2);
-
-	for (int j=0;j<lines.size();j++){
-
-		gl::pushMatrices();
-
-		xPos = (getWindowWidth()/2) - (getLineWidth(j)/2);
-
-		gl::translate( xPos, yPos, 0 );
-
-		for( vector<Particle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-			p->draw();
-		}
-	
-		yPos += FontRenderer::getLineHeight(j)+10;
-
-		gl::popMatrices();
-	}
-
-	*/
-
-
-	//float yPos = 100;
-	//float xPos = 300;//(getWindowWidth()/2);
-	
 	gl::color(currentColor);
 
 	for (int j=0;j<lines.size();j++){
-
-		//gl::pushMatrices();
-
-		//xPos = 300;//(getWindowWidth()/2) - (getLineWidth(j)/2);
-
-		//gl::translate( xPos, yPos, 0 );
-
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
 			p->update(getElapsedSeconds());
 			p->draw();
 			if (p->moving){
 				animationInProgress = true;
 			}
 		}
+	}
 	
+	
+	if (animationInProgress == false && tickCued == false){
 
-		//gl::popMatrices();
+		float time = timeline().getCurrentTime() + 0.5;
+
+		tickingCue = timeline().add( bind(&FontRenderer::tick, this), time );
+		tickingCue->setDuration(1);
+		tickingCue->setLoop();
+		tickingCue->setInfinite();
+		tickCued = true;
 	}
 
 	gl::color(Color(1.0,1.0,1.0));
@@ -457,10 +492,12 @@ void FontRenderer::setPosition(float x, float y){
 
 void FontRenderer::clear()
 {
-	mParticles.clear();
 	layoutXPos = 0;
 	layoutYPos = 0;
+	if (tickCued == true){
+		tickingCue->removeSelf();
+	}
 	mGridPointInc = 0;
-
+	tickCued = false;
 	lines.clear();
 }
