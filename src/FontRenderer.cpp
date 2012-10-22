@@ -181,6 +181,7 @@ float FontRenderer::getCharWidth( char char1, char char2 )
 
 
 void FontRenderer::tick(){
+	/*
 	int lineIndex = randInt(lines.size()-1);
 	int tickRange = 80;
 	int particleIndexA = randInt(lines[lineIndex].size());
@@ -233,7 +234,7 @@ void FontRenderer::tick(){
 		}
 	}
 
-
+	*/
 
 }
 
@@ -439,7 +440,7 @@ void FontRenderer::animateIn(){
 
 void FontRenderer::animateOut(){
 	
-		tickingCue->removeSelf();
+		//tickingCue->removeSelf();
 		mGridPointInc = 0;
 		float t = 0;//offset each time value slightly
 		for (int j=0;j<lines.size();j++){
@@ -469,7 +470,7 @@ void FontRenderer::draw()
 		}
 	}
 	
-	
+	/*
 	if (animationInProgress == false && tickCued == false){
 
 		float time = timeline().getCurrentTime() + 0.5;
@@ -479,7 +480,7 @@ void FontRenderer::draw()
 		tickingCue->setLoop();
 		tickingCue->setInfinite();
 		tickCued = true;
-	}
+	}*/
 
 	gl::color(Color(1.0,1.0,1.0));
 }
