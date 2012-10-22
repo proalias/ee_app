@@ -29,6 +29,11 @@
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
 
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
+
+
 #include <list>
 
 using namespace ci;
@@ -89,6 +94,10 @@ class TextTestApp : public AppNative {
 	int mNextGesture;
 
 
+	// TODO - for blur effect. if dont work remove these later.
+	void render();
+	void drawStrokedRect( const Rectf &rect );
+	
 	Timer textAnimationTimer;
 	//ParticleImageContainer pTextures;
 
@@ -115,6 +124,18 @@ protected:
 
 	void onPassiveSceneComplete( SceneBase* sceneInstance  );
 	SceneBase* currentScene;
+
+	//
+	gl::Fbo			mFboScene;
+	gl::Fbo			mFboBlur1;
+	gl::Fbo			mFboBlur2;
+	gl::GlslProg	mShaderBlur;
+	gl::GlslProg	mShaderPhong;
+	
+	gl::Texture		mTexture;
+	Matrix44f		mTransform;
+
+
 };
 
 
@@ -165,6 +186,59 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
+
+
+// SET UP BLUR STUFF
+
+		// setup our scene Fbo
+	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
+
+	// setup our blur Fbo's, smaller ones will generate a bigger blur
+	mFboBlur1 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
+	mFboBlur2 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
+
+	// load and compile the shaders
+	try { 
+		mShaderBlur = gl::GlslProg( 
+			loadFile("../data/blur_vert.glsl"),
+			loadFile("../data/blur_frag.glsl")); 
+	} catch(...) {
+		console() << "Can't load/compile blur shader" << endl;
+		quit();
+	}
+
+	try { 
+		mShaderPhong = gl::GlslProg( 
+			loadFile("../data/phong_vert.glsl"),
+			loadFile("../data/phong_frag.glsl")); 
+	} catch(...) {
+		console() << "Can't load/compile phong shader" << endl;
+		quit();
+	}
+
+
+// setup the stuff to render our ducky
+	// (see the Picking3D sample for more information)
+	mTransform.setToIdentity();
+
+	gl::Texture::Format format;
+	format.enableMipmapping(true);
+
+	//ImageSourceRef img = loadImage( "../data/ducky.png" );
+	//if(img) mTexture = gl::Texture( img, format );
+
+	//DataSourceRef file = loadFile("../data/ducky.msh");
+	//if(file) mMesh.read( file );
+
+	mCamera.setEyePoint( Vec3f(2.5f, 5.0f, 5.0f) );
+	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
+	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
+
+
+
+
+
+
 	mbackground.setup();
 
 	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
@@ -172,7 +246,7 @@ void TextTestApp::setup()
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
-	fgParticles.setup( 100 );
+	fgParticles.setup( 1 );
 
 	/*- Leave this for now, textures can be added to the particle later.
 	//load particle textures
@@ -327,7 +401,7 @@ void TextTestApp::draw()
 
 	drawSkeleton();
 
-	fgParticles.draw();
+	//fgParticles.draw();
 
 	gl::enableAlphaBlending();
 	gl::color( Color::white() ); // TODO - move the color into the font?
@@ -335,8 +409,111 @@ void TextTestApp::draw()
 
 	currentScene->draw();
 
-	gl::color( Color( 1, 1, 1 ) );
+	//gl::color( Color( 1, 1, 1 ) );
+
+
+
+	//fgParticles.draw();
+
+
+	// store our viewport, so we can restore it later
+	Area viewport = gl::getViewport();
+
+	// render a simple scene into mFboScene
+	gl::setViewport( mFboScene.getBounds() );
+	mFboScene.bindFramebuffer();
+		gl::pushMatrices();
+		gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
+			gl::clear( ColorA( 0,0,0,0 ));
+			//render();
+		
+			fgParticles.draw();
+
+			//gl::drawSolidCircle( Vec2f(50,50), 20 );
+
+			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
+
+
+		gl::popMatrices();
+	mFboScene.unbindFramebuffer();
+
+	// bind the blur shader
+	mShaderBlur.bind();
+	mShaderBlur.uniform("tex0", 0); // use texture unit 0
+ 
+	// tell the shader to blur horizontally and the size of 1 pixel
+	mShaderBlur.uniform("sampleOffset", Vec2f(1.0f/mFboBlur1.getWidth(), 0.0f));
+
+	// copy a horizontally blurred version of our scene into the first blur Fbo
+	
+	gl::setViewport( mFboBlur1.getBounds() );
+	mFboBlur1.bindFramebuffer();
+		mFboScene.bindTexture(0);
+		gl::pushMatrices();
+			gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
+			gl::clear( Color::black() );
+			gl::drawSolidRect( mFboBlur1.getBounds() );
+		gl::popMatrices();
+		mFboScene.unbindTexture();
+	mFboBlur1.unbindFramebuffer();	
+	
+ 
+	// tell the shader to blur vertically and the size of 1 pixel
+	mShaderBlur.uniform("sampleOffset", Vec2f(0.0f, 1.0f/mFboBlur2.getHeight()));
+
+	// copy a vertically blurred version of our blurred scene into the second blur Fbo
+	gl::setViewport( mFboBlur2.getBounds() );
+	mFboBlur2.bindFramebuffer();
+		mFboBlur1.bindTexture(0);
+		gl::pushMatrices();
+			gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
+			gl::clear( Color::black() );
+			gl::drawSolidRect( mFboBlur2.getBounds() );
+		gl::popMatrices();
+		mFboBlur1.unbindTexture();
+	mFboBlur2.unbindFramebuffer();
+
+	// unbind the shader
+	mShaderBlur.unbind();
+
+	// restore the viewport
+	gl::setViewport( viewport );
+
+	// because the Fbo's have their origin in the LOWER-left corner,
+	// flip the Y-axis before drawing
+	gl::pushModelView();
+	gl::translate( Vec2f(0, viewport.getHeight() ) );
+	gl::scale( Vec3f(1, -1, 1) );
+
+	// draw the 3 Fbo's 
+	//gl::color( Color::white() );
+	//gl::draw( mFboScene.getTexture(), Rectf(0, 0, 256, 256) );
+	//gl::draw( mFboBlur1.getTexture(), Rectf(260, 0, 260 + 256, 256) );
+	//gl::draw( mFboBlur2.getTexture(), Rectf(520, 0, 520 + 256, 256) );
+
+	// draw our scene with the blurred version added as a blend
+	gl::color( Color::white() );
+	gl::draw( mFboScene.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
+
+	gl::enableAdditiveBlending();
+	gl::draw( mFboBlur2.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
+	gl::disableAlphaBlending();
+
+	// restore the modelview matrix
+	gl::popModelView();
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void TextTestApp::drawSkeleton(){
