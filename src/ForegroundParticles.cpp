@@ -32,6 +32,12 @@ void ForegroundParticles::hide() // TODO - create show function too
 {
 	//mParticles.clear();
 	// fade out the particles
+
+
+
+	//for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
+		//ci::app::timeline().apply(p->width, 
+	//}
 }
 
 

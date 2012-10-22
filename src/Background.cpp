@@ -120,7 +120,7 @@ float Background::getForceForIndex(int index){
 					 
 						case NUI_SKELETON_POSITION_SPINE:
 							//draw spine
-							force = 80;
+							force = 120;
 				 			break;
 						case NUI_SKELETON_POSITION_SHOULDER_CENTER:
 							//draw shoulder center
@@ -160,8 +160,8 @@ float Background::getForceForIndex(int index){
 							break;				 
 						case NUI_SKELETON_POSITION_HAND_RIGHT:
 							//draw right hand
-							force = 70;
-							break;				 
+							force = 30;
+							break;
 						case NUI_SKELETON_POSITION_HIP_LEFT:
 							//draw left hip
 							force = 30;
@@ -248,7 +248,7 @@ float Background::getMinDistForIndex(int index){
 							break;				 
 						case NUI_SKELETON_POSITION_HAND_RIGHT:
 							//draw right hand
-							minDist = 70;
+							minDist = 30;
 							break;				 
 						case NUI_SKELETON_POSITION_HIP_LEFT:
 							//draw left hip

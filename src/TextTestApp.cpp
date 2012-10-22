@@ -474,19 +474,6 @@ void TextTestApp::draw()
 	gl::popModelView();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void TextTestApp::drawSkeleton(){
 	// Clear window
 
@@ -496,6 +483,10 @@ void TextTestApp::drawSkeleton(){
 		// Set up 3D view
 		//gl::pushMatrices();
 		//gl::setMatrices( mCamera );
+		for(int k=0;k<repelClips.size();k++){
+			repelClips[k].x = -200;
+			repelClips[k].y = -200;
+		}
 
 		// Iterate through skeletons
 		uint32_t i = 0;
