@@ -20,20 +20,27 @@ void Background::setRepelClips( std::vector<CinderClip> &rclips ) // TODO - if w
 	// loop into each grid and make its clips repellers
 	for( vector<ParticleA>::iterator gp = gridLayer1.begin(); gp != gridLayer1.end(); ++gp ){
 		for (int i=0; i<repelClips->size(); i++){
-				gp->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
+			gp->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
+
+		///		gp->addGravClip( repelClips->at(i), 200 );
 		}
 	}
+
+	
 	for( vector<ParticleA>::iterator gp2 = gridLayer2.begin(); gp2 != gridLayer2.end(); ++gp2 ){
 		for (int i=0; i<repelClips->size(); i++){
-				gp2->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
+			gp2->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
+		//	gp2->addGravClip( repelClips->at(i), 200 );
 		}
 	}
 
 	for( vector<ParticleA>::iterator gp3 = gridLayer3.begin(); gp3 != gridLayer3.end(); ++gp3 ){
 		for (int i=0; i<repelClips->size(); i++){
 			gp3->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
+			//gp3->addGravClip( repelClips->at(i), 200 );
 		}
 	}
+	
 }
 
 void Background::setup()

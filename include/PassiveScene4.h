@@ -25,7 +25,6 @@ public:
 
 	std::vector<IconRenderer*> arrows;
 
-	
 	CueRef mCue;
 	// keyframes
 	void showFrame2();

@@ -15,6 +15,9 @@
 //#include "IconFactory.h"
 //#include "IconRenderer.h"
 
+#include "cinder/app/AppBasic.h"
+#include "cinder/Timeline.h"
+
 #include <list>
 
 using namespace ci;
@@ -32,6 +35,24 @@ void ForegroundParticles::hide() // TODO - create show function too
 {
 	//mParticles.clear();
 	// fade out the particles
+
+	//for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
+		//p->update();
+
+	//	mTimeline = Timeline::create();
+	//	mTimeline->setDefaultAutoRemove( false );
+
+		//mTimeline->apply();//->apply( p, p->width, 0, 1.0f );
+		//mTimeline->apply( &mBoxPos2, Vec2f( 300, 50 ), Vec2f( 300, 200 ), 2.0f ).delay( 1.0f ).pingPong( true );
+
+		//cinder::app::timeline().apply( &p, p->width, 0, 0, 1.0f );
+		//cinder::app::timeline().apply( p->width, Vec2f(1400,600), ci::Vec2f(-300.0,arrow2.pos.value().y ), 2.0f , cinder::EaseInExpo() );
+
+		//cinder::app::timeline().apply( p->width, 1.0, 1.0, 5.0f ,cinder::EaseInExpo());
+
+
+
+	//}
 }
 
 

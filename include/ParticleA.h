@@ -87,6 +87,7 @@ public:
 	float x;
 	float y;
 	float rotation;
+	//ci::Anim<float> width;
 	float width;
 	float height;
 	float scaleX;

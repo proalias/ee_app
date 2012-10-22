@@ -163,7 +163,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
 	case 2:
-		currentScene = new PassiveScene3();
+		currentScene = new PassiveScene2();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
@@ -173,10 +173,10 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
 	case 4:
-		break;
 		currentScene = new PassiveScene1();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles );
+		break;
 	}
 
 

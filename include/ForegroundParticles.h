@@ -8,6 +8,9 @@
 #include "ParticleA.h"
 #include "CinderClip.h"
 
+#include "cinder/app/AppBasic.h"
+#include "cinder/Timeline.h"
+
 #include <list>
 
 using namespace ci;
@@ -35,6 +38,8 @@ public:
 	// TODO - you can pass in clips that you want to effect our particles. skeleton ones
 	std::vector<CinderClip> repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
+
+	TimelineRef mTimeline;
 
 	ForegroundParticles(void);
 };
