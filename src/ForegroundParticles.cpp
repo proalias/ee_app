@@ -36,6 +36,7 @@ void ForegroundParticles::hide() // TODO - create show function too
 	//mParticles.clear();
 	// fade out the particles
 
+
 	//for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 		//p->update();
 
@@ -49,9 +50,6 @@ void ForegroundParticles::hide() // TODO - create show function too
 		//cinder::app::timeline().apply( p->width, Vec2f(1400,600), ci::Vec2f(-300.0,arrow2.pos.value().y ), 2.0f , cinder::EaseInExpo() );
 
 		//cinder::app::timeline().apply( p->width, 1.0, 1.0, 5.0f ,cinder::EaseInExpo());
-
-
-
 	//}
 }
 

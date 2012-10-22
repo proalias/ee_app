@@ -29,6 +29,8 @@
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
 
+#include "ActiveScene1.h"
+
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
@@ -163,7 +165,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
 	case 2:
-		currentScene = new PassiveScene2();
+		currentScene = new PassiveScene3();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
@@ -179,18 +181,14 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		break;
 	}
 
-
-
 }
 
 
 void TextTestApp::setup()
 {
+	// SET UP BLUR STUFF
 
-
-// SET UP BLUR STUFF
-
-		// setup our scene Fbo
+	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
 
 	// setup our blur Fbo's, smaller ones will generate a bigger blur
@@ -217,7 +215,7 @@ void TextTestApp::setup()
 	}
 
 
-// setup the stuff to render our ducky
+	// setup the stuff to render our ducky
 	// (see the Picking3D sample for more information)
 	mTransform.setToIdentity();
 
@@ -234,8 +232,6 @@ void TextTestApp::setup()
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
 	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
 
-
-
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
 		repelClips.push_back(cinderClip);
@@ -243,7 +239,6 @@ void TextTestApp::setup()
 
 	mbackground.setup();
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
-	
 
 	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
 	
@@ -271,20 +266,22 @@ void TextTestApp::setup()
 	*/
 
 
-	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene1();
+	// TO VIEW ACTIVE SCENE
+	currentScene = new ActiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles );
+
+
+	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
+	//currentScene = new PassiveScene1();
+	//currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	//currentScene->setup( myFont, iconFactory, fgParticles );
 
 	iconFactory.init();
 	
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
-
-
-
-	//fgParticles.setup();
-
+	
 	setupSkeletonTracker();
 }
 
@@ -384,7 +381,7 @@ void TextTestApp::draw()
 
 
 
-	fgParticles.draw();
+	//fgParticles.draw();
 
 
 	// store our viewport, so we can restore it later
@@ -398,7 +395,7 @@ void TextTestApp::draw()
 			gl::clear( ColorA( 0,0,0,0 ));
 			//render();
 		
-			//fgParticles.draw();
+			fgParticles.draw();
 
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
 
@@ -474,19 +471,6 @@ void TextTestApp::draw()
 	gl::popModelView();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void TextTestApp::drawSkeleton(){
 	// Clear window
 
@@ -496,6 +480,10 @@ void TextTestApp::drawSkeleton(){
 		// Set up 3D view
 		//gl::pushMatrices();
 		//gl::setMatrices( mCamera );
+		for(int k=0;k<repelClips.size();k++){
+			repelClips[k].x = -200;
+			repelClips[k].y = -200;
+		}
 
 		// Iterate through skeletons
 		uint32_t i = 0;
