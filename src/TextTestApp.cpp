@@ -384,7 +384,7 @@ void TextTestApp::draw()
 
 
 
-	//fgParticles.draw();
+	fgParticles.draw();
 
 
 	// store our viewport, so we can restore it later
@@ -398,7 +398,7 @@ void TextTestApp::draw()
 			gl::clear( ColorA( 0,0,0,0 ));
 			//render();
 		
-			fgParticles.draw();
+			//fgParticles.draw();
 
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
 
@@ -527,8 +527,8 @@ void TextTestApp::drawSkeleton(){
 				repelClips[boneIndex].x = destinationScreen.x*2;
 				repelClips[boneIndex].y = destinationScreen.y*2;
 
-				gl::color(Color(1.0,0.0,0.0));
-				gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
+				//gl::color(Color(1.0,0.0,0.0));
+				//gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
 
 				/*
 				// Draw generic bone stuff here
