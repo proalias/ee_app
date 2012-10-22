@@ -1,6 +1,7 @@
 #ifndef PassiveScene5_H_
 #define PassiveScene5_H_
 
+#include "FontRenderer.h"
 #include "SceneBase.h"
 
 using namespace std;
@@ -11,24 +12,25 @@ class PassiveScene5: public SceneBase {
 public:
 
 	// inherited and overridden
-	void setup( FontRenderer &thefont, IconFactory &theIconFactory);
+	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles );
 	void update();
 	void draw();
 
 	PassiveScene5(void);
 	//~PassiveScene4(void);
 
-	std::map<string,IconRenderer> icons;
-
-	//icon renderers
-	IconRenderer airGuitar;
-	IconRenderer arrow;
-
  private:
-	Timer animationTimer;
 
-	void animateIn(ci::Timeline &timeline);
-	void animateOut(ci::Timeline &timeline);
+	IconRenderer arrow1, arrow2, arrow3, arrow4;
+
+	std::vector<IconRenderer*> arrows;
+
+	
+	CueRef mCue;
+	// keyframes
+	void showFrame2();
+	void showFrame3();
+	void showFrame4();
 
 };
 

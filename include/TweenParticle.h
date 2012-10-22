@@ -26,7 +26,6 @@ public:
 	float xpos;
 	float ypos;
 	float rad;
-	float alpha;
 	Color color;
 	bool moving;
 

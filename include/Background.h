@@ -35,5 +35,9 @@ public:
 	std::vector<CinderClip> * repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
+	
+	float Background::getForceForIndex(int index);
+	float Background::getMinDistForIndex(int index);
+
 	Background(void);
 };
