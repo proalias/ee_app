@@ -236,7 +236,6 @@ void TextTestApp::setup()
 
 
 
-
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
 		repelClips.push_back(cinderClip);

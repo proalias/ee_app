@@ -21,7 +21,7 @@ public:
  private:
 
 	std::vector<IconRenderer*> placeMarks;
-	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4;
+	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4, placeMark5, placeMark6;
 
 	CueRef mCue;
 	// keyframes

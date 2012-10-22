@@ -5,6 +5,8 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
 
+#include "Kinect.h"
+
 #include "ParticleA.h"
 #include "CinderClip.h"
 
@@ -34,6 +36,10 @@ public:
 	// TODO - maybe force these in the constuctor?
 	std::vector<CinderClip> * repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
+
+	
+	float Background::getForceForIndex(int index);
+	float Background::getMinDistForIndex(int index);
 
 	Background(void);
 };

@@ -1,5 +1,4 @@
 #include "Background.h"
-
 #include "cinder/ImageIo.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/Utilities.h"
@@ -21,35 +20,20 @@ void Background::setRepelClips( std::vector<CinderClip> &rclips ) // TODO - if w
 	// loop into each grid and make its clips repellers
 	for( vector<ParticleA>::iterator gp = gridLayer1.begin(); gp != gridLayer1.end(); ++gp ){
 		for (int i=0; i<repelClips->size(); i++){
-			if(i==3){
-				//gp->removeRepelClip(); // TODO - might need to clear them out.
-				gp->addRepelClip( repelClips->at(i), 175, 175 );
-			}else{
-				gp->addRepelClip( repelClips->at(i), 50, 70 );
-			}
+				gp->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
 		}
 	}
 	for( vector<ParticleA>::iterator gp2 = gridLayer2.begin(); gp2 != gridLayer2.end(); ++gp2 ){
 		for (int i=0; i<repelClips->size(); i++){
-			if(i==3){
-				//gp->removeRepelClip(); // TODO - might need to clear them out.
-				gp2->addRepelClip( repelClips->at(i), 175, 175 );
-			}else{
-				gp2->addRepelClip( repelClips->at(i), 50, 70 );
-			}
+				gp2->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
 		}
 	}
+
 	for( vector<ParticleA>::iterator gp3 = gridLayer3.begin(); gp3 != gridLayer3.end(); ++gp3 ){
 		for (int i=0; i<repelClips->size(); i++){
-			if(i==3){
-				//gp->removeRepelClip(); // TODO - might need to clear them out.
-				gp3->addRepelClip( repelClips->at(i), 175, 175 );
-			}else{
-				gp3->addRepelClip( repelClips->at(i), 50, 70 );
-			}
+			gp3->addRepelClip( repelClips->at(i), getForceForIndex(i), getMinDistForIndex(i) );
 		}
 	}
-	
 }
 
 void Background::setup()
@@ -124,6 +108,183 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 
 }
 
+float Background::getForceForIndex(int index){
+
+
+				float force = 50;//default to 50
+				switch(index){
+						case NUI_SKELETON_POSITION_HIP_CENTER:
+							//draw hip center
+							force = 100;
+				 			break;
+					 
+						case NUI_SKELETON_POSITION_SPINE:
+							//draw spine
+							force = 80;
+				 			break;
+						case NUI_SKELETON_POSITION_SHOULDER_CENTER:
+							//draw shoulder center
+							force = 30;
+				 			break;
+						case NUI_SKELETON_POSITION_HEAD:
+							//draw head
+							force = 170;
+				 			break;
+						case NUI_SKELETON_POSITION_SHOULDER_LEFT:
+							//draw left shoulder
+							force = 30;
+							break;		 
+						case NUI_SKELETON_POSITION_ELBOW_LEFT:
+							//draw left elbow
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_WRIST_LEFT:
+							//draw left wrist
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_HAND_LEFT:
+							//draw left hand
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_SHOULDER_RIGHT:
+							//draw right shoulder
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_ELBOW_RIGHT:
+							//draw right elbow
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_WRIST_RIGHT:
+							//draw right wrist
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_HAND_RIGHT:
+							//draw right hand
+							force = 70;
+							break;				 
+						case NUI_SKELETON_POSITION_HIP_LEFT:
+							//draw left hip
+							force = 30;
+							break;
+						case NUI_SKELETON_POSITION_KNEE_LEFT:
+							//draw left knee
+							force = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_ANKLE_LEFT:
+							//draw left ankle
+							force = 30;
+							break;
+						case NUI_SKELETON_POSITION_FOOT_LEFT:
+							//draw left foot
+							force = 50;
+							break;
+						case NUI_SKELETON_POSITION_HIP_RIGHT:
+							//draw right hip
+							force = 30;
+							break;
+						case NUI_SKELETON_POSITION_KNEE_RIGHT:
+							//draw right knee
+							force = 30;
+							break;
+						case NUI_SKELETON_POSITION_ANKLE_RIGHT:
+							//draw right ankle
+							force = 30;
+							break;
+						case NUI_SKELETON_POSITION_FOOT_RIGHT:
+							//draw right foot
+							force = 30;
+							break;
+				}
+			return force;
+}
+
+float Background::getMinDistForIndex(int index){
+				float minDist = 50;//default to 50
+				switch(index){
+						case NUI_SKELETON_POSITION_HIP_CENTER:
+							//draw hip center
+							minDist = 100;
+				 			break;
+					 
+						case NUI_SKELETON_POSITION_SPINE:
+							//draw spine
+							minDist = 80;
+				 			break;
+						case NUI_SKELETON_POSITION_SHOULDER_CENTER:
+							//draw shoulder center
+							minDist = 30;
+				 			break;
+						case NUI_SKELETON_POSITION_HEAD:
+							//draw head
+							minDist = 170;
+				 			break;
+						case NUI_SKELETON_POSITION_SHOULDER_LEFT:
+							//draw left shoulder
+							minDist = 30;
+							break;		 
+						case NUI_SKELETON_POSITION_ELBOW_LEFT:
+							//draw left elbow
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_WRIST_LEFT:
+							//draw left wrist
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_HAND_LEFT:
+							//draw left hand
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_SHOULDER_RIGHT:
+							//draw right shoulder
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_ELBOW_RIGHT:
+							//draw right elbow
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_WRIST_RIGHT:
+							//draw right wrist
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_HAND_RIGHT:
+							//draw right hand
+							minDist = 70;
+							break;				 
+						case NUI_SKELETON_POSITION_HIP_LEFT:
+							//draw left hip
+							minDist = 30;
+							break;
+						case NUI_SKELETON_POSITION_KNEE_LEFT:
+							//draw left knee
+							minDist = 30;
+							break;				 
+						case NUI_SKELETON_POSITION_ANKLE_LEFT:
+							//draw left ankle
+							minDist = 30;
+							break;
+						case NUI_SKELETON_POSITION_FOOT_LEFT:
+							//draw left foot
+							minDist = 50;
+							break;
+						case NUI_SKELETON_POSITION_HIP_RIGHT:
+							//draw right hip
+							minDist = 30;
+							break;
+						case NUI_SKELETON_POSITION_KNEE_RIGHT:
+							//draw right knee
+							minDist = 30;
+							break;
+						case NUI_SKELETON_POSITION_ANKLE_RIGHT:
+							//draw right ankle
+							minDist = 30;
+							break;
+						case NUI_SKELETON_POSITION_FOOT_RIGHT:
+							//draw right foot
+							minDist = 30;
+							break;
+				}
+			return minDist;
+}
 
 void Background::draw()
 {
