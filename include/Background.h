@@ -32,7 +32,7 @@ public:
 	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int );
 
 	// TODO - maybe force these in the constuctor?
-	std::vector<CinderClip> repelClips;
+	std::vector<CinderClip> * repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
 	Background(void);

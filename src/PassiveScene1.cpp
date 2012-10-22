@@ -15,7 +15,7 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	fgParticles = &thefgParticles;
 
 
-	fgParticles->mParticles.clear();
+	fgParticles->destroy();//mParticles.clear();
 
 	for( int i=0; i<200; i++ )
 	{

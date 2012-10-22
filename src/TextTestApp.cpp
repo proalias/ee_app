@@ -237,9 +237,14 @@ void TextTestApp::setup()
 
 
 
-
+	for (int i=0; i<20; i++){
+		CinderClip cinderClip = CinderClip();
+		repelClips.push_back(cinderClip);
+	}
 
 	mbackground.setup();
+	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
+	
 
 	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
 	
@@ -277,12 +282,7 @@ void TextTestApp::setup()
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
 
-	for (int i=0; i<20; i++){
-		CinderClip cinderClip = CinderClip();
-		repelClips.push_back(cinderClip);
-	}
 
-	mbackground.setRepelClips( repelClips );
 
 	//fgParticles.setup();
 

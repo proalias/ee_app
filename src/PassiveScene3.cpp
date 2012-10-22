@@ -16,11 +16,39 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	font->addLine( "PREPARE TO GO", 3 );
 	font->addLine( "              SUPERFAST", 3 );
 
-	// TODO - then clear then says...
-
-
 	iconFactory =  &theIconFactory;
-	//_signal( this );
+
+
+
+
+	fgParticles = &thefgParticles;
+
+	fgParticles->mParticles.clear();
+
+	//fgParticles->mParticles.clear();
+
+	for( int i=0; i<200; i++ )
+	{
+		ParticleA particle = ParticleA();
+		particle.init();
+		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
+		particle.width = randFloat(3,10);
+		particle.x=randFloat(getWindowWidth());
+		particle.y=randFloat(getWindowHeight());
+		//particle.setBounce(-1);
+		particle.setMaxSpeed(40);
+		particle.setEdgeBehavior("wrap");
+		particle.setWander(6);
+		particle.setGrav(0);
+		
+		// (int i=0; i<20; i++){
+		//	particle.addRepelClip( repelClips[i],500,200 );
+		//}
+		
+		fgParticles->mParticles.push_back( particle );
+	}
+
+
 
 	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() );
 }

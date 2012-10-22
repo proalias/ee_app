@@ -28,6 +28,18 @@ ForegroundParticles::ForegroundParticles(void)
 
 }
 
+void ForegroundParticles::hide() // TODO - create show function too
+{
+	//mParticles.clear();
+	// fade out the particles
+}
+
+
+void ForegroundParticles::destroy()
+{
+	mParticles.clear();
+}
+
 void ForegroundParticles::setup( int howMany )
 {
 	//particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - can we use image? - or sequence

@@ -16,7 +16,40 @@ Background::Background(){}
 
 void Background::setRepelClips( std::vector<CinderClip> &rclips ) // TODO - if were storing repel clips make this param const
 {
-	repelClips = rclips;
+	repelClips = &rclips;
+
+	// loop into each grid and make its clips repellers
+	for( vector<ParticleA>::iterator gp = gridLayer1.begin(); gp != gridLayer1.end(); ++gp ){
+		for (int i=0; i<repelClips->size(); i++){
+			if(i==3){
+				//gp->removeRepelClip(); // TODO - might need to clear them out.
+				gp->addRepelClip( repelClips->at(i), 175, 175 );
+			}else{
+				gp->addRepelClip( repelClips->at(i), 50, 70 );
+			}
+		}
+	}
+	for( vector<ParticleA>::iterator gp2 = gridLayer2.begin(); gp2 != gridLayer2.end(); ++gp2 ){
+		for (int i=0; i<repelClips->size(); i++){
+			if(i==3){
+				//gp->removeRepelClip(); // TODO - might need to clear them out.
+				gp2->addRepelClip( repelClips->at(i), 175, 175 );
+			}else{
+				gp2->addRepelClip( repelClips->at(i), 50, 70 );
+			}
+		}
+	}
+	for( vector<ParticleA>::iterator gp3 = gridLayer3.begin(); gp3 != gridLayer3.end(); ++gp3 ){
+		for (int i=0; i<repelClips->size(); i++){
+			if(i==3){
+				//gp->removeRepelClip(); // TODO - might need to clear them out.
+				gp3->addRepelClip( repelClips->at(i), 175, 175 );
+			}else{
+				gp3->addRepelClip( repelClips->at(i), 50, 70 );
+			}
+		}
+	}
+	
 }
 
 void Background::setup()
@@ -75,6 +108,7 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 			particle.setGrav(0);
 			particle.addSpringPoint( particle.x, particle.y, 0.01 ); // FORCES THE PARTICLE INTO POSITION
 
+			/*
 			for (int i=0; i<repelClips.size(); i++){
 
 				if(i==3){
@@ -83,7 +117,7 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 					particle.addRepelClip( repelClips[i], 50, 70 );
 				}
 			}
-
+			*/
 			fieldLayerContainer.push_back( particle );
 		}
 	}

@@ -13,8 +13,10 @@ PassiveScene2::PassiveScene2()
 void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
 {
 	font = &thefont;
-	
 	iconFactory =  &theIconFactory;
+	fgParticles = &thefgParticles;
+
+	fgParticles->destroy();//hide();
 
 
 	// show pin icons
