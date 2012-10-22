@@ -27,7 +27,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	//fgParticles->mParticles.clear();
 
-	for( int i=0; i<200; i++ )
+	for( int i=0; i<100; i++ )
 	{
 		ParticleA particle = ParticleA();
 		particle.init();
