@@ -14,6 +14,8 @@ FontRenderer::FontRenderer(void)
 	populateGridPoints();
 
 	currentColor =  Color(1.0,1.0,1.0);
+
+	tickCued = false;
 }
 
 //creates a lookup table of grid points.
@@ -176,6 +178,66 @@ float FontRenderer::getCharWidth( char char1, char char2 )
 
 	return totalWidth;
 }
+
+
+void FontRenderer::tick(){
+	int lineIndex = randInt(lines.size()-1);
+	int particleIndexA = randInt(lines[lineIndex].size());
+	int particleIndexB = particleIndexA + randInt(90);; 
+
+	while(particleIndexB >= lines[lineIndex].size()-1){
+
+		particleIndexB = particleIndexA + randInt(90);
+
+	}
+
+
+	//ensure A is lower than B
+	if (particleIndexA > particleIndexB){
+		int temp = particleIndexA;
+		particleIndexA = particleIndexB;
+		particleIndexB = temp;
+	}
+
+	//loop through the particles
+	for (int i = particleIndexA; i<=particleIndexB; i++){
+		
+		if (i==particleIndexA){
+
+			float aPosX = lines[lineIndex][particleIndexA].xpos;
+			float aPosY = lines[lineIndex][particleIndexA].ypos;
+
+
+			float bPosX = lines[lineIndex][particleIndexB].xpos;
+			float bPosY = lines[lineIndex][particleIndexB].ypos;
+
+			float rad = lines[lineIndex][particleIndexA].rad;
+
+			//lines[lineIndex][particleIndexB].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+			lines[lineIndex][particleIndexA].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
+
+			bPosX = lines[lineIndex][i+1].xpos;
+			bPosY = lines[lineIndex][i+1].ypos;
+
+			lines[lineIndex][i+1].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+
+		}
+
+		if (i>particleIndexA+1){
+
+			float bPosX = lines[lineIndex][i-1].xpos;
+			float bPosY = lines[lineIndex][i-1].ypos;
+
+			float rad = lines[lineIndex][particleIndexA].rad;
+
+			lines[lineIndex][i].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
+		}
+	}
+
+
+
+}
+
 
 // TODO - get someone to look at this cos i dont really know what im doing with the pointer crap
 // on strings like this. I just did it and it semeed to work : /
@@ -393,34 +455,6 @@ void FontRenderer::animateOut(){
 
 void FontRenderer::draw()
 {
-	// DO NOT REMOVE THIS CODE
-	// IT CENTRES TEXT AND WE MAY NEED TO ROLL IT BACK LATER
-
-	/*
-	float yPos = 100;
-	float xPos = 0;//(getWindowWidth()/2);
-
-	for (int j=0;j<lines.size();j++){
-
-		gl::pushMatrices();
-
-		xPos = (getWindowWidth()/2) - (getLineWidth(j)/2);
-
-		gl::translate( xPos, yPos, 0 );
-
-		for( vector<Particle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
-			//p->mLoc+=( Rand::randFloat( 0.2f ) - Rand::randFloat( 0.2f ) );
-			p->draw();
-		}
-	
-		yPos += FontRenderer::getLineHeight(j)+10;
-
-		gl::popMatrices();
-	}
-
-	*/
-
-
 
 	gl::color(currentColor);
 
@@ -433,6 +467,16 @@ void FontRenderer::draw()
 				animationInProgress = true;
 			}
 		}
+	}
+	
+	
+
+	if (animationInProgress == false && tickCued == false){
+		tickingCue = timeline().add( bind(&FontRenderer::tick, this), timeline().getCurrentTime()+0.5 );
+		tickingCue->setDuration(0.5);
+		tickingCue->setLoop();
+		tickingCue->setInfinite();
+		tickCued = true;
 	}
 
 	gl::color(Color(1.0,1.0,1.0));
@@ -448,7 +492,10 @@ void FontRenderer::clear()
 {
 	layoutXPos = 0;
 	layoutYPos = 0;
+	if (tickCued == true){
+		tickingCue->removeSelf();
+	}
 	mGridPointInc = 0;
-
+	tickCued = false;
 	lines.clear();
 }

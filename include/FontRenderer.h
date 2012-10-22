@@ -43,6 +43,8 @@ public:
 	void animateIn();
 	void animateOut();
 	void setPosition(float x, float y);
+	void tick();
+
 	// TODO - this one should actually be private
 	// TODO - also for now its a massive switch, I read can do some kind of hash map to function pointers instead
 	// essentially you pass in a string and it will give you the points for that character
@@ -68,6 +70,8 @@ private:
 	int mGridPointInc;
 	std::vector<Vec2f> gridPoints;
 
+	CueRef tickingCue;
+	bool tickCued;
 	ci::Color currentColor;
 
 	float layoutXPos;
