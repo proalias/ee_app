@@ -5,6 +5,8 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
 
+#include "Kinect.h"
+
 #include "ParticleA.h"
 #include "CinderClip.h"
 
