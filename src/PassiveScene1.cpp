@@ -26,9 +26,9 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 		particle.x=randFloat(getWindowWidth());
 		particle.y=randFloat(getWindowHeight());
 		//particle.setBounce(-1);
-		particle.setMaxSpeed(40);
+		particle.setMaxSpeed(20);
 		particle.setEdgeBehavior("wrap");
-		particle.setWander(6);
+		particle.setWander(3);
 		particle.setGrav(0);
 		
 		// (int i=0; i<20; i++){
@@ -46,7 +46,7 @@ void PassiveScene1::showFrame2()
 {
 	// font->addLine( "timer works", 2 );
 	font->clear();
-	font->setPosition(200.0,100.0);
+	font->setPosition(300.0,100.0);
 	font->setColor(Color(1.0,1.0,1.0));
 
 	font->addLine( "WELCOME TO", 2 );
@@ -56,13 +56,13 @@ void PassiveScene1::showFrame2()
 
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 12 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 10 );
 }
 
 void PassiveScene1::showFrame3()
 {
 	font->animateOut();
-	mCue = timeline().add( bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 3 );
 }
 
 void PassiveScene1::showFrame4()

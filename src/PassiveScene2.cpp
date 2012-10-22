@@ -57,7 +57,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 void PassiveScene2::showFrame2()
 {
 	font->clear();
-	font->setPosition(200.0,100.0);
+	font->setPosition(300.0,100.0);
 	font->setColor(Color(1.0,1.0,1.0));
 	font->addLine( "4GEE IS HERE", 3 );
 	font->addLine( "   IS HERE", 4 );
@@ -81,7 +81,7 @@ void PassiveScene2::showFrame3()
 void PassiveScene2::showFrame4()
 {
 	font->clear();
-	font->setPosition(200.0,100.0);
+	font->setPosition(300.0,100.0);
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
 	// TODO - get the actual city name from the config
 	font->addLine( "LONDON", 3 );
@@ -98,7 +98,7 @@ void PassiveScene2::showFrame5()
 void PassiveScene2::showFrame6()
 {
 	font->clear();
-	font->setPosition(200.0,100.0);
+	font->setPosition(300.0,100.0);
 	font->setColor(Color(1.0,1.0,1.0));
 	font->addLine( "SUPERFAST", 3 );
 	font->addLine( "      MOBILE #4GEE", 3 );

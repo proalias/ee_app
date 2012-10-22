@@ -10,24 +10,17 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 {
 	font = &thefont;
 	font->clear();
-	font->setPosition(200,100);
+	font->setPosition(300,100);
 	font->setColor(Color(1.0,1.0,1.0));
-	//font = FontRenderer();
 	font->addLine( "PREPARE TO GO", 3 );
 	font->addLine( "              SUPERFAST", 3 );
+	font->animateIn();
 
 	iconFactory =  &theIconFactory;
 
-
-
-
 	fgParticles = &thefgParticles;
-
 	fgParticles->mParticles.clear();
-
-	//fgParticles->mParticles.clear();
-
-	for( int i=0; i<100; i++ )
+	for( int i=0; i<50; i++ )
 	{
 		ParticleA particle = ParticleA();
 		particle.init();
@@ -36,9 +29,9 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 		particle.x=randFloat(getWindowWidth());
 		particle.y=randFloat(getWindowHeight());
 		//particle.setBounce(-1);
-		particle.setMaxSpeed(40);
+		particle.setMaxSpeed(300);
 		particle.setEdgeBehavior("wrap");
-		particle.setWander(6);
+		particle.setWander(30);
 		particle.setGrav(0);
 		
 		// (int i=0; i<20; i++){
@@ -49,41 +42,34 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	}
 
 
-
-	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 10 );
 }
 
 void PassiveScene3::showFrame2(){
-	font->animateIn();
+	font->animateOut();
 	mCue = timeline().add( bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 10 );
-
 }
 
 void PassiveScene3::showFrame3(){
-	font->animateOut();
-	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
-
-}
-
-
-void PassiveScene3::showFrame4(){
 	
 	font->clear();
-	font->setPosition(200,100);
+	font->setPosition(300,100);
 	font->setColor(Color(1.0,1.0,1.0));
 
 	font->addLine( "WITH SUPERFAST", 2 );
 	font->addLine( "      4GEE AND", 2 );
 	font->addLine( "      FIBRE BROADBAND", 2 );
+	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
+}
 
-
-
+void PassiveScene3::showFrame4(){
+	_signal(this);
 }
 
 void PassiveScene3::showFrame5(){
-	_signal(this);
+
 }
 
 void PassiveScene3::update()
