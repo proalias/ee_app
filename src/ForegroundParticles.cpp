@@ -92,6 +92,10 @@ void ForegroundParticles::setup( int howMany )
 		//	particle.addRepelClip( repelClips[i],500,200 );
 		//}
 		
+
+		// TODO REPELLER FOR FONT. TO BE ABLE TO SHOW /HIDE
+		// particle.addRepelClip( repelClips[i],500,200 );
+
 		mParticles.push_back( particle );
 	}
 

@@ -59,7 +59,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 15 );
+	mCue = timeline().add( bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
 
 }
 
