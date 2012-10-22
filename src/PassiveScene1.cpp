@@ -30,7 +30,7 @@ void PassiveScene1::showFrame2()
 
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 112 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 12 );
 }
 
 void PassiveScene1::showFrame3()

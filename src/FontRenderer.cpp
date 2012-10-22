@@ -182,13 +182,12 @@ float FontRenderer::getCharWidth( char char1, char char2 )
 
 void FontRenderer::tick(){
 	int lineIndex = randInt(lines.size()-1);
+	int tickRange = 80;
 	int particleIndexA = randInt(lines[lineIndex].size());
-	int particleIndexB = particleIndexA + randInt(90);; 
+	int particleIndexB = particleIndexA + randInt(tickRange);; 
 
-	while(particleIndexB >= lines[lineIndex].size()-1){
-
-		particleIndexB = particleIndexA + randInt(90);
-
+	if (particleIndexB > lines[lineIndex].size()){
+		particleIndexB = lines[lineIndex].size() - 5;
 	}
 
 
@@ -373,7 +372,6 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 void FontRenderer::addLine( const std::string &copy, int size )
 {
 	std::vector<TweenParticle> newline = vector<TweenParticle>();
-
 	// current characters postition 
 	int xPosition = 0;
 	//int yPosition = 0;
@@ -431,7 +429,7 @@ void FontRenderer::animateIn(){
 		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.001){
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.0,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
@@ -440,11 +438,13 @@ void FontRenderer::animateIn(){
 }
 
 void FontRenderer::animateOut(){
+	
+		tickingCue->removeSelf();
 		mGridPointInc = 0;
 		float t = 0;//offset each time value slightly
 		for (int j=0;j<lines.size();j++){
 
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p, t+=0.001 ){
 				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),1.0,getElapsedSeconds(),0);
 				p->update(ci::app::getElapsedSeconds());
 			}
@@ -470,10 +470,12 @@ void FontRenderer::draw()
 	}
 	
 	
-
 	if (animationInProgress == false && tickCued == false){
-		tickingCue = timeline().add( bind(&FontRenderer::tick, this), timeline().getCurrentTime()+0.5 );
-		tickingCue->setDuration(0.5);
+
+		float time = timeline().getCurrentTime() + 0.5;
+
+		tickingCue = timeline().add( bind(&FontRenderer::tick, this), time );
+		tickingCue->setDuration(1);
 		tickingCue->setLoop();
 		tickingCue->setInfinite();
 		tickCued = true;
