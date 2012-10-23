@@ -17,10 +17,10 @@ TextureGlobals* TextureGlobals::getInstance()
     }
 }
 
-gl::Texture* TextureGlobals::getParticleTexture(){
-	return &particleTexture;
+gl::Texture* TextureGlobals::getParticleTexture(int type){
+	return &particleTextures[type];
 }
 
-void TextureGlobals::setParticleTexture(gl::Texture texture){
-	particleTexture = texture;
+void TextureGlobals::setParticleTexture(gl::Texture texture,int type){
+	particleTextures[type] = texture;
 }

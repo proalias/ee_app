@@ -158,9 +158,6 @@
     <ClInclude Include="..\include\PassiveScene5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\TextTestApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\TextureGlobals.h">
       <Filter>Header Files</Filter>
     </ClInclude>

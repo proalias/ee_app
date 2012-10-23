@@ -150,7 +150,6 @@
     <ClInclude Include="..\include\SceneBase.h" />
     <ClInclude Include="..\include\SceneFactory.h" />
     <ClInclude Include="..\include\SVGtoParticleParser.h" />
-    <ClInclude Include="..\include\TextTestApp.h" />
     <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
   </ItemGroup>

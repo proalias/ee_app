@@ -12,18 +12,25 @@ class TextureGlobals
 private:
     static bool instanceFlag;
     static TextureGlobals *single;
-	gl::Texture particleTexture;
+	std::vector<gl::Texture> particleTextures;
+
     TextureGlobals()
     {
         //private constructor
-		particleTexture =  gl::Texture();
+		gl::Texture particleTexture =  gl::Texture();
+		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
+
     }
 public:
     static TextureGlobals* getInstance();
-	void TextureGlobals::setParticleTexture(gl::Texture texture);
+	void TextureGlobals::setParticleTexture(gl::Texture texture,int type);
 
-	gl::Texture* getParticleTexture();
-
+	gl::Texture* getParticleTexture(int type);
 
     ~TextureGlobals()
     {

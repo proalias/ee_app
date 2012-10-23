@@ -63,13 +63,11 @@ class TextTestApp : public AppNative {
 
 	void draw();
 	void drawSkeleton();
-	void drawParticle(float tx, float ty, float scale);
 	void toggleAnimation();
 
 	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
 
-	static gl::Texture particleTexture;
 
 	FontRenderer myFont;
  
@@ -248,35 +246,29 @@ void TextTestApp::setup()
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
 	
 
-	gl::Texture particleTexture = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
-	TextureGlobals::getInstance()->setParticleTexture(particleTexture);
+	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
+
+	gl::Texture particleTexture1 = loadImage(loadAsset( "ParticlePatial01.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture1,1);
+
+	gl::Texture particleTexture2 = loadImage(loadAsset( "ParticlePatial02.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture2,2);
+
+	gl::Texture particleTexture3 = loadImage(loadAsset( "ParticlePatial03.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture3,3);
+
+	gl::Texture particleTexture4 = loadImage(loadAsset( "ParticlePatial04.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture4,4);
+
+	gl::Texture particleTexture5 = loadImage(loadAsset( "ParticlePatial05.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture5,5);
 
 
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 1 );
-
-	particleTexture = loadImage(loadAsset( "ParticleFullON.png") );
-	
-
-	/*- Leave this for now, textures can be added to the particle later.
-	//load particle textures
-	pTextures.init();
-	gl::Texture texture1 = loadImage(loadAsset( "ParticleFullON.png") );
-	pTextures.addTexture(texture1);
-	gl::Texture texture2 = loadImage(loadAsset( "ParticlePatial01.png") );
-	pTextures.addTexture(texture2);
-	gl::Texture texture3 = loadImage(loadAsset( "ParticlePatial02.png") );
-	pTextures.addTexture(texture3);
-	gl::Texture texture4 = loadImage(loadAsset( "ParticlePatial03.png") );
-	pTextures.addTexture(texture4);
-	gl::Texture texture5 = loadImage(loadAsset( "ParticlePatial04.png") );
-	pTextures.addTexture(texture5);
-	gl::Texture texture6 = loadImage(loadAsset( "ParticlePatial05.png") );
-	pTextures.addTexture(texture6);
-	
-	*/
 
 
 
@@ -334,32 +326,9 @@ void TextTestApp::update()
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
 	
-	for (int i=0;i<animatingParticles.size();i++){  
-		if (animatingParticles[i].moving){
-			animatingParticles[i].update(time);
-			animationInProgress = true;
-		}
-		drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
-	}
-
-	updateAnimatingParticles();
-
-}
-
-
-void TextTestApp::updateAnimatingParticles(){
-	double time = getElapsedSeconds();
 	
-	for (int i=0;i<animatingParticles.size();i++){  
-		if (animatingParticles[i].moving){
-			animatingParticles[i].update(time);
-			animationInProgress = true;
-		}
-		//gl::color(animatingParticles[i].color);
-		drawParticle(animatingParticles[i].xpos,animatingParticles[i].ypos,animatingParticles[i].rad);
-		//drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
-	}
 }
+
 
 
 void TextTestApp::updateSkeleton()
@@ -383,7 +352,7 @@ void TextTestApp::draw()
 
 	//fgParticles.draw();
 
-	gl::enableAlphaBlending();
+	gl::enableAdditiveBlending();
 	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
@@ -627,13 +596,6 @@ void TextTestApp::drawSkeleton(){
 }
 
 
-
-
-// TODO - is this being used anymore?
-void TextTestApp::drawParticle(float tx, float ty, float scale){
-	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
-	gl::draw(particleImg,rect);
-}
 
 
 

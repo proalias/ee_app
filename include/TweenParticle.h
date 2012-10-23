@@ -15,7 +15,8 @@ using namespace cinder;
 
 class TweenParticle {
 public:
-	TweenParticle( float pX,float pY,float pRad, bool jitters);
+	
+	TweenParticle( float pX,float pY,float pRad, bool isRandomised);
 	void update(double t);
 	void draw();
 
@@ -28,6 +29,7 @@ public:
 	float rad;
 	Color color;
 	bool moving;
+	int textureType;
 
 	bool jitters;
 	gl::Texture* particleTexture;
