@@ -109,6 +109,9 @@
     <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
+    <ClCompile Include="..\src\FireFlyEffect.cpp" />
+    <ClCompile Include="..\src\FireFlyParticle.cpp" />
+    <ClCompile Include="..\src\FireFlyParticleController.cpp" />
     <ClCompile Include="..\src\ForegroundParticles.cpp" />
     <ClCompile Include="..\src\IconFactory.cpp" />
     <ClCompile Include="..\src\IconRenderer.cpp" />
@@ -126,6 +129,7 @@
     <ClCompile Include="..\src\SVGtoParticleParser.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
     <ClCompile Include="..\src\TweenParticle.cpp" />
+    <ClCompile Include="..\src\Vect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
@@ -133,6 +137,10 @@
     <ClInclude Include="..\include\Background.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
+    <ClInclude Include="..\include\FireFlyEffect.h" />
+    <ClInclude Include="..\include\FireFlyParticle.h" />
+    <ClInclude Include="..\include\FireFlyParticleController.h" />
+    <ClInclude Include="..\include\FireFlyWaveScheme.h" />
     <ClInclude Include="..\include\ForegroundParticles.h" />
     <ClInclude Include="..\include\Icon.h" />
     <ClInclude Include="..\include\IconFactory.h" />
@@ -154,6 +162,7 @@
     <ClInclude Include="..\include\SVGtoParticleParser.h" />
     <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
+    <ClInclude Include="..\include\Vect.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

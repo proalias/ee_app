@@ -15,6 +15,6 @@ class Particle {
 	ci::Vec2f	mLoc;
 	ci::Vec2f	mDir;
 	float		mVel;
-	
+
 	float		mRadius;
 };

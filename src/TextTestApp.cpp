@@ -9,6 +9,9 @@
 #include "cinder/Vector.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
 
 #include "boost/lambda/bind.hpp"
 
@@ -29,12 +32,7 @@
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
 
-#include "ActiveScene1.h"
-
-#include "cinder/gl/Fbo.h"
-#include "cinder/gl/GlslProg.h"
-#include "cinder/gl/Texture.h"
-
+//#include "ActiveScene1.h"
 
 #include <list>
 
@@ -267,15 +265,15 @@ void TextTestApp::setup()
 
 
 	// TO VIEW ACTIVE SCENE
-	currentScene = new ActiveScene1();
-	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-	currentScene->setup( myFont, iconFactory, fgParticles );
+	//currentScene = new ActiveScene1();
+	//currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	//currentScene->setup( myFont, iconFactory, fgParticles );
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	//currentScene = new PassiveScene1();
-	//currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-	//currentScene->setup( myFont, iconFactory, fgParticles );
+	currentScene = new PassiveScene1();
+	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->setup( myFont, iconFactory, fgParticles );
 
 	iconFactory.init();
 	

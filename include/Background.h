@@ -10,6 +10,9 @@
 #include "ParticleA.h"
 #include "CinderClip.h"
 
+//#include "FireFlyEffect.h"
+
+
 #include <list>
 
 using namespace ci;
@@ -37,9 +40,10 @@ public:
 	std::vector<CinderClip> * repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
-	
 	float Background::getForceForIndex(int index);
 	float Background::getMinDistForIndex(int index);
 
 	Background(void);
+
+//	FireFlyEffect ff;
 };
