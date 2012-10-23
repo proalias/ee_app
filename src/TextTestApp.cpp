@@ -367,7 +367,8 @@ void TextTestApp::draw()
 
 
 	//fgParticles.draw();
-
+	
+	currentScene->draw();
 	
 	// store our viewport, so we can restore it later
 	Area viewport = gl::getViewport();
@@ -381,7 +382,6 @@ void TextTestApp::draw()
 			//render();
 			fgParticles.draw();
 			
-			currentScene->draw();
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
 
 			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
