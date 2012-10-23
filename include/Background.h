@@ -35,7 +35,7 @@ public:
 	std::vector<ParticleA>	gridLayer2;
 	std::vector<ParticleA>	gridLayer3;
 
-	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int );
+	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int, float );
 
 	// TODO - maybe force these in the constuctor?
 	std::vector<CinderClip> * repelClips;

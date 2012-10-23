@@ -50,9 +50,9 @@ void Background::setup()
 	try { bgImage = loadImage( loadAsset("scoopfullhd.png")  ); }
 	catch( const std::exception &e ) { console() << "Could not load texture: " << e.what() << std::endl; }
 
-	Background::drawGrid( gridLayer1, 0 );
-	Background::drawGrid( gridLayer2, -2 );
-	Background::drawGrid( gridLayer3, 2 );
+	Background::drawGrid( gridLayer1, 0, 1 );
+	Background::drawGrid( gridLayer2, -2, 1.3 );
+	Background::drawGrid( gridLayer3, 2, 1.6 );
 
 	//ff.createGrid();
 }
@@ -74,7 +74,7 @@ void Background::update()
 }
 
 
-void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offset )
+void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offset, float size )
 {
 	int SPACING = 40;
 
@@ -89,7 +89,7 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 			ParticleA particle = ParticleA();
 			particle.init();
 			particle.setBounds( 0, getWindowWidth(), 0, getWindowHeight() );
-			particle.width = 2;//andFloat(2,6);
+			particle.width = size;//1.5;//andFloat(2,6);
 	
 			particle.x = ( i*SPACING ) + offset;
 			particle.y = ( j*SPACING ) + offset;
@@ -130,51 +130,39 @@ void Background::draw()
 
 
 	// draw the firefly
-//	ff.draw();
+	// ff.draw();
 
 
 	gl::enableAlphaBlending();
-
 	gl::color( 1, 1, 1, 0.6 );
 
-	for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
-		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width + (p->getVx()+p->getVy())/5 );
-
-		float speed = (p->getVx()+p->getVy())/5 ;
-
-		Rectf rect = Rectf(p->x - p->width, p->y - p->width,p->x + p->width, p->y + p->width);
+	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
+		float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
+		Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
 		gl::draw(*particleTexture,rect);
-	
-
 	}
 
+
 	gl::color( 1, 1, 1, 0.5 );
-	
 	gl::pushMatrices();
-	gl::translate(0,0,-10);
+	gl::translate(0,0,-15);
+	
 	for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
-		//gl::drawSolidCircle( Vec2f( p2->x+2, p2->y+2 ), p2->width + (p2->getVx()+p2->getVy())/5);
-
-
 		float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 4;
-
 		Rectf rect = Rectf(p2->x+2 - p2->width - rad, p2->y+2 - p2->width - rad,p2->x+2 + p2->width + rad, p2->y+2 + p2->width + rad);
 		gl::draw(*particleTexture,rect);
 	}
 	gl::popMatrices();
 
+	
 	gl::color( 1, 1, 1, 0.4 );
-
 	gl::pushMatrices();
-	gl::translate(0,0,-20);
-	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
-		//gl::drawSolidCircle( Vec2f( p3->x-2, p3->y-2 ), p3->width + (p3->getVx()+p3->getVy())/5 );
-
-		float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
-
-		Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
+	gl::translate(0,0,-30);
+	
+	for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
+		float rad = p->width + (p->getVx()+p->getVy())/5;
+		Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
 		gl::draw(*particleTexture,rect);
-
 	}
 
 	gl::popMatrices();
