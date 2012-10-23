@@ -38,7 +38,7 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 		fgParticles->mParticles.push_back( particle );
 	}
 
-	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 2 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 }
 
@@ -56,7 +56,7 @@ void PassiveScene1::showFrame2()
 
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene1::showFrame3()

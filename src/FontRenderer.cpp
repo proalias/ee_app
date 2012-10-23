@@ -233,9 +233,7 @@ void FontRenderer::tick(){
 			lines[lineIndex][i].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
 		}
 	}
-
 	*/
-
 }
 
 
@@ -470,7 +468,7 @@ void FontRenderer::draw()
 		}
 	}
 	
-	/*
+	
 	if (animationInProgress == false && tickCued == false){
 
 		float time = timeline().getCurrentTime() + 0.5;
@@ -480,7 +478,7 @@ void FontRenderer::draw()
 		tickingCue->setLoop();
 		tickingCue->setInfinite();
 		tickCued = true;
-	}*/
+	}
 
 	gl::color(Color(1.0,1.0,1.0));
 }

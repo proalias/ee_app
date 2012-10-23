@@ -10,10 +10,10 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 {
 	font = &thefont;
 	font->clear();
-	font->setPosition(300,100);
+	font->setPosition(200,100);
 	font->setColor(Color(1.0,1.0,1.0));
 	font->addLine( "PREPARE TO GO", 3 );
-	font->addLine( "              SUPERFAST", 3 );
+	font->addLine( "         SUPERFAST", 3 );
 	font->animateIn();
 
 	iconFactory =  &theIconFactory;
@@ -42,12 +42,12 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	}
 
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame2(){
 	font->animateOut();
-	mCue = timeline().add( bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 2 );
 }
 
 void PassiveScene3::showFrame3(){
@@ -61,7 +61,7 @@ void PassiveScene3::showFrame3(){
 	font->addLine( "      FIBRE BROADBAND", 2 );
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame4(){
