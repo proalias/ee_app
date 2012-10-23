@@ -8,6 +8,7 @@
 #include "cinder\Rand.h"
 #include "cinder\Perlin.h"
 #include "cinder\CinderMath.h"
+#include "TextureGlobals.h"
 //#include "ParticleImageContainer.h"
 
 using namespace cinder;
@@ -29,6 +30,7 @@ public:
 	bool moving;
 
 	bool jitters;
+	gl::Texture* particleTexture;
 	
 	//ci::Timeline	&mTimeline;
 	float mDuration;

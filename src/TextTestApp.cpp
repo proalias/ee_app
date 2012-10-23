@@ -17,6 +17,7 @@
 #include "FontRenderer.h"
 #include "Particle.h"
 #include "CinderClip.h"
+#include "TextureGlobals.h"
 #include "ParticleA.h"
 #include "TweenParticle.h"
 #include "IconFactory.h"
@@ -27,6 +28,7 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
+
 
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
@@ -43,6 +45,7 @@ using std::list;
 
 using boost::lambda::_1;
 using boost::lambda::bind; 
+
 
 static const bool PREMULT = false;
 
@@ -65,6 +68,8 @@ class TextTestApp : public AppNative {
 
 	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
+
+	static gl::Texture particleTexture;
 
 	FontRenderer myFont;
  
@@ -243,12 +248,17 @@ void TextTestApp::setup()
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
 	
 
-	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
-	
+	gl::Texture particleTexture = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture);
+
+
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 1 );
+
+	particleTexture = loadImage(loadAsset( "ParticleFullON.png") );
+	
 
 	/*- Leave this for now, textures can be added to the particle later.
 	//load particle textures

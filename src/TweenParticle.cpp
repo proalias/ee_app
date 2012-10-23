@@ -17,6 +17,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool jitters)
 	jitterSpeed = randFloat(-10,10);
 	xJitter = 0;
 	yJitter = 0;
+	particleTexture = TextureGlobals::getInstance()->getParticleTexture();
 }
 
 
@@ -46,14 +47,17 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 	mStartRad = rad;
 	mDestRad = newrad;
 	moving = true;
+
+
 }
 
 void TweenParticle::draw(){
 
 	
-	gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
+	//gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 	
-	
+	Rectf rect = Rectf(xpos - rad + xJitter, ypos - rad + yJitter,xpos+rad + xJitter, ypos+rad+ yJitter);
+	gl::draw(*particleTexture,rect);
 	
 	/* TODO - get particles drawing with textures
 	float halfRad = rad * 0.5;
