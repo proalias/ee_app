@@ -20,11 +20,11 @@
 #include "FontRenderer.h"
 #include "Particle.h"
 #include "CinderClip.h"
+#include "TextureGlobals.h"
 #include "ParticleA.h"
 #include "TweenParticle.h"
 #include "IconFactory.h"
 #include "IconRenderer.h"
-//#include "ParticleImageContainer.h"
 #include "ForegroundParticles.h"
 #include "SceneBase.h"
 #include "PassiveScene1.h"
@@ -33,6 +33,11 @@
 #include "PassiveScene4.h"
 
 //#include "ActiveScene1.h"
+
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
+
 
 #include <list>
 
@@ -44,6 +49,7 @@ using std::list;
 
 using boost::lambda::_1;
 using boost::lambda::bind; 
+
 
 static const bool PREMULT = false;
 
@@ -61,11 +67,11 @@ class TextTestApp : public AppNative {
 
 	void draw();
 	void drawSkeleton();
-	void drawParticle(float tx, float ty, float scale);
 	void toggleAnimation();
 
 	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
+
 
 	FontRenderer myFont;
  
@@ -137,7 +143,6 @@ protected:
 
 
 };
-
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
@@ -213,18 +218,10 @@ void TextTestApp::setup()
 	}
 
 
-	// setup the stuff to render our ducky
-	// (see the Picking3D sample for more information)
 	mTransform.setToIdentity();
 
 	gl::Texture::Format format;
 	format.enableMipmapping(true);
-
-	//ImageSourceRef img = loadImage( "../data/ducky.png" );
-	//if(img) mTexture = gl::Texture( img, format );
-
-	//DataSourceRef file = loadFile("../data/ducky.msh");
-	//if(file) mMesh.read( file );
 
 	mCamera.setEyePoint( Vec3f(2.5f, 5.0f, 5.0f) );
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
@@ -232,36 +229,40 @@ void TextTestApp::setup()
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
+		cinderClip.x = -200;
+		cinderClip.y = -200;
 		repelClips.push_back(cinderClip);
 	}
 
 	mbackground.setup();
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
 
-	particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - is this being used?
-	
+	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
+
+	gl::Texture particleTexture1 = loadImage(loadAsset( "ParticlePatial01.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture1,1);
+
+	gl::Texture particleTexture2 = loadImage(loadAsset( "ParticlePatial02.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture2,2);
+
+	gl::Texture particleTexture3 = loadImage(loadAsset( "ParticlePatial03.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture3,3);
+
+	gl::Texture particleTexture4 = loadImage(loadAsset( "ParticlePatial04.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture4,4);
+
+	gl::Texture particleTexture5 = loadImage(loadAsset( "ParticlePatial05.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture5,5);
+
+	gl::Texture particleTexture6 = loadImage(loadAsset( "background-particle.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,6);
+
+
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 1 );
-
-	/*- Leave this for now, textures can be added to the particle later.
-	//load particle textures
-	pTextures.init();
-	gl::Texture texture1 = loadImage(loadAsset( "ParticleFullON.png") );
-	pTextures.addTexture(texture1);
-	gl::Texture texture2 = loadImage(loadAsset( "ParticlePatial01.png") );
-	pTextures.addTexture(texture2);
-	gl::Texture texture3 = loadImage(loadAsset( "ParticlePatial02.png") );
-	pTextures.addTexture(texture3);
-	gl::Texture texture4 = loadImage(loadAsset( "ParticlePatial03.png") );
-	pTextures.addTexture(texture4);
-	gl::Texture texture5 = loadImage(loadAsset( "ParticlePatial04.png") );
-	pTextures.addTexture(texture5);
-	gl::Texture texture6 = loadImage(loadAsset( "ParticlePatial05.png") );
-	pTextures.addTexture(texture6);
-	
-	*/
 
 
 	// TO VIEW ACTIVE SCENE
@@ -320,32 +321,9 @@ void TextTestApp::update()
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
 	
-	for (int i=0;i<animatingParticles.size();i++){  
-		if (animatingParticles[i].moving){
-			animatingParticles[i].update(time);
-			animationInProgress = true;
-		}
-		drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
-	}
-
-	updateAnimatingParticles();
-
-}
-
-
-void TextTestApp::updateAnimatingParticles(){
-	double time = getElapsedSeconds();
 	
-	for (int i=0;i<animatingParticles.size();i++){  
-		if (animatingParticles[i].moving){
-			animatingParticles[i].update(time);
-			animationInProgress = true;
-		}
-		//gl::color(animatingParticles[i].color);
-		drawParticle(animatingParticles[i].xpos,animatingParticles[i].ypos,animatingParticles[i].rad);
-		//drawParticle(animatingParticles[i].xpos ,animatingParticles[i].ypos ,animatingParticles[i].rad * 2);
-	}
 }
+
 
 
 void TextTestApp::updateSkeleton()
@@ -367,16 +345,12 @@ void TextTestApp::draw()
 
 	drawSkeleton();
 
-	//fgParticles.draw();
-
-	gl::enableAlphaBlending();
+	
+	gl::enableAdditiveBlending();
 	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
-	currentScene->draw();
-
 	//gl::color( Color( 1, 1, 1 ) );
-
 
 
 	//fgParticles.draw();
@@ -391,14 +365,10 @@ void TextTestApp::draw()
 		gl::pushMatrices();
 		gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
 			gl::clear( ColorA( 0,0,0,0 ));
-			//render();
-		
+			
 			fgParticles.draw();
-
-			//gl::drawSolidCircle( Vec2f(50,50), 20 );
-
-			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
-
+			
+			currentScene->draw();
 
 		gl::popMatrices();
 	mFboScene.unbindFramebuffer();
@@ -461,9 +431,9 @@ void TextTestApp::draw()
 	gl::color( Color::white() );
 	gl::draw( mFboScene.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
 
-	gl::enableAdditiveBlending();
+	//gl::enableAdditiveBlending();
 	gl::draw( mFboBlur2.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
-	gl::disableAlphaBlending();
+	//gl::disableAlphaBlending();
 
 	// restore the modelview matrix
 	gl::popModelView();
@@ -613,13 +583,6 @@ void TextTestApp::drawSkeleton(){
 }
 
 
-
-
-// TODO - is this being used anymore?
-void TextTestApp::drawParticle(float tx, float ty, float scale){
-	Rectf rect = Rectf(tx,ty,tx+scale, ty+scale);
-	gl::draw(particleImg,rect);
-}
 
 
 

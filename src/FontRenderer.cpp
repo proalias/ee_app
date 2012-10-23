@@ -11,6 +11,7 @@ FontRenderer::FontRenderer(void)
 
 	particleCount = 0;
 
+	tickCounter = 0;
 	populateGridPoints();
 
 	currentColor =  Color(1.0,1.0,1.0);
@@ -181,15 +182,19 @@ float FontRenderer::getCharWidth( char char1, char char2 )
 
 
 void FontRenderer::tick(){
-	/*
+	
 	int lineIndex = randInt(lines.size()-1);
 	int tickRange = 80;
+	if (lines.size() == 0 && lineIndex == 0){
+		return;
+	}
 	int particleIndexA = randInt(lines[lineIndex].size());
 	int particleIndexB = particleIndexA + randInt(tickRange);; 
 
-	if (particleIndexB > lines[lineIndex].size()){
-		particleIndexB = lines[lineIndex].size() - 5;
+	if (particleIndexB >= lines[lineIndex].size()){
+		return;
 	}
+
 
 
 	//ensure A is lower than B
@@ -214,12 +219,12 @@ void FontRenderer::tick(){
 			float rad = lines[lineIndex][particleIndexA].rad;
 
 			//lines[lineIndex][particleIndexB].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
-			lines[lineIndex][particleIndexA].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
+			lines[lineIndex][particleIndexA].animateTo(ci::Vec2f(bPosX,bPosY),1,getElapsedSeconds(),rad);
 
 			bPosX = lines[lineIndex][i+1].xpos;
 			bPosY = lines[lineIndex][i+1].ypos;
 
-			lines[lineIndex][i+1].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+			lines[lineIndex][i+1].animateTo(ci::Vec2f(aPosX,aPosY),1,getElapsedSeconds(),rad);
 
 		}
 
@@ -233,9 +238,7 @@ void FontRenderer::tick(){
 			lines[lineIndex][i].animateTo(ci::Vec2f(bPosX,bPosY),0.5,getElapsedSeconds(),rad);
 		}
 	}
-
-	*/
-
+	
 }
 
 
@@ -431,7 +434,7 @@ void FontRenderer::animateIn(){
 
 		for (int j=0;j<lines.size();j++){
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.001){
-				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.0,getElapsedSeconds()+t,p->rad);
+				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.5,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
 			}
@@ -470,17 +473,21 @@ void FontRenderer::draw()
 		}
 	}
 	
-	/*
-	if (animationInProgress == false && tickCued == false){
+	
+	if (animationInProgress == false ){
 
 		float time = timeline().getCurrentTime() + 0.5;
+		tickCounter ++;
 
-		tickingCue = timeline().add( bind(&FontRenderer::tick, this), time );
-		tickingCue->setDuration(1);
-		tickingCue->setLoop();
-		tickingCue->setInfinite();
-		tickCued = true;
-	}*/
+		if (tickCounter % 20 == 0){
+			tick();
+		}
+		//tickingCue = timeline().add( bind(&FontRenderer::tick, this), time );
+		//tickingCue->setDuration(1);
+		//tickingCue->setLoop();
+		//tickingCue->setInfinite();
+		//tickCued = true;
+	}
 
 	gl::color(Color(1.0,1.0,1.0));
 }
@@ -495,10 +502,8 @@ void FontRenderer::clear()
 {
 	layoutXPos = 0;
 	layoutYPos = 0;
-	if (tickCued == true){
-		tickingCue->removeSelf();
-	}
+
 	mGridPointInc = 0;
-	tickCued = false;
+	tickCounter = 0;
 	lines.clear();
 }

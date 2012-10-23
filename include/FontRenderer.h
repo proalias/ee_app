@@ -73,6 +73,7 @@ private:
 	CueRef tickingCue;
 	bool tickCued;
 	ci::Color currentColor;
+	int tickCounter;
 
 	float layoutXPos;
 	float layoutYPos;

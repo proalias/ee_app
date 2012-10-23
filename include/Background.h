@@ -29,6 +29,7 @@ public:
 	void draw();
 	
 	gl::Texture bgImage;
+	gl::Texture* particleTexture;
 	
 	std::vector<ParticleA>	gridLayer1;
 	std::vector<ParticleA>	gridLayer2;

@@ -1,13 +1,14 @@
-#ifndef PassiveScene5_H_
-#define PassiveScene5_H_
+#ifndef ActiveScene1_H_
+#define ActiveScene1_H_
 
 #include "FontRenderer.h"
 #include "SceneBase.h"
+#include "cinder/Timeline.h"
 
 using namespace std;
 using namespace ci;
 
-class PassiveScene5: public SceneBase {
+class ActiveScene1: public SceneBase {
  
 public:
 
@@ -16,22 +17,18 @@ public:
 	void update();
 	void draw();
 
-	PassiveScene5(void);
-	//~PassiveScene4(void);
+	ActiveScene1(void);
+	//~ActiveScene1(void);
 
  private:
-
-	IconRenderer arrow1, arrow2, arrow3, arrow4;
-
-	std::vector<IconRenderer*> arrows;
-
-	
 	CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();
-	void showFrame4();
-	void showFrame5();
+
+	bool showHand;
+
+	IconRenderer hand;
 };
 
-#endif /* PASSIVESCENE4_H_ */
+#endif /* ActiveScene1_H_ */

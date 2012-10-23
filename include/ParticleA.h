@@ -6,11 +6,15 @@
 #include "cinder\gl\gl.h"
 #include <stdio.h>
 #include <string.h>
-#include "cinder\app\MouseEvent.h"
-#include "cinder\CinderMath.h"
-#include "cinder\Rand.h"
+#include "cinder/app/App.h"
+#include "cinder/app/MouseEvent.h"
+#include "cinder/CinderMath.h"
+#include "cinder/Rand.h"
+#include "cinder/Timeline.h"
+
 #include "CinderClip.h"
 #include "RepelPoint.h"
+#include "TextureGlobals.h"
 
 using namespace ci;
 
@@ -36,6 +40,8 @@ public:
     void setBounds( float left, float right, float top, float bot);
 	void setDraggable( bool bDrag );
 
+	gl::Texture* particleTexture;
+
 	void gravToMouse( bool bGrav, float force );
     void springToMouse( bool bSpring, float force );
     void repelMouse( bool bRepel, float force, float minDist );
@@ -46,6 +52,9 @@ public:
 	float addSpringClip(CinderClip &clip, float force);
 	float addGravClip(CinderClip &clip, float force);
 	int addRepelClip( CinderClip &clip, float force, float minDist );
+
+	
+	ci::Vec2f getRandomPointOnGrid();
 
     void removeSpringPoint( int index );
     void removeGravPoint( int index );
@@ -70,7 +79,7 @@ public:
     std::vector<CinderClip*> __gravClips;
 	std::vector<CinderClip*> __repelClips;
 
-	//ci::Rectf __efClip;  
+	//ci::Rectf __efClip;
 
 	void pressHandler( ci::app::MouseEvent);
     void releaseHandler( ci::app::MouseEvent);
@@ -87,7 +96,6 @@ public:
 	float x;
 	float y;
 	float rotation;
-	//ci::Anim<float> width;
 	float width;
 	float height;
 	float scaleX;
@@ -122,6 +130,13 @@ public:
 
 	std::string __edgeBehavior;
 	ci::Rectf __bounds;
+
+	//spawn & die related 
+	bool decays;
+	int lifeSpan;
+	void die();
+	void respawn();
+	bool dying;
 };
 
 #endif

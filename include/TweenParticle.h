@@ -8,14 +8,15 @@
 #include "cinder\Rand.h"
 #include "cinder\Perlin.h"
 #include "cinder\CinderMath.h"
-#include "cinder\app\AppBasic.h"
+#include "TextureGlobals.h"
 //#include "ParticleImageContainer.h"
 
 using namespace cinder;
 
 class TweenParticle {
 public:
-	TweenParticle( float pX,float pY,float pRad, bool jitters);
+	
+	TweenParticle( float pX,float pY,float pRad, bool isRandomised);
 	void update(double t);
 	void draw();
 
@@ -28,8 +29,10 @@ public:
 	float rad;
 	Color color;
 	bool moving;
+	int textureType;
 
 	bool jitters;
+	gl::Texture* particleTexture;
 	
 	//ci::Timeline	&mTimeline;
 	float mDuration;
