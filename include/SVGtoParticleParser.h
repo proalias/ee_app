@@ -1,4 +1,6 @@
-#include "cinder/Cinder.h"
+#ifndef SVGtoParticleParser_h
+#define SVGtoParticleParser_h
+
 #include "cinder/Xml.h"
 #include "TweenParticle.h"
 
@@ -18,3 +20,4 @@ class SVGtoParticleParser{
 
 	void recursiveParse(cinder::XmlTree node, std::vector<TweenParticle> &pointsContainer);
 };
+#endif

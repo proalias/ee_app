@@ -1,4 +1,141 @@
-#include "TextTestApp.h"
+#include "cinder/app/AppBasic.h"
+#include "cinder/app/AppNative.h"
+#include "cinder/Camera.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/ImageIo.h"
+#include "cinder/params/Params.h"
+#include "cinder/Utilities.h"
+#include "cinder/gl/gl.h"
+#include "cinder/Vector.h"
+#include "cinder/Rand.h"
+#include "cinder/Timeline.h"
+
+#include "boost/lambda/bind.hpp"
+
+#include "Kinect.h"
+#include "Background.h"
+#include "FontRenderer.h"
+#include "Particle.h"
+#include "CinderClip.h"
+#include "ParticleA.h"
+#include "TweenParticle.h"
+#include "IconFactory.h"
+#include "IconRenderer.h"
+#include "ForegroundParticles.h"
+#include "SceneBase.h"
+#include "PassiveScene1.h"
+#include "PassiveScene2.h"
+#include "PassiveScene3.h"
+#include "PassiveScene4.h"
+
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
+
+
+#include <list>
+
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+using namespace KinectSdk;
+using std::list;
+
+using boost::lambda::_1;
+using boost::lambda::bind; 
+
+static const bool PREMULT = false;
+
+class TextTestApp : public AppNative {
+ public:
+
+	void prepareSettings( Settings *settings ); // TODO - whats this wheres it get called?
+
+	void setup();
+	void setupSkeletonTracker();
+	void updateAnimatingParticles();
+
+	void update();
+	void updateSkeleton();
+
+	void draw();
+	void drawSkeleton();
+	void drawParticle(float tx, float ty, float scale);
+	void toggleAnimation();
+
+	gl::Texture particleImg;
+	gl::Texture mSimpleTexture;
+
+	FontRenderer myFont;
+ 
+	ForegroundParticles fgParticles; // ones flying around the screen
+
+	std::vector<CinderClip> repelClips;
+
+	bool animationInProgress;
+	std::vector<TweenParticle> pointsContainer;
+	std::vector<TweenParticle> animatingParticles;
+	
+	ci::Vec2f getRandomPointOffscreen();
+
+	SVGtoParticleParser svgParser;
+	
+	IconFactory iconFactory;
+	std::vector<IconRenderer> iconRenderers;
+	
+	//mode definitions
+
+	int mGestureMode;
+	static const int GESTUREMODE_TEXT_PROMPT_WAVE = 0;
+	static const int GESTUREMODE_WAVE = 1;
+	static const int GESTUREMODE_SUPERFAST = 2;
+	static const int GESTUREMODE_GUITAR = 3;
+	int mNextGesture;
+
+
+	// TODO - for blur effect. if dont work remove these later.
+	void render();
+	void drawStrokedRect( const Rectf &rect );
+	
+	Timer textAnimationTimer;
+	//ParticleImageContainer pTextures;
+
+private:
+	// Kinect
+	uint32_t							mCallbackId;
+	KinectSdk::KinectRef				mKinect;
+	std::vector<KinectSdk::Skeleton>	mSkeletons;
+	void								onSkeletonData( std::vector<KinectSdk::Skeleton> skeletons, 
+		const KinectSdk::DeviceOptions &deviceOptions );
+
+	// Camera
+	ci::CameraPersp						mCamera;
+
+	// Save screenshot
+	void								screenShot();
+
+
+	bool trackingRightHand;
+	bool tweeningPointsIn;
+
+protected:
+	Background mbackground;
+
+	void onPassiveSceneComplete( SceneBase* sceneInstance  );
+	SceneBase* currentScene;
+
+	//
+	gl::Fbo			mFboScene;
+	gl::Fbo			mFboBlur1;
+	gl::Fbo			mFboBlur2;
+	gl::GlslProg	mShaderBlur;
+	gl::GlslProg	mShaderPhong;
+	
+	gl::Texture		mTexture;
+	Matrix44f		mTransform;
+
+
+};
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
@@ -78,7 +215,7 @@ void TextTestApp::setup()
 	}
 
 
-// setup the stuff to render our ducky
+	// setup the stuff to render our particles
 	// (see the Picking3D sample for more information)
 	mTransform.setToIdentity();
 
@@ -130,6 +267,7 @@ void TextTestApp::setup()
 	pTextures.addTexture(texture6);
 	
 	*/
+
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE

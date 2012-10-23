@@ -21,7 +21,7 @@ public:
 
  private:
 
-	IconRenderer arrow1, arrow2, arrow3, arrow4;
+	IconRenderer arrow1, arrow2, arrow3, arrow4, arrow5;
 
 	std::vector<IconRenderer*> arrows;
 

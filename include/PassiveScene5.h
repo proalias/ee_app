@@ -31,7 +31,7 @@ public:
 	void showFrame2();
 	void showFrame3();
 	void showFrame4();
-
+	void showFrame5();
 };
 
 #endif /* PASSIVESCENE4_H_ */

@@ -75,9 +75,6 @@
     <ClCompile Include="..\src\IconRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\include\TextureGlobals.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ForegroundParticles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,13 +149,13 @@
     <ClInclude Include="..\include\SceneFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\TextureGlobals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\ForegroundParticles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\PassiveScene5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\TextTestApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -54,7 +54,7 @@ void TweenParticle::draw(){
 	gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 	
 	
-
+	
 	/* TODO - get particles drawing with textures
 	float halfRad = rad * 0.5;
 	Rectf rect = Rectf(xpos - halfRad,ypos - halfRad,xpos+halfRad, ypos+halfRad);
