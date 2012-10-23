@@ -11,6 +11,7 @@
 #include "cinder\Rand.h"
 #include "CinderClip.h"
 #include "RepelPoint.h"
+#include "TextureGlobals.h"
 
 using namespace ci;
 
@@ -35,6 +36,8 @@ public:
     std::string getEdgeBehavior();
     void setBounds( float left, float right, float top, float bot);
 	void setDraggable( bool bDrag );
+
+	gl::Texture* particleTexture;
 
 	void gravToMouse( bool bGrav, float force );
     void springToMouse( bool bSpring, float force );

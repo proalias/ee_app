@@ -22,6 +22,10 @@ void ParticleA::init()
 	__repelPoints = std::vector<RepelPoint>();
 
 	//__efClip = ci::Rectf();
+
+	int textureType = randInt(4)+1;
+	
+	particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);
 }
 
 void ParticleA::setVx(float nVx)

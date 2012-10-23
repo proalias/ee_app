@@ -125,12 +125,14 @@ void ForegroundParticles::draw()
 	//glEnable( GL_BLEND );
 	//glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
-	gl::enableAlphaBlending();
 	gl::color( Color( 1, 1, 1 ) );
 
 	// TODO - may be passing foreground particles into scenes. but still probs drawn here
 	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
+		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );		
+		Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
+		gl::draw(*p->particleTexture,rect);
+	
 	}
 
 
