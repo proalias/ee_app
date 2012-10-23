@@ -90,8 +90,8 @@
       <AdditionalIncludeDirectories>..\include;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;KinectSdk_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\blocks\Cinder-KinectSdk\lib;C:\Users\alias\Downloads\cinder-Cinder-v0.8.4-7-g4214f76\cinder-Cinder-4214f76\lib\msw;C:\Users\alias\Downloads\cinder-Cinder-v0.8.4-7-g4214f76\cinder-Cinder-4214f76\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;KinectSdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\blocks\Cinder-KinectSdk\lib;../../../lib/msw;../../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

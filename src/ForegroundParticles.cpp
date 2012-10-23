@@ -54,12 +54,12 @@ void ForegroundParticles::show() // TODO - create show function too
 	}
 
 }
-
+/*
 void ForegroundParticles::destroy()
 {
 	mParticles.clear();
 }
-
+*/
 void ForegroundParticles::setup( int howMany )
 {
 	//particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - can we use image? - or sequence

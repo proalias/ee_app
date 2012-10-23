@@ -181,9 +181,9 @@ float FontRenderer::getCharWidth( char char1, char char2 )
 }
 
 
-void FontRenderer::tick(){
+void FontRenderer::tick(int lineIndex){
 	
-	int lineIndex = randInt(lines.size()-1);
+	//int lineIndex = randInt(lines.size()-1);
 	int tickRange = 80;
 	if (lines.size() == 0 && lineIndex == 0){
 		return;
@@ -449,7 +449,7 @@ void FontRenderer::animateOut(){
 		for (int j=0;j<lines.size();j++){
 
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p, t+=0.001 ){
-				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),1.0,getElapsedSeconds(),0);
+				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),2.0,getElapsedSeconds(),0);
 				p->update(ci::app::getElapsedSeconds());
 			}
 		}
@@ -480,7 +480,9 @@ void FontRenderer::draw()
 		tickCounter ++;
 
 		if (tickCounter % 20 == 0){
-			tick();
+			for (int li = 0; li < lines.size();li++){
+				tick(li);
+			}
 		}
 		//tickingCue = timeline().add( bind(&FontRenderer::tick, this), time );
 		//tickingCue->setDuration(1);

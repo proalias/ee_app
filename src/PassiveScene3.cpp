@@ -21,7 +21,6 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	fgParticles = &thefgParticles;
 	
 	
-	fgParticles->mParticles.clear();
 	
 	/*
 	for( int i=0; i<50; i++ )
@@ -65,15 +64,16 @@ void PassiveScene3::showFrame3(){
 	font->addLine( "      FIBRE BROADBAND", 2 );
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
 
 void PassiveScene3::showFrame4(){
-	_signal(this);
+	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame5(){
-
+	_signal(this);
 }
 
 void PassiveScene3::update()

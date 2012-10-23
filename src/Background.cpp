@@ -42,8 +42,10 @@ void Background::setup()
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 
 	// TODO - fit iamge to screen?... at moment we rely on screen res matching our image yet we draw grid dynamically
-	try { bgImage = loadImage( loadAsset("scoopfullhd.png")  ); }
-	catch( const std::exception &e ) { console() << "Could not load texture: " << e.what() << std::endl; }
+	//try { bgImage = loadImage( loadAsset("scoopfullhd.png")  ); }
+	//catch( const std::exception &e ) { console() << "Could not load texture: " << e.what() << std::endl; }
+
+	bgImage = loadImage( loadAsset("scoopfullhd.png"));
 
 	Background::drawGrid( gridLayer1, 0 );
 	Background::drawGrid( gridLayer2, -2 );
@@ -69,8 +71,8 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 {
 	int SPACING = 40;
 
-	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
-	float ROWS = cinder::app::getWindowHeight()/SPACING;
+	int COLUMNS = (cinder::app::getWindowWidth() / SPACING) + 2;
+	int ROWS = (cinder::app::getWindowHeight()  / SPACING) + 2;
 	
 	//fieldLayerContainer.clear();
 

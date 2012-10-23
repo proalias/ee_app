@@ -15,7 +15,7 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	fgParticles = &thefgParticles;
 
 
-	fgParticles->destroy();//mParticles.clear();
+	//fgParticles->destroy();//mParticles.clear();
 
 	for( int i=0; i<100; i++ )
 	{
@@ -38,7 +38,7 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 		fgParticles->mParticles.push_back( particle );
 	}
 
-	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 25 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 }
 
@@ -56,14 +56,14 @@ void PassiveScene1::showFrame2()
 
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 8);
 }
 
 void PassiveScene1::showFrame3()
 {
 	font->animateOut();
 	mCue = timeline().add( bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 3 );
-	fgParticles->hide();
+	//fgParticles->hide();
 }
 
 void PassiveScene1::showFrame4()

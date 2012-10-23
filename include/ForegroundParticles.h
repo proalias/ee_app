@@ -23,7 +23,7 @@ public:
 	void update();
 	void draw();
 
-	void destroy(); // destroy all the particles
+	//void destroy(); // destroy all the particles
 	void hide(); // make them all invisible
 	void show(); // make them all invisible
 
