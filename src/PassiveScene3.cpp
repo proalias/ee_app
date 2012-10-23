@@ -19,7 +19,11 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
+	
+	
 	fgParticles->mParticles.clear();
+	
+	/*
 	for( int i=0; i<50; i++ )
 	{
 		ParticleA particle = ParticleA();
@@ -40,7 +44,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 		
 		fgParticles->mParticles.push_back( particle );
 	}
-
+	*/
 
 	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
 }

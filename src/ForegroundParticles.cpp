@@ -35,11 +35,25 @@ void ForegroundParticles::hide() // TODO - create show function too
 
 
 
-	//for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		//ci::app::timeline().apply(p->width, 
-	//}
+	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
+		p->die();
+		//cinder::app::timeline().apply(&p->width,p->width.value(),0, 5.0f ,cinder::EaseInExpo());
+	}
+
 }
 
+
+void ForegroundParticles::show() // TODO - create show function too
+{
+	//mParticles.clear();
+	// fade out the particles
+
+	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
+		p->respawn();
+		//cinder::app::timeline().apply(&p->width,p->width.value(),0, 5.0f ,cinder::EaseInExpo());
+	}
+
+}
 
 void ForegroundParticles::destroy()
 {
@@ -88,7 +102,7 @@ void ForegroundParticles::setup( int howMany )
 
 		//particle.setBounce(-1);
 		particle.setMaxSpeed(5);
-
+		particle.decays = true;
 		//particle.setEdgeBehavior("wrap");
 
 		particle.setWander(3);
@@ -132,7 +146,6 @@ void ForegroundParticles::draw()
 		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );		
 		Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
 		gl::draw(*p->particleTexture,rect);
-	
 	}
 
 

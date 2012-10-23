@@ -39,6 +39,7 @@ void Background::setRepelClips( std::vector<CinderClip> &rclips ) // TODO - if w
 void Background::setup()
 {
 	//console() << "scoopfullhd.png lives at: " << getAssetPath( "scoopfullhd.png" ) << std::endl;
+	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 
 	// TODO - fit iamge to screen?... at moment we rely on screen res matching our image yet we draw grid dynamically
 	try { bgImage = loadImage( loadAsset("scoopfullhd.png")  ); }
@@ -301,7 +302,14 @@ void Background::draw()
 	gl::color( 1, 1, 1, 0.6 );
 
 	for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
-		gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width + (p->getVx()+p->getVy())/5 );
+		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width + (p->getVx()+p->getVy())/5 );
+
+		float speed = (p->getVx()+p->getVy())/5 ;
+
+		Rectf rect = Rectf(p->x - p->width, p->y - p->width,p->x + p->width, p->y + p->width);
+		gl::draw(*particleTexture,rect);
+	
+
 	}
 
 	gl::color( 1, 1, 1, 0.5 );
@@ -309,7 +317,13 @@ void Background::draw()
 	gl::pushMatrices();
 	gl::translate(0,0,-10);
 	for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
-		gl::drawSolidCircle( Vec2f( p2->x+2, p2->y+2 ), p2->width + (p2->getVx()+p2->getVy())/5);
+		//gl::drawSolidCircle( Vec2f( p2->x+2, p2->y+2 ), p2->width + (p2->getVx()+p2->getVy())/5);
+
+
+		float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 4;
+
+		Rectf rect = Rectf(p2->x+2 - p2->width - rad, p2->y+2 - p2->width - rad,p2->x+2 + p2->width + rad, p2->y+2 + p2->width + rad);
+		gl::draw(*particleTexture,rect);
 	}
 	gl::popMatrices();
 
@@ -318,7 +332,13 @@ void Background::draw()
 	gl::pushMatrices();
 	gl::translate(0,0,-20);
 	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
-		gl::drawSolidCircle( Vec2f( p3->x-2, p3->y-2 ), p3->width + (p3->getVx()+p3->getVy())/5 );
+		//gl::drawSolidCircle( Vec2f( p3->x-2, p3->y-2 ), p3->width + (p3->getVx()+p3->getVy())/5 );
+
+		float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
+
+		Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
+		gl::draw(*particleTexture,rect);
+
 	}
 
 	gl::popMatrices();

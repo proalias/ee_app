@@ -239,6 +239,8 @@ void TextTestApp::setup()
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
+		cinderClip.x = -200;
+		cinderClip.y = -200;
 		repelClips.push_back(cinderClip);
 	}
 
@@ -246,23 +248,26 @@ void TextTestApp::setup()
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
 	
 
-	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); // TODO - is this being used?
+	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
 
-	gl::Texture particleTexture1 = loadImage(loadAsset( "ParticlePatial01.png" ) ); // TODO - is this being used?
+	gl::Texture particleTexture1 = loadImage(loadAsset( "ParticlePatial01.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture1,1);
 
-	gl::Texture particleTexture2 = loadImage(loadAsset( "ParticlePatial02.png" ) ); // TODO - is this being used?
+	gl::Texture particleTexture2 = loadImage(loadAsset( "ParticlePatial02.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture2,2);
 
-	gl::Texture particleTexture3 = loadImage(loadAsset( "ParticlePatial03.png" ) ); // TODO - is this being used?
+	gl::Texture particleTexture3 = loadImage(loadAsset( "ParticlePatial03.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture3,3);
 
-	gl::Texture particleTexture4 = loadImage(loadAsset( "ParticlePatial04.png" ) ); // TODO - is this being used?
+	gl::Texture particleTexture4 = loadImage(loadAsset( "ParticlePatial04.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture4,4);
 
-	gl::Texture particleTexture5 = loadImage(loadAsset( "ParticlePatial05.png" ) ); // TODO - is this being used?
+	gl::Texture particleTexture5 = loadImage(loadAsset( "ParticlePatial05.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture5,5);
+
+	gl::Texture particleTexture6 = loadImage(loadAsset( "background-particle.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,6);
 
 
 	myFont = FontRenderer();
@@ -350,21 +355,20 @@ void TextTestApp::draw()
 
 	drawSkeleton();
 
-	//fgParticles.draw();
-
+	
 	gl::enableAdditiveBlending();
 	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
-	currentScene->draw();
+
 
 	//gl::color( Color( 1, 1, 1 ) );
 
 
 
-	fgParticles.draw();
+	//fgParticles.draw();
 
-
+	
 	// store our viewport, so we can restore it later
 	Area viewport = gl::getViewport();
 
@@ -375,9 +379,9 @@ void TextTestApp::draw()
 		gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
 			gl::clear( ColorA( 0,0,0,0 ));
 			//render();
-		
-			//fgParticles.draw();
-
+			fgParticles.draw();
+			
+			currentScene->draw();
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
 
 			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
@@ -444,9 +448,9 @@ void TextTestApp::draw()
 	gl::color( Color::white() );
 	gl::draw( mFboScene.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
 
-	gl::enableAdditiveBlending();
+	//gl::enableAdditiveBlending();
 	gl::draw( mFboBlur2.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
-	gl::disableAlphaBlending();
+	//gl::disableAlphaBlending();
 
 	// restore the modelview matrix
 	gl::popModelView();

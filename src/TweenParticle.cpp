@@ -17,10 +17,15 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	jitterSpeed = randFloat(-10,10);
 	xJitter = 0;
 	yJitter = 0;
+
+	
+
 	if (!isRandomised){
 		textureType = 0;
-	}else{
+	}else if (randFloat(1.0) > 0.8){
 		textureType = randInt(4)+1;
+	}else{
+		textureType = 0;
 	}
 	
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);

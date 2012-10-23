@@ -10,7 +10,13 @@ void ParticleA::init()
 	__grav              = 0;
 	
 	__wander=0;
-		
+	
+
+	decays = false;
+	lifeSpan = 100 + randInt(1600);
+	dying = false;
+	
+
 	width = 1;
 	height = 1;
 
@@ -23,9 +29,7 @@ void ParticleA::init()
 
 	//__efClip = ci::Rectf();
 
-	int textureType = randInt(4)+1;
 	
-	particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);
 }
 
 void ParticleA::setVx(float nVx)
@@ -142,7 +146,13 @@ void ParticleA::update()
 	int k;
 	float minDist;
 
+	if (decays){
+		lifeSpan -= 1;
 
+		if (lifeSpan == 0){
+			dying = true;
+		}	
+	}
 		for ( int sp=0; sp < __springPoints.size(); sp++ )
 		{
 			point = __springPoints[sp];
@@ -290,7 +300,18 @@ void ParticleA::update()
 		}
 		//if( stage != null )
 		//    stage.invalidate();
+
+		int textureType = randInt(4)+1;
 	
+		particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);
+	
+		if (dying==true){
+			width = width * 0.8;
+		}
+
+		if (width < 0.0001){
+			respawn();
+		}
 };
 
 void ParticleA::gravToMouse( bool bGrav, float force )
@@ -415,6 +436,39 @@ int ParticleA::addRepelClip( CinderClip &clip, float force, float minDist )
 	__repelClips.push_back( &clip );
 	return __repelClips.size() - 1;
 }
+
+
+void ParticleA::die(){
+	dying = true;
+}
+
+void ParticleA::respawn(){
+
+		width = randFloat(3,10);
+		Vec2f p  = getRandomPointOnGrid();
+
+		x=randFloat(app::getWindowWidth());
+		y=randFloat(app::getWindowHeight());
+
+		lifeSpan = 100 + randInt(1600);
+
+
+}
+
+
+ci::Vec2f ParticleA::getRandomPointOnGrid(){
+	
+	int SPACING = 40;
+
+	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
+	float ROWS = cinder::app::getWindowHeight()/SPACING;
+	
+	float pX = randInt(-COLUMNS, COLUMNS)*SPACING;
+	float pY = randInt(-ROWS, ROWS)*SPACING;
+	return ci::Vec2f(pX,pY);	
+}
+
+
 
 void  ParticleA::removeSpringPoint( int index )
 {
