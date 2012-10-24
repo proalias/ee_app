@@ -31,7 +31,6 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	//}
 	fgParticles->hide();
 
-
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 	otherParticleTexture = TextureGlobals::getInstance()->getParticleTexture(5);
 	

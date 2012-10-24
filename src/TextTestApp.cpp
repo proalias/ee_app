@@ -148,7 +148,7 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	bool isDeployed = false;
+	bool isDeployed = true;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -356,7 +356,7 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::draw()
 {
-	if (flipScreen){
+	if (flipScreen==true){
 		gl::pushMatrices();
 		
 		gl::scale( Vec3f(-1, 1, 1) );
