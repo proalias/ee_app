@@ -32,7 +32,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	placeMark2 = IconRenderer();
 	placeMark2.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
 	placeMark2.pos = Vec2f(150.0,-200);
-	placeMark2.scale = 0.75;
+	placeMark2.scale = 0.45;
 	
 	placeMarks.push_back(&placeMark2);
 
@@ -57,7 +57,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	placeMark5 = IconRenderer();
 	placeMark5.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
 	placeMark5.pos = Vec2f(850,-200);
-	placeMark5.scale = 1.2;
+	placeMark5.scale = 0.8;
 	
 	placeMarks.push_back(&placeMark5);
 
@@ -79,11 +79,11 @@ void PassiveScene2::showFrame2()
 	font->addLine( "4GEE IS HERE", 3 );
 	font->animateIn();
 
-	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,600.0), 3.0f ,cinder::EaseOutBounce(0.8));
+	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.8));
 	cinder::app::timeline().apply(&placeMark2.pos,ci::Vec2f(placeMark2.pos.value().x,150.0), 2.0f ,cinder::EaseOutBounce(0.8));
 	//cinder::app::timeline().apply(&placeMark3.pos,ci::Vec2f(placeMark3.pos.value().x,400.0), 4.5f ,cinder::EaseOutBounce(0.8));
 	cinder::app::timeline().apply(&placeMark4.pos,ci::Vec2f(placeMark4.pos.value().x,750.0), 5.0f ,cinder::EaseOutBounce(0.8));
-	cinder::app::timeline().apply(&placeMark5.pos,ci::Vec2f(placeMark5.pos.value().x,400.0), 4.0f ,cinder::EaseOutBounce(0.8));
+	cinder::app::timeline().apply(&placeMark5.pos,ci::Vec2f(placeMark5.pos.value().x,370.0), 4.0f ,cinder::EaseOutBounce(0.8));
 	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.8));
 
 

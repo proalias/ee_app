@@ -53,5 +53,7 @@ public:
 	float yJitter;
 	float jitterSpeed;
 
+	int sparking;
+
 };
 #endif

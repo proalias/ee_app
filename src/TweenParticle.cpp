@@ -18,12 +18,13 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	xJitter = 0;
 	yJitter = 0;
 
-	
+	sparking = false;
 
 	if (!isRandomised){
 		textureType = 0;
 	}else if (randFloat(1.0) > 0.8){
 		textureType = randInt(4)+1;
+		
 	}else{
 		textureType = 0;
 	}
@@ -100,9 +101,21 @@ void TweenParticle::update(double t){
 		xJitter = cinder::math<float>::sin(t*jitterSpeed) * noise;
 		yJitter = cinder::math<float>::cos(t*jitterSpeed) * noise;
 
+		if (sparking == 0 && randFloat(1.0) > 0.99){
+			sparking = 20;
+		}
+
+		if (sparking > 0){
+			sparking -= 1;
+			textureType = sparking % 4 +1;
+			particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);
+		}else if (sparking == 0){
+			textureType = 0;
+			particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);
+		}
 	}
-	
 }
+
 float TweenParticle::ease(float time,float begin,float change,float duration,float snapback = 1.70158){
 	return change*((time=time/duration-1)*time*((snapback+1)*time + snapback) + 1) + begin;
 }

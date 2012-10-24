@@ -195,7 +195,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
-	flipScreen = true;
+	flipScreen = false;
 
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
@@ -286,7 +286,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene3();
+	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
