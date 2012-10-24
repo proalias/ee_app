@@ -26,28 +26,29 @@ public:
 	void update();
 	void draw();
 	
-	void init();
+	//void init();
 
 	//void destroy(); // destroy all the particles
 	void hide(); // make them all invisible
 	void show(); // make them all invisible
 
 	
-	std::list<ParticleA>	mParticles; // TODO - getter?... really be fine to just get the whole array and change behaviours from scenes.
+	std::list<ParticleA> mParticles; // TODO - getter?... really be fine to just get the whole array and change behaviours from scenes.
 
 	// gl::Texture bgImage; // = TODO potentially have textures on them
 	
 	// TODO - you can pass in clips that you want to effect our particles. skeleton ones
-	std::vector<CinderClip> repelClips;
+	std::vector<CinderClip> * repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
-	TimelineRef mTimeline;
 
-
+	//TimelineRef mTimeline;
 
 	// if this is set then the scene is reponsible for the draw method
 	//YOU MUST CANCEL THIS AT THE END OF THE SCENE
 	bool overrideDrawMethodInScene;
+
+
 
 
 

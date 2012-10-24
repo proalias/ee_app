@@ -275,9 +275,10 @@ void TextTestApp::setup()
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
-	fgParticles.setup( 1 );
-	
-	fgParticles.init();
+	fgParticles.setup( 100 );
+	//fgParticles.init();
+
+	fgParticles.setRepelClips( repelClips );
 
 	// TO VIEW ACTIVE SCENE
 	//currentScene = new ActiveScene1();
@@ -286,7 +287,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene3();
+	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
@@ -418,8 +419,8 @@ void TextTestApp::draw()
 			gl::drawSolidRect( mFboBlur1.getBounds() );
 		gl::popMatrices();
 		mFboScene.unbindTexture();
-	mFboBlur1.unbindFramebuffer();	
-	
+	mFboBlur1.unbindFramebuffer();
+
  
 	// tell the shader to blur vertically and the size of 1 pixel
 	mShaderBlur.uniform("sampleOffset", Vec2f(0.0f, 1.0f/mFboBlur2.getHeight()));
@@ -607,9 +608,13 @@ void TextTestApp::drawSkeleton(){
 
 			}
 
-		}
-		
+		}	
 	}
+	 
+
+
+
+
 }
 
 

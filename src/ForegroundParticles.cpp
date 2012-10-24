@@ -32,7 +32,26 @@ ForegroundParticles::ForegroundParticles(void)
 }
 
 
+
+void ForegroundParticles::setRepelClips( std::vector<CinderClip> &rclips )
+{
+	repelClips = &rclips;
+
+	// loop into each grid and make its clips repellers
+	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
+		for (int i=0; i<repelClips->size(); i++){
+			p->addRepelClip( repelClips->at(i), 100, 100 );
+			///	gp->addGravClip( repelClips->at(i), 200 );
+		}
+	}
+}
+
+
+/*
+
 void ForegroundParticles::init(){
+		mParticles.clear();
+
 	for( int i=0; i<100; i++ )
 	{
 		ParticleA particle = ParticleA();
@@ -51,9 +70,10 @@ void ForegroundParticles::init(){
 		//	particle.addRepelClip( repelClips[i],500,200 );
 		//}
 		
-		this->mParticles.push_back( particle );
+		mParticles.push_back( particle );
 	}
 }
+*/
 
 void ForegroundParticles::hide() // TODO - create show function too
 {
@@ -132,30 +152,16 @@ void ForegroundParticles::setup( int howMany )
 	{
 		ParticleA particle = ParticleA();
 		particle.init();
-
 		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-
-		particle.width = randFloat(3,10);
-	
-		particle.x=randFloat(getWindowWidth());
-		particle.y=randFloat(getWindowHeight());
-
-		//particle.setBounce(-1);
-		particle.setMaxSpeed(5);
 		particle.decays = true;
-		//particle.setEdgeBehavior("wrap");
-
+		//particle.setBounce(-1);
+		particle.setMaxSpeed(20);
+		particle.setEdgeBehavior("wrap");
 		particle.setWander(3);
 		particle.setGrav(0);
-		
-		// (int i=0; i<20; i++){
-		//	particle.addRepelClip( repelClips[i],500,200 );
-		//}
-		
 
-		// TODO REPELLER FOR FONT. TO BE ABLE TO SHOW /HIDE
-		// particle.addRepelClip( repelClips[i],500,200 );
-
+		particle.respawn();
+		
 		mParticles.push_back( particle );
 	}
 

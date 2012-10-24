@@ -4,6 +4,8 @@
 PassiveScene3::PassiveScene3()
 {
 	_id = 3; // for boost signal
+
+	isFrame2=false;
 }
 
 void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer )
@@ -22,17 +24,23 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles->overrideDrawMethodInScene = true;
 
-	fgParticles->mParticles.clear();
+	//fgParticles->mParticles.clear();
+
+	//if(fgParticles->mParticles.size()<1){
+	//	fgParticles->setup( 100 );
+	//}
+	fgParticles->hide();
+
 
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
+	otherParticleTexture = TextureGlobals::getInstance()->getParticleTexture(5);
 	
 	gridLayer = &thegridLayer;
-	testVar=0;
 
-
+	gridSpeed=0;
+	particleSpeed=0;
 
 	// create a particle
-
 	ParticleA particle = ParticleA();
 	particle.init();
 	particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
@@ -52,6 +60,9 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 }
 
 void PassiveScene3::showFrame2(){
+
+	isFrame2=true;
+
 	font->animateOut();
 	mCue = timeline().add( bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 2 );
 }
@@ -90,28 +101,39 @@ void PassiveScene3::update()
 
 void PassiveScene3::draw()
 {
-	testVar+=15;
-	
-	for( int i=0; i<6; i++ ){
 
-		gl::color( 1, 1, 1, 0.4 );
-		gl::pushMatrices();
-		gl::translate(0,0,testVar*i);
+	if(isFrame2)
+	{
+		// ZOOM THE GRID
 	
-		//if(i==0){
-		//	for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p ){		
-		//		Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
-		//		gl::draw(*p->particleTexture,rect);
-		//	}
-		//}
-
-		for( vector<ParticleA>::iterator p = gridLayer->begin(); p != gridLayer->end(); ++p ){
-			float rad = p->width + (p->getVx()+p->getVy())/5;
-			Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
-			gl::draw( *particleTexture, rect );
+		gridSpeed+=4;
+	
+		for( int i=0; i<7; i++ ){
+			gl::color( 1, 1, 1, 0.7 );
+			gl::pushMatrices();
+			gl::translate(0,0,gridSpeed*i);
+		
+			for( vector<ParticleA>::iterator p = gridLayer->begin(); p != gridLayer->end(); ++p ){
+				float rad = p->width + (p->getVx()+p->getVy())/5;
+				Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
+				gl::draw( *particleTexture, rect );
+			}
+			gl::popMatrices();
 		}
+	
 
-		if(i==5){
+	
+		//if(gridSpeed>150)
+	//	{
+			// ZOOM INDIVIDUAL PARTICLES
+			particleSpeed +=10;
+
+			gl::color( 1, 1, 1, 0.4 );
+			gl::pushMatrices();
+			gl::translate(0,0,particleSpeed);
+	
+			//if(i==0){
+	
 			ParticleA particle = ParticleA();
 			particle.init();
 			particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
@@ -124,9 +146,20 @@ void PassiveScene3::draw()
 			particle.setGrav(0);
 
 			localParticles.push_back( particle );
-		}
+			
+			//gl::translate(0,0,testVar*i);
 
-		gl::popMatrices();
+			for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p ){		
+				Rectf rect = Rectf(p->x - p->width, p->y - p->width, p->x + p->width, p->y + p->width);
+				gl::draw( *otherParticleTexture, rect ); // TODO - change for the foreground texture
+				//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
+			}
+
+			gl::popMatrices();	
+	//	}
+
 	}
-	
+
+
+
 }

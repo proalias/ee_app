@@ -15,6 +15,9 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles = &thefgParticles;
 
+//	if(fgParticles->mParticles.size()<1){
+//		fgParticles->setup( 100 );
+//	}
 
 	mCue = timeline().add( bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 25 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
