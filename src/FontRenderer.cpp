@@ -191,6 +191,10 @@ void FontRenderer::tick(int lineIndex){
 	int particleIndexA = randInt(lines[lineIndex].size());
 	int particleIndexB = particleIndexA + randInt(tickRange);; 
 
+	if (particleIndexA == particleIndexB){
+		return;
+	}
+
 	if (particleIndexB >= lines[lineIndex].size()){
 		return;
 	}

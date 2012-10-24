@@ -182,6 +182,6 @@ NobleeBold::NobleeBold(void)
 	COMMA = std::vector<Vec2f>( comma, comma+(sizeof(comma)/sizeof(comma[0])) );
 
 	Vec2f hashtag[] = { Vec2f(11.7, 9.6), Vec2f(10.8, 12.7), Vec2f(9.85, 15.8), Vec2f(8.95, 18.75), Vec2f(7.85, 21.95), Vec2f(7.05, 24.9), Vec2f(6.1, 28), Vec2f(18.45, 9.6), Vec2f(17.55, 12.7), Vec2f(16.6, 15.8), Vec2f(15.65, 18.75), Vec2f(14.6, 21.95), Vec2f(13.8, 24.9), Vec2f(12.85, 28), Vec2f(6.6, 15.55), Vec2f(13.1, 15.55), Vec2f(19.55, 15.55), Vec2f(5.1, 22.2), Vec2f(11.5, 22.15), Vec2f(18.1, 22.2) };
-	HASHTAG = std::vector<Vec2f>( comma, comma+(sizeof(comma)/sizeof(comma[0])) );
+	HASHTAG = std::vector<Vec2f>( hashtag, hashtag+(sizeof(hashtag)/sizeof(hashtag[0])) );
 
 }

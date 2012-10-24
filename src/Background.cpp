@@ -135,7 +135,7 @@ void Background::draw()
 
 
 	gl::enableAlphaBlending();
-	gl::color( 1, 1, 1, 0.6 );
+	gl::color( 1, 1, 1, 0.8 );
 
 	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
 		float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
@@ -144,7 +144,7 @@ void Background::draw()
 	}
 
 
-	gl::color( 1, 1, 1, 0.5 );
+	gl::color( 1, 1, 1, 0.7 );
 	gl::pushMatrices();
 	gl::translate(0,0,-15);
 	
@@ -156,7 +156,7 @@ void Background::draw()
 	gl::popMatrices();
 
 	
-	gl::color( 1, 1, 1, 0.4 );
+	gl::color( 1, 1, 1, 0.6 );
 	gl::pushMatrices();
 	gl::translate(0,0,-30);
 	

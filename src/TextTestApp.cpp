@@ -79,7 +79,9 @@ class TextTestApp : public AppNative {
 
 	std::vector<CinderClip> repelClips;
 
-	bool animationInProgress;
+	
+	bool flipScreen;
+	
 	std::vector<TweenParticle> pointsContainer;
 	std::vector<TweenParticle> animatingParticles;
 	
@@ -124,6 +126,7 @@ private:
 
 	bool trackingRightHand;
 	bool tweeningPointsIn;
+
 
 protected:
 	Background mbackground;
@@ -189,6 +192,8 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
+	flipScreen = true;
+
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
@@ -347,6 +352,15 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::draw()
 {
+	if (flipScreen){
+		gl::pushMatrices();
+		
+		gl::scale( Vec3f(-1, 1, 1) );
+		gl::translate( Vec2f(-ci::app::getWindowWidth(), 0 ) );
+		gl::translate( Vec3f(-1, 1, 1) );
+	}
+
+
 	mbackground.draw();
 
 	drawSkeleton();
@@ -447,6 +461,10 @@ void TextTestApp::draw()
 
 	// restore the modelview matrix
 	gl::popModelView();
+
+	if (flipScreen == true){
+		gl::popMatrices();
+	}
 }
 
 void TextTestApp::drawSkeleton(){
@@ -588,7 +606,6 @@ void TextTestApp::drawSkeleton(){
 
 		}
 		
-		//gl::popMatrices();
 	}
 }
 
