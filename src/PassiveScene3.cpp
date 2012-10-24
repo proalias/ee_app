@@ -22,7 +22,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles->overrideDrawMethodInScene = true;
 
-	fgParticles->mParticles.clear();
+	//fgParticles->mParticles.clear();
 
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 	

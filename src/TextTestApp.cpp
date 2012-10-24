@@ -148,7 +148,7 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	bool isDeployed = false;
+	bool isDeployed = true;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -195,7 +195,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
-	flipScreen = false;
+	flipScreen = true;
 
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
@@ -355,7 +355,7 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::draw()
 {
-	if (flipScreen){
+	if (flipScreen==true){
 		gl::pushMatrices();
 		
 		gl::scale( Vec3f(-1, 1, 1) );
