@@ -55,7 +55,6 @@ static const bool PREMULT = false;
 
 class TextTestApp : public AppNative {
  public:
-
 	void prepareSettings( Settings *settings ); // TODO - whats this wheres it get called?
 
 	void setup();
@@ -149,15 +148,19 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	// TODO - turn on for the live app
-	//setAlwaysOnTop();
-	//setBorderless();
-	//setFullScreen(true);
+	bool isDeployed = false;
+
+	if (isDeployed == true){
+		flipScreen = true;
+		settings->setAlwaysOnTop(true);
+		settings->setBorderless(true);
+		settings->setFullScreen( true );
+	}
 
 	settings->setWindowSize( 1280, 800 );
-	//settings->setWindowSize( 1280, 800 );
-	//settings->setFrameRate( 30.0f );
-	//settings->setFullScreen( true );
+	settings->setFrameRate( 30.0f );
+
+	
 }
 
 
@@ -570,7 +573,7 @@ void TextTestApp::drawSkeleton(){
 							break;
 						case NUI_SKELETON_POSITION_KNEE_LEFT:
 							//draw left knee
-							break;				 
+							break;
 						case NUI_SKELETON_POSITION_ANKLE_LEFT:
 							//draw left ankle
 							break;
