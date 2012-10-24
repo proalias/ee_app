@@ -1,5 +1,5 @@
 #include "PassiveScene3.h"
-#include "boost/bind.hpp"
+#include "boost/lambda/bind.hpp"
 
 PassiveScene3::PassiveScene3()
 {
@@ -56,7 +56,8 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	particle.setGrav(0);
 	localParticles.push_back( particle );
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
+
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame2(){
@@ -64,7 +65,7 @@ void PassiveScene3::showFrame2(){
 	isFrame2=true;
 
 	font->animateOut();
-	mCue = timeline().add( bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 2 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 2 );
 }
 
 void PassiveScene3::showFrame3(){
@@ -78,12 +79,12 @@ void PassiveScene3::showFrame3(){
 	font->addLine( "      FIBRE BROADBAND", 2 );
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
 
 void PassiveScene3::showFrame4(){
 	font->animateOut();
-	mCue = timeline().add( bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame5(){

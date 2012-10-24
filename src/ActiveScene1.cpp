@@ -1,5 +1,5 @@
 #include "ActiveScene1.h"
-#include "boost/bind.hpp"
+#include "boost/lambda/bind.hpp"
 
 ActiveScene1::ActiveScene1()
 {
@@ -23,7 +23,7 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 	fgParticles = &thefgParticles;
 
 	// TODO - TIMEOUT BACK TO NORMAL????
-	mCue = timeline().add( bind(&ActiveScene1::showFrame2, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( boost::lambda::bind(&ActiveScene1::showFrame2, this), timeline().getCurrentTime() + 10 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 }
 
@@ -34,12 +34,12 @@ void ActiveScene1::showFrame2()
 	//hand = IconRenderer();
 	hand.setPoints( iconFactory->getPointsForIcon(IconFactory::HAND) ); // TODO - animate in from grid
 	hand.pos = Vec2f(600,500);
-	hand.scale = .7;
+	hand.scale = 0.7;
 	showHand=true;
 
 	// TODO - timeout
 	// TODO - cull this cue if interaction happens. OR return in each keyframe
-	mCue = timeline().add( bind(&ActiveScene1::showFrame2, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( boost::lambda::bind(&ActiveScene1::showFrame2, this), timeline().getCurrentTime() + 5 );
 }
 
 void ActiveScene1::showFrame3()
