@@ -13,7 +13,7 @@ void ParticleA::init()
 	
 
 	decays = false;
-	lifeSpan = 100 + randInt(1600);
+	lifeSpan = 100 + randInt(200);
 	dying = false;
 	
 
@@ -450,9 +450,10 @@ void ParticleA::respawn(){
 		x=randFloat(app::getWindowWidth());
 		y=randFloat(app::getWindowHeight());
 
-		lifeSpan = 100 + randInt(1600);
+		lifeSpan = 100 + randInt(200);
 
-
+		
+		dying = false;
 }
 
 

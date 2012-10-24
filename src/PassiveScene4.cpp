@@ -19,7 +19,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-	fgParticles->destroy(); // TODO - call hide not destroy
+	//fgParticles->destroy(); // TODO - call hide not destroy
 
 	arrow1 = IconRenderer();
 	arrow1.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
@@ -60,11 +60,11 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	
 	arrows.push_back(&arrow5);
 
-	cinder::app::timeline().apply(&arrow1.pos,Vec2f(1600,450),ci::Vec2f(-300.0,arrow1.pos.value().y), 3.0f ,cinder::EaseInExpo()).loop(true);
-	cinder::app::timeline().apply(&arrow2.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 2.0f ,cinder::EaseInExpo()).loop(true);
-	cinder::app::timeline().apply(&arrow3.pos,Vec2f(1600,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 4.0f ,cinder::EaseInExpo()).loop(true);
-	cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 5.0f ,cinder::EaseInExpo()).loop(true);
-	cinder::app::timeline().apply(&arrow5.pos,Vec2f(1600,50),ci::Vec2f(-300.0,arrow5.pos.value().y), 5.0f ,cinder::EaseInExpo()).loop(true);
+	cinder::app::timeline().apply(&arrow1.pos,Vec2f(1600,450),ci::Vec2f(-300.0,arrow1.pos.value().y), 6.0f ,cinder::EaseInExpo()).loop(true);
+	cinder::app::timeline().apply(&arrow2.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow2.pos.value().y), 4.0f ,cinder::EaseInExpo()).loop(true);
+	cinder::app::timeline().apply(&arrow3.pos,Vec2f(1600,700),ci::Vec2f(-300.0,arrow3.pos.value().y), 8.0f ,cinder::EaseInExpo()).loop(true);
+	cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 16.0f ,cinder::EaseInExpo()).loop(true);
+	cinder::app::timeline().apply(&arrow5.pos,Vec2f(1600,50),ci::Vec2f(-300.0,arrow5.pos.value().y), 10.0f ,cinder::EaseInExpo()).loop(true);
 
 	font->animateIn();
 
@@ -75,6 +75,11 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 void PassiveScene4::showFrame2(){
 	font->animateOut();
 	mCue = timeline().add( bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 3 );
+	
+	for (int i = 0; i < arrows.size(); i++){
+		arrows[i]->disperseParticles();
+	}
+
 }
 
 void PassiveScene4::showFrame3(){
@@ -88,7 +93,25 @@ void PassiveScene4::showFrame4(){
 
 
 void PassiveScene4::draw(){
+
+	
+	bool doorOnRight = ShopConfig::getInstance()->doorOnRight;
+	//some stores have doors on the left, so we need to reverse the direction of the arrows.
+	//todo - read orientation from config
+	if(doorOnRight == true){
+		gl::pushMatrices();
+	
+		gl::scale( Vec3f(-1, 1, 1) );
+		
+		gl::translate( Vec2f(-ci::app::getWindowWidth(), 0 ) );
+		gl::translate( Vec3f(-1, 1, 1) );
+	}
+	
 	for (int i = 0; i < arrows.size(); i++){
 		arrows[i]->draw();
+	}
+
+	if(doorOnRight == true){
+		gl::popMatrices();
 	}
 }

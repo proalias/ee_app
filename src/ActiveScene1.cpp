@@ -21,7 +21,6 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-	fgParticles->destroy();//mParticles.clear();
 
 	// TODO - TIMEOUT BACK TO NORMAL????
 	mCue = timeline().add( bind(&ActiveScene1::showFrame2, this), timeline().getCurrentTime() + 10 );

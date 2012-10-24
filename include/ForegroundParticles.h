@@ -25,8 +25,10 @@ public:
 	void setup( int howMany );
 	void update();
 	void draw();
+	
+	void init();
 
-	void destroy(); // destroy all the particles
+	//void destroy(); // destroy all the particles
 	void hide(); // make them all invisible
 	void show(); // make them all invisible
 

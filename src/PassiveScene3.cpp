@@ -19,7 +19,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-	
+
 	fgParticles->mParticles.clear();
 	
 	/*
@@ -60,19 +60,20 @@ void PassiveScene3::showFrame3(){
 	font->setColor(Color(1.0,1.0,1.0));
 
 	font->addLine( "WITH SUPERFAST", 2 );
-	font->addLine( "      4GEE AND", 2 );
+	font->addLine( "      #4GEE AND", 2 );
 	font->addLine( "      FIBRE BROADBAND", 2 );
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
 
 void PassiveScene3::showFrame4(){
-	_signal(this);
+	font->animateOut();
+	mCue = timeline().add( bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame5(){
-
+	_signal(this);
 }
 
 void PassiveScene3::update()

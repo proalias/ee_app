@@ -31,6 +31,30 @@ ForegroundParticles::ForegroundParticles(void)
 
 }
 
+
+void ForegroundParticles::init(){
+	for( int i=0; i<100; i++ )
+	{
+		ParticleA particle = ParticleA();
+		particle.init();
+		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
+		particle.decays = true;
+		//particle.setBounce(-1);
+		particle.setMaxSpeed(20);
+		particle.setEdgeBehavior("wrap");
+		particle.setWander(3);
+		particle.setGrav(0);
+
+		particle.respawn();
+		
+		// (int i=0; i<20; i++){
+		//	particle.addRepelClip( repelClips[i],500,200 );
+		//}
+		
+		this->mParticles.push_back( particle );
+	}
+}
+
 void ForegroundParticles::hide() // TODO - create show function too
 {
 	//mParticles.clear();
@@ -70,12 +94,12 @@ void ForegroundParticles::show() // TODO - create show function too
 	}
 
 }
-
+/*
 void ForegroundParticles::destroy()
 {
 	mParticles.clear();
 }
-
+*/
 void ForegroundParticles::setup( int howMany )
 {
 	//particleImg = loadImage(loadAsset( "particle.png" ) ); // TODO - can we use image? - or sequence

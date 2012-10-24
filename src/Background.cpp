@@ -78,8 +78,9 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 {
 	int SPACING = 40;
 
-	int COLUMNS = cinder::app::getWindowWidth()/SPACING;
-	int ROWS = cinder::app::getWindowHeight()/SPACING; // TODO - make global and pass to firefly
+	int COLUMNS = (cinder::app::getWindowWidth() / SPACING) + 2;
+	int ROWS = (cinder::app::getWindowHeight()  / SPACING) + 2;
+
 	
 	//fieldLayerContainer.clear();
 

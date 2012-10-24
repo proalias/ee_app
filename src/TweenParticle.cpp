@@ -99,6 +99,7 @@ void TweenParticle::update(double t){
 	
 		xJitter = cinder::math<float>::sin(t*jitterSpeed) * noise;
 		yJitter = cinder::math<float>::cos(t*jitterSpeed) * noise;
+
 	}
 	
 }

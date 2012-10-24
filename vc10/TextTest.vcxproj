@@ -90,8 +90,8 @@
       <AdditionalIncludeDirectories>..\include;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;KinectSdk_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\blocks\Cinder-KinectSdk\lib;C:\Users\alias\Downloads\cinder-Cinder-v0.8.4-7-g4214f76\cinder-Cinder-4214f76\lib\msw;C:\Users\alias\Downloads\cinder-Cinder-v0.8.4-7-g4214f76\cinder-Cinder-4214f76\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;KinectSdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\blocks\Cinder-KinectSdk\lib;../../../lib/msw;../../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -104,14 +104,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
-    <ClCompile Include="..\include\TextureGlobals.cpp" />
     <ClCompile Include="..\src\ActiveScene1.cpp" />
     <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
-    <ClCompile Include="..\src\FireFlyEffect.cpp" />
-    <ClCompile Include="..\src\FireFlyParticle.cpp" />
-    <ClCompile Include="..\src\FireFlyParticleController.cpp" />
     <ClCompile Include="..\src\ForegroundParticles.cpp" />
     <ClCompile Include="..\src\IconFactory.cpp" />
     <ClCompile Include="..\src\IconRenderer.cpp" />
@@ -125,10 +121,11 @@
     <ClCompile Include="..\src\PassiveScene3.cpp" />
     <ClCompile Include="..\src\PassiveScene4.cpp" />
     <ClCompile Include="..\src\RepelPoint.cpp" />
+    <ClCompile Include="..\src\ShopConfig.cpp" />
     <ClCompile Include="..\src\SVGtoParticleParser.cpp" />
     <ClCompile Include="..\src\TextTestApp.cpp" />
+    <ClCompile Include="..\src\TextureGlobals.cpp" />
     <ClCompile Include="..\src\TweenParticle.cpp" />
-    <ClCompile Include="..\src\Vect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
@@ -136,10 +133,6 @@
     <ClInclude Include="..\include\Background.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
-    <ClInclude Include="..\include\FireFlyEffect.h" />
-    <ClInclude Include="..\include\FireFlyParticle.h" />
-    <ClInclude Include="..\include\FireFlyParticleController.h" />
-    <ClInclude Include="..\include\FireFlyWaveScheme.h" />
     <ClInclude Include="..\include\ForegroundParticles.h" />
     <ClInclude Include="..\include\Icon.h" />
     <ClInclude Include="..\include\IconFactory.h" />
@@ -157,10 +150,10 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\SceneBase.h" />
     <ClInclude Include="..\include\SceneFactory.h" />
+    <ClInclude Include="..\include\ShopConfig.h" />
     <ClInclude Include="..\include\SVGtoParticleParser.h" />
     <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
-    <ClInclude Include="..\include\Vect.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

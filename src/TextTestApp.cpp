@@ -31,7 +31,7 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
-
+#include "ShopConfig.h"
 //#include "ActiveScene1.h"
 
 #include "cinder/gl/Fbo.h"
@@ -190,7 +190,6 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 void TextTestApp::setup()
 {
 	// SET UP BLUR STUFF
-
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
 
@@ -237,6 +236,12 @@ void TextTestApp::setup()
 	mbackground.setup();
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
 
+
+	//load store config
+	cinder::XmlTree configXml( ci::app::loadAsset( "shopconfig.xml" ) );
+	ShopConfig::getInstance()->parseConfig(configXml);
+
+
 	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
 
@@ -263,7 +268,8 @@ void TextTestApp::setup()
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 1 );
-
+	
+	fgParticles.init();
 
 	// TO VIEW ACTIVE SCENE
 	//currentScene = new ActiveScene1();
@@ -354,8 +360,9 @@ void TextTestApp::draw()
 
 
 	//fgParticles.draw();
-
-
+	
+	currentScene->draw();
+	
 	// store our viewport, so we can restore it later
 	Area viewport = gl::getViewport();
 
@@ -368,7 +375,10 @@ void TextTestApp::draw()
 			
 			fgParticles.draw();
 			
-			currentScene->draw();
+			//gl::drawSolidCircle( Vec2f(50,50), 20 );
+
+			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
+
 
 		gl::popMatrices();
 	mFboScene.unbindFramebuffer();
