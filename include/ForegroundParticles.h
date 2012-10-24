@@ -43,5 +43,13 @@ public:
 
 	TimelineRef mTimeline;
 
+
+
+	// if this is set then the scene is reponsible for the draw method
+	//YOU MUST CANCEL THIS AT THE END OF THE SCENE
+	bool overrideDrawMethodInScene;
+
+
+
 	ForegroundParticles(void);
 };

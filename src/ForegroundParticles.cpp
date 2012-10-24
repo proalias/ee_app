@@ -28,7 +28,7 @@ using std::list;
 
 ForegroundParticles::ForegroundParticles(void)
 {
-
+	overrideDrawMethodInScene = false;
 }
 
 
@@ -170,23 +170,22 @@ void ForegroundParticles::update()
 
 void ForegroundParticles::draw()
 {
-	//gl::enableAdditiveBlending();
 
-	// Turns on additive blending so we can draw a bunch of glowing images without
-	// needing to do any depth testing.
-	//glDepthMask( GL_FALSE );
-	//glDisable( GL_DEPTH_TEST );
-	//glEnable( GL_BLEND );
-	//glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+	if(!overrideDrawMethodInScene)
+	{
+		//gl::enableAdditiveBlending();
+		//gl::enableAlphaBlending();
 
-	gl::color( Color( 1, 1, 1 ) );
+		//gl::color( 0, 0, 0, 0.8 );
 
-	// TODO - may be passing foreground particles into scenes. but still probs drawn here
-	for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
-		//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );		
-		Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
-		gl::draw(*p->particleTexture,rect);
+		// TODO - may be passing foreground particles into scenes. but still probs drawn here
+		for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
+			//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );		
+			Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
+			gl::draw(*p->particleTexture,rect);
+		}
+
+		//gl::disableAlphaBlending();
 	}
-
 
 }

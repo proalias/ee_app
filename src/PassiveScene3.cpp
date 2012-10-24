@@ -6,7 +6,7 @@ PassiveScene3::PassiveScene3()
 	_id = 3; // for boost signal
 }
 
-void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
+void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer )
 {
 	font = &thefont;
 	font->clear();
@@ -20,30 +20,33 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles = &thefgParticles;
 
+	fgParticles->overrideDrawMethodInScene = true;
+
 	fgParticles->mParticles.clear();
+
+	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 	
-	/*
-	for( int i=0; i<50; i++ )
-	{
-		ParticleA particle = ParticleA();
-		particle.init();
-		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-		particle.width = randFloat(3,10);
-		particle.x=randFloat(getWindowWidth());
-		particle.y=randFloat(getWindowHeight());
-		//particle.setBounce(-1);
-		particle.setMaxSpeed(300);
-		particle.setEdgeBehavior("wrap");
-		particle.setWander(30);
-		particle.setGrav(0);
-		
-		// (int i=0; i<20; i++){
-		//	particle.addRepelClip( repelClips[i],500,200 );
-		//}
-		
-		fgParticles->mParticles.push_back( particle );
-	}
-	*/
+	gridLayer = &thegridLayer;
+	testVar=0;
+
+
+
+	// create a particle
+
+	ParticleA particle = ParticleA();
+	particle.init();
+	particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
+	particle.width = randFloat(3,10);
+	particle.x=randFloat(getWindowWidth());
+	particle.y=randFloat(getWindowHeight());
+	particle.setMaxSpeed(0);
+	particle.setEdgeBehavior("wrap");
+	particle.setWander(0);
+	particle.setGrav(0);
+	localParticles.push_back( particle );
+
+
+
 
 	mCue = timeline().add( bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
 }
@@ -73,6 +76,8 @@ void PassiveScene3::showFrame4(){
 }
 
 void PassiveScene3::showFrame5(){
+	fgParticles->overrideDrawMethodInScene = false;
+	//fgParticles.over
 	_signal(this);
 }
 
@@ -85,5 +90,43 @@ void PassiveScene3::update()
 
 void PassiveScene3::draw()
 {
-	//font.draw(); // THINK THIS IS DONE BY BASE CLASS ANYWAYS
+	testVar+=15;
+	
+	for( int i=0; i<6; i++ ){
+
+		gl::color( 1, 1, 1, 0.4 );
+		gl::pushMatrices();
+		gl::translate(0,0,testVar*i);
+	
+		//if(i==0){
+		//	for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p ){		
+		//		Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
+		//		gl::draw(*p->particleTexture,rect);
+		//	}
+		//}
+
+		for( vector<ParticleA>::iterator p = gridLayer->begin(); p != gridLayer->end(); ++p ){
+			float rad = p->width + (p->getVx()+p->getVy())/5;
+			Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
+			gl::draw( *particleTexture, rect );
+		}
+
+		if(i==5){
+			ParticleA particle = ParticleA();
+			particle.init();
+			particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
+			particle.width = randFloat(3,10);
+			particle.x=randFloat(getWindowWidth());
+			particle.y=randFloat(getWindowHeight());
+			particle.setMaxSpeed(0);
+			particle.setEdgeBehavior("wrap");
+			particle.setWander(0);
+			particle.setGrav(0);
+
+			localParticles.push_back( particle );
+		}
+
+		gl::popMatrices();
+	}
+	
 }

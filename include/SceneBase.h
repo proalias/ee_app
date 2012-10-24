@@ -13,7 +13,7 @@
 class SceneBase {
 
 public:
-	virtual void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
+	virtual void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer )
 	{
 		font = &thefont;
 		font->clear();
@@ -24,8 +24,7 @@ public:
 
 		fgParticles = &thefgParticles;
 
-		//bckgrnd = &thebg;
-		gridLayer1 = &thegridLayer1;
+		gridLayer = &thegridLayer;
 	}
 	virtual void update(Timeline &timeline){}
 	virtual void draw(){}
@@ -44,9 +43,8 @@ protected:
 	FontRenderer * font;
 	IconFactory * iconFactory;
 	ForegroundParticles * fgParticles;
-	//Background * bckgrnd;
 
-	std::vector<ParticleA> * gridLayer1;
+	std::vector<ParticleA> * gridLayer;
 
 	// signal stuff
 	int _id;

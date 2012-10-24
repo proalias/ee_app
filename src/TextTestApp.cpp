@@ -278,7 +278,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene1();
+	currentScene = new PassiveScene3();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
@@ -351,7 +351,7 @@ void TextTestApp::draw()
 
 	drawSkeleton();
 
-	
+
 	gl::enableAdditiveBlending();
 	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
