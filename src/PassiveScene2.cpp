@@ -4,6 +4,7 @@
 #include "cinder/Tween.h"
 #include "cinder/Easing.h"
 #include "ColorConstants.h"
+#include "ShopConfig.h"
 
 PassiveScene2::PassiveScene2()
 {
@@ -66,11 +67,12 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	placeMark6.scale = 0.5;
 	
 	placeMarks.push_back(&placeMark6);
-
+	
 	mCue = timeline().add( bind(&PassiveScene2::showFrame2, this), timeline().getCurrentTime() + 1 );
 }
 
-void PassiveScene2::showFrame2(){
+void PassiveScene2::showFrame2()
+{
 	font->clear();
 	font->setPosition(200.0,200.0);
 	font->setColor(Color(1.0,1.0,1.0));
@@ -100,7 +102,7 @@ void PassiveScene2::showFrame4()
 	font->setPosition(370.0,450.0);
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
 	// TODO - get the actual city name from the config
-	font->addLine( "LONDON", 3 );
+	font->addLine( "LONDON" , 3);// ShopConfig::getInstance()->location, 3 );
 	font->animateIn();
 	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 3 );
 }

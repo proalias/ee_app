@@ -5,6 +5,8 @@
 
 using namespace ci;
 
+// TODO -  was this used for fonts?... should potentially put it back as currently icon and font share particle
+
 Particle::Particle()
 {
 }

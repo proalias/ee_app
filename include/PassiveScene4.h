@@ -3,6 +3,8 @@
 
 #include "FontRenderer.h"
 #include "SceneBase.h"
+#include "ShopConfig.h"
+
 
 using namespace std;
 using namespace ci;
@@ -25,7 +27,6 @@ public:
 
 	std::vector<IconRenderer*> arrows;
 
-	
 	CueRef mCue;
 	// keyframes
 	void showFrame2();

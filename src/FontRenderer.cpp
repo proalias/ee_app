@@ -367,8 +367,9 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 		points = font.SEMI_COLON;
 	}else if( character == *"," ){
 		points = font.COMMA;
+	}else if( character == *"#" ){
+		points = font.HASHTAG;
 	}
-
 	return points;
 }
 

@@ -10,6 +10,9 @@
 #include "ParticleA.h"
 #include "CinderClip.h"
 
+//#include "FireFlyEffect.h"
+
+
 #include <list>
 
 using namespace ci;
@@ -32,15 +35,16 @@ public:
 	std::vector<ParticleA>	gridLayer2;
 	std::vector<ParticleA>	gridLayer3;
 
-	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int );
+	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int, float );
 
 	// TODO - maybe force these in the constuctor?
 	std::vector<CinderClip> * repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
-	
 	float Background::getForceForIndex(int index);
 	float Background::getMinDistForIndex(int index);
 
 	Background(void);
+
+//	FireFlyEffect ff;
 };

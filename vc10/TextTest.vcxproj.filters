@@ -78,10 +78,13 @@
     <ClCompile Include="..\src\ForegroundParticles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PassiveScene5.cpp">
+    <ClCompile Include="..\src\ActiveScene1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\include\TextureGlobals.cpp">
+    <ClCompile Include="..\src\TextureGlobals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ShopConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,10 +158,13 @@
     <ClInclude Include="..\include\ForegroundParticles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\PassiveScene5.h">
+    <ClInclude Include="..\include\ActiveScene1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\TextureGlobals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ShopConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

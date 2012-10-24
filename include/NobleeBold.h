@@ -69,6 +69,7 @@ class NobleeBold {
 	std::vector<Vec2f> COLON;
 	std::vector<Vec2f> SEMI_COLON;
 	std::vector<Vec2f> COMMA;
+	std::vector<Vec2f> HASHTAG;
 
 	NobleeBold(void);
 	//~NobleeRegular(void);

@@ -75,6 +75,11 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 void PassiveScene4::showFrame2(){
 	font->animateOut();
 	mCue = timeline().add( bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 3 );
+	
+	for (int i = 0; i < arrows.size(); i++){
+		arrows[i]->disperseParticles();
+	}
+
 }
 
 void PassiveScene4::showFrame3(){
@@ -88,7 +93,25 @@ void PassiveScene4::showFrame4(){
 
 
 void PassiveScene4::draw(){
+
+	
+	bool doorOnRight = ShopConfig::getInstance()->doorOnRight;
+	//some stores have doors on the left, so we need to reverse the direction of the arrows.
+	//todo - read orientation from config
+	if(doorOnRight == true){
+		gl::pushMatrices();
+	
+		gl::scale( Vec3f(-1, 1, 1) );
+		
+		gl::translate( Vec2f(-ci::app::getWindowWidth(), 0 ) );
+		gl::translate( Vec3f(-1, 1, 1) );
+	}
+	
 	for (int i = 0; i < arrows.size(); i++){
 		arrows[i]->draw();
+	}
+
+	if(doorOnRight == true){
+		gl::popMatrices();
 	}
 }

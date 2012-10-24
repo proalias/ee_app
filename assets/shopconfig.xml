@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- When standing outside, in front of the projection, is the door on the left or on the right?  Set to doorOnRight to "true" if the door is on the right, "false" if on the right --->
+
+<config>
+	<shop doorOnRight ="true" location ="DONCASTER"/>
+</config>

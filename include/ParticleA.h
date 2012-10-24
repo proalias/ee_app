@@ -96,7 +96,7 @@ public:
 	float x;
 	float y;
 	float rotation;
-	Anim <float> width;
+	float width;
 	float height;
 	float scaleX;
 	float scaleY;

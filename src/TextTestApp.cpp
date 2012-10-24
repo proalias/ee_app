@@ -9,6 +9,9 @@
 #include "cinder/Vector.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
 
 #include "boost/lambda/bind.hpp"
 
@@ -28,7 +31,8 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
-
+#include "ShopConfig.h"
+//#include "ActiveScene1.h"
 
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
@@ -178,21 +182,15 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles );
 		break;
-		
 	}
-
-
 
 }
 
 
 void TextTestApp::setup()
 {
-
-
-// SET UP BLUR STUFF
-
-		// setup our scene Fbo
+	// SET UP BLUR STUFF
+	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
 
 	// setup our blur Fbo's, smaller ones will generate a bigger blur
@@ -219,24 +217,14 @@ void TextTestApp::setup()
 	}
 
 
-	// setup the stuff to render our particles
-	// (see the Picking3D sample for more information)
 	mTransform.setToIdentity();
 
 	gl::Texture::Format format;
 	format.enableMipmapping(true);
 
-	//ImageSourceRef img = loadImage( "../data/ducky.png" );
-	//if(img) mTexture = gl::Texture( img, format );
-
-	//DataSourceRef file = loadFile("../data/ducky.msh");
-	//if(file) mMesh.read( file );
-
 	mCamera.setEyePoint( Vec3f(2.5f, 5.0f, 5.0f) );
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
 	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
-
-
 
 	for (int i=0; i<20; i++){
 		CinderClip cinderClip = CinderClip();
@@ -247,7 +235,12 @@ void TextTestApp::setup()
 
 	mbackground.setup();
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
-	
+
+
+	//load store config
+	cinder::XmlTree configXml( ci::app::loadAsset( "shopconfig.xml" ) );
+	ShopConfig::getInstance()->parseConfig(configXml);
+
 
 	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
@@ -275,7 +268,13 @@ void TextTestApp::setup()
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 1 );
+	
+	fgParticles.init();
 
+	// TO VIEW ACTIVE SCENE
+	//currentScene = new ActiveScene1();
+	//currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	//currentScene->setup( myFont, iconFactory, fgParticles );
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
@@ -287,11 +286,7 @@ void TextTestApp::setup()
 	
 	Timer textAnimationTimer = Timer();
 	textAnimationTimer.start();
-
-
-
-	//fgParticles.setup();
-
+	
 	setupSkeletonTracker();
 }
 
@@ -361,10 +356,7 @@ void TextTestApp::draw()
 	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
-
-
 	//gl::color( Color( 1, 1, 1 ) );
-
 
 
 	//fgParticles.draw();
@@ -380,7 +372,7 @@ void TextTestApp::draw()
 		gl::pushMatrices();
 		gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
 			gl::clear( ColorA( 0,0,0,0 ));
-			//render();
+			
 			fgParticles.draw();
 			
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
