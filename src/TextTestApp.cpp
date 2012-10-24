@@ -55,7 +55,6 @@ static const bool PREMULT = false;
 
 class TextTestApp : public AppNative {
  public:
-
 	void prepareSettings( Settings *settings ); // TODO - whats this wheres it get called?
 
 	void setup();
@@ -79,7 +78,9 @@ class TextTestApp : public AppNative {
 
 	std::vector<CinderClip> repelClips;
 
-	bool animationInProgress;
+	
+	bool flipScreen;
+	
 	std::vector<TweenParticle> pointsContainer;
 	std::vector<TweenParticle> animatingParticles;
 	
@@ -125,6 +126,7 @@ private:
 	bool trackingRightHand;
 	bool tweeningPointsIn;
 
+
 protected:
 	Background mbackground;
 
@@ -146,15 +148,19 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	// TODO - turn on for the live app
-	//setAlwaysOnTop();
-	//setBorderless();
-	//setFullScreen(true);
+	bool isDeployed = false;
+
+	if (isDeployed == true){
+		flipScreen = true;
+		settings->setAlwaysOnTop(true);
+		settings->setBorderless(true);
+		settings->setFullScreen( true );
+	}
 
 	settings->setWindowSize( 1280, 800 );
-	//settings->setWindowSize( 1280, 800 );
-	//settings->setFrameRate( 30.0f );
-	//settings->setFullScreen( true );
+	settings->setFrameRate( 30.0f );
+
+	
 }
 
 
@@ -189,6 +195,8 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
+	flipScreen = true;
+
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
@@ -347,6 +355,15 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::draw()
 {
+	if (flipScreen){
+		gl::pushMatrices();
+		
+		gl::scale( Vec3f(-1, 1, 1) );
+		gl::translate( Vec2f(-ci::app::getWindowWidth(), 0 ) );
+		gl::translate( Vec3f(-1, 1, 1) );
+	}
+
+
 	mbackground.draw();
 
 	drawSkeleton();
@@ -447,6 +464,10 @@ void TextTestApp::draw()
 
 	// restore the modelview matrix
 	gl::popModelView();
+
+	if (flipScreen == true){
+		gl::popMatrices();
+	}
 }
 
 void TextTestApp::drawSkeleton(){
@@ -552,7 +573,7 @@ void TextTestApp::drawSkeleton(){
 							break;
 						case NUI_SKELETON_POSITION_KNEE_LEFT:
 							//draw left knee
-							break;				 
+							break;
 						case NUI_SKELETON_POSITION_ANKLE_LEFT:
 							//draw left ankle
 							break;
@@ -588,7 +609,6 @@ void TextTestApp::drawSkeleton(){
 
 		}
 		
-		//gl::popMatrices();
 	}
 }
 
