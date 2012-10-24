@@ -131,7 +131,7 @@ void Background::draw()
 
 
 	// draw the firefly
-	// ff.draw();
+	//ff.draw();
 
 
 	gl::enableAlphaBlending();

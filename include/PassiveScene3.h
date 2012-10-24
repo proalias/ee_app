@@ -11,7 +11,11 @@ class PassiveScene3: public SceneBase {
  
 public:
 
+	float leftShift;
+
 	bool isFrame2;
+
+	float alphaValue;
 
 	float gridSpeed;
 	float particleSpeed;

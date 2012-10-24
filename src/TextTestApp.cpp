@@ -148,7 +148,7 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	bool isDeployed = true;
+	bool isDeployed = false;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -287,14 +287,14 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene1();
+	currentScene = new PassiveScene3();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 	iconFactory.init();
 	
-	Timer textAnimationTimer = Timer();
-	textAnimationTimer.start();
+	//Timer textAnimationTimer = Timer();
+	//textAnimationTimer.start();
 	
 	setupSkeletonTracker();
 }

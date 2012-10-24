@@ -22,6 +22,21 @@ void FireFlyParticleController::setParticles( std::vector<FireFlyParticleControl
 	ffparticles = &theffparticles;
 }
 
+/*
+void FireFlyParticleController::setActiveParticles( std::vector<FireFlyParticleController> &theffparticles )
+{
+	ffparticles = &theffparticles;
+}
+
+void FireFlyParticleController::setWaveParticles( std::vector<FireFlyParticleController> &theffparticles )
+{
+	ffparticles = &theffparticles;
+}
+*/
+
+
+
+
 FireFlyParticleController::FireFlyParticleController( float initX,
 	float initY,
 	Vect initPos,

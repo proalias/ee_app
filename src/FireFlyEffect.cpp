@@ -81,13 +81,14 @@ void FireFlyEffect::update()
 	int i = 0; 
 	int j = 0; 
 			
-	FireFlyParticle particle;
+	//FireFlyParticle particle;
 			
 	for (i = particles.size()-1; i >= 0; i--)
 	{
 		FireFlyParticleController controller  = particles[i];
-		particle = controller.particle;
+		FireFlyParticle particle = controller.particle;
 				
+		
 		controller.applyFade();
 				
 		if (!controller.isOccupied) {
@@ -97,29 +98,31 @@ void FireFlyEffect::update()
 		if (particle.isActive) {
 			particle.applyShuffle();						
 		}
-				
+			/*	
 		controller.repel();
 		if (!controller.isRepelling) {
 			controller.resetGrid();	
 		}
-			
-		/*
-		for (j = activeParticles.size()-1; j >=0; j--)
-		{
+		
+		*/
+
+		
+		for (j = activeParticles.size()-1; j >=0; j--){
 			if (controller.index == activeParticles[j]->index) {	
-				//activeParticles.shift().checkPath();	// TODO - replacement for shift
+				activeParticles[0]->checkPath();
+				activeParticles.erase(activeParticles.begin());
 				break;
 			}
 		}
 				
-		for (j = waveParticles.size()-1; j >=0; j--)
-		{
+		for (j = waveParticles.size()-1; j >=0; j--){
 			if (controller.index == waveParticles[j]->index) {
-				//waveParticles.shift().makeWave(); TODO -
+				waveParticles[0]->checkPath();
+				waveParticles.erase(activeParticles.begin());
 				break;						
 			}
 		}
-		*/
+		
 
 		particle.update();			
 	}
@@ -143,6 +146,7 @@ void FireFlyEffect::update()
 	}
 			
 	_delayNewFireFly++;
+	
 }
 
 void FireFlyEffect::increment()
@@ -161,15 +165,7 @@ void FireFlyEffect::decrement()
 
 void FireFlyEffect::draw()
 {
-	// loop through and draw
-//	for( int i = particles.size()-1; i >= 0; i--)
-//	{
-//		FireFlyParticleController controller  = particles[i];
-//		controller.draw();
-//	}
-
-		// TODO - may be passing foreground particles into scenes. but still probs drawn here
 	for( vector<FireFlyParticleController>::iterator p = particles.begin(); p != particles.end(); ++p ){
-		gl::drawSolidCircle( Vec2f( p->x, p->y ), 2 );
+		gl::drawSolidCircle( Vec2f( p->particlePos.x, p->particlePos.y ), 2 );
 	}
 }
