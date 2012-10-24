@@ -1,5 +1,5 @@
 #include "PassiveScene4.h"
-#include "boost/bind.hpp"
+#include "boost/lambda/bind.hpp"
 
 PassiveScene4::PassiveScene4()
 {
@@ -68,13 +68,13 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	font->animateIn();
 
-	mCue = timeline().add( bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
 
 }
 
 void PassiveScene4::showFrame2(){
 	font->animateOut();
-	mCue = timeline().add( bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 3 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 3 );
 	
 	for (int i = 0; i < arrows.size(); i++){
 		arrows[i]->disperseParticles();

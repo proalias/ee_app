@@ -38,6 +38,7 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 
+#include "ContourFinder.h"
 
 #include <list>
 
@@ -79,6 +80,11 @@ class TextTestApp : public AppNative {
 	std::vector<CinderClip> repelClips;
 
 	
+	ContourFinderRef		mContourFinder;
+	std::vector<Contour>	mContours;
+	ci::Channel16u			mChannel;
+	
+
 	bool flipScreen;
 	
 	std::vector<TweenParticle> pointsContainer;
@@ -107,6 +113,9 @@ class TextTestApp : public AppNative {
 	
 	Timer textAnimationTimer;
 	//ParticleImageContainer pTextures;
+
+	void					onDepthData( ci::Surface16u surface, const KinectSdk::DeviceOptions &deviceOptions );
+
 
 private:
 	// Kinect
@@ -148,7 +157,7 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	bool isDeployed = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -195,8 +204,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
-	flipScreen = true;
-
+	
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
@@ -305,8 +313,11 @@ void TextTestApp::setupSkeletonTracker(){
 	
 	// Start Kinect
 	mKinect = Kinect::create();
-	mKinect->start( DeviceOptions().enableDepth( false ).enableVideo( false ) );
+	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_80x60 ) );
+	
 	mKinect->removeBackground();
+	// Add callbacks
+	mCallbackId = mKinect->addDepthCallback( &TextTestApp::onDepthData, this );
 
 	// Set the skeleton smoothing to remove jitters. Better smoothing means
 	// less jitters, but a slower response time.
@@ -329,8 +340,33 @@ void TextTestApp::update()
 
 	fgParticles.update();
 
-	updateSkeleton();
 
+
+	
+	if ( mKinect->isCapturing() ) {
+			mKinect->update();
+			updateSkeleton();
+
+			if (false){//if ( mChannel ) {
+			// Find contours
+			mContours = mContourFinder->findContours( Channel8u( mChannel ) );
+			
+			// Scale contours to window
+			Vec2f scale = Vec2f( getWindowSize() ) / Vec2f( mChannel.getSize() );
+			for ( vector<Contour>::iterator contourIt = mContours.begin(); contourIt != mContours.end(); ++contourIt ) {
+				for ( vector<Vec2f>::iterator pointIt = contourIt->getPoints().begin(); pointIt != contourIt->getPoints().end(); ++pointIt ) {
+					pointIt->operator*=( scale );
+				}
+				contourIt->calcCentroid();
+			}
+		}else {
+			// If Kinect initialization failed, try again every 90 frames
+			if ( getElapsedFrames() % 90 == 0 ) {
+				mKinect->start();
+			}
+		}
+
+	}
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
@@ -342,14 +378,7 @@ void TextTestApp::update()
 
 void TextTestApp::updateSkeleton()
 {
-	if ( mKinect->isCapturing() ) {
-		mKinect->update();
-	} else {
-		// If Kinect initialization failed, try again every 90 frames
-		if ( getElapsedFrames() % 90 == 0 ) {
-			mKinect->start();
-		}
-	}
+	
 }
 
 
@@ -614,6 +643,11 @@ void TextTestApp::drawSkeleton(){
 
 
 
+// Handles depth data
+void TextTestApp::onDepthData( Surface16u surface, const DeviceOptions &deviceOptions )
+{
+	mChannel = surface.getChannelRed();
+}
 
 
 // Receives skeleton data
