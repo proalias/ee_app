@@ -8,20 +8,24 @@
 #include "IconFactory.h"
 #include "IconRenderer.h"
 #include "ForegroundParticles.h"
+#include "ParticleA.h"
 
 class SceneBase {
 
 public:
-	virtual void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
+	virtual void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
 	{
 		font = &thefont;
 		font->clear();
 		font->setPosition(0.0,0.0);
 		font->addLine( "BASE CLASS ERROR - OVERRIDE SETUP", 2 );
 
-		iconFactory =  &theIconFactory;
+		iconFactory = &theIconFactory;
 
 		fgParticles = &thefgParticles;
+
+		//bckgrnd = &thebg;
+		gridLayer1 = &thegridLayer1;
 	}
 	virtual void update(Timeline &timeline){}
 	virtual void draw(){}
@@ -40,6 +44,9 @@ protected:
 	FontRenderer * font;
 	IconFactory * iconFactory;
 	ForegroundParticles * fgParticles;
+	//Background * bckgrnd;
+
+	std::vector<ParticleA> * gridLayer1;
 
 	// signal stuff
 	int _id;

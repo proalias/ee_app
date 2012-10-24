@@ -6,7 +6,7 @@ PassiveScene4::PassiveScene4()
 	_id = 4; // for boost signal
 }
 
-void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
+void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
 {
 	font = &thefont;
 	font->clear();

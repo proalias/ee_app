@@ -6,7 +6,7 @@ PassiveScene3::PassiveScene3()
 	_id = 3; // for boost signal
 }
 
-void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
+void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
 {
 	font = &thefont;
 	font->clear();
@@ -19,7 +19,6 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-	
 	
 	fgParticles->mParticles.clear();
 	

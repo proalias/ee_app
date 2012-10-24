@@ -165,22 +165,22 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 	case 1:
 		currentScene = new PassiveScene2();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles );
+		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	case 2:
 		currentScene = new PassiveScene3();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles );
+		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	case 3:
 		currentScene = new PassiveScene4();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles );
+		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	case 4:
 		currentScene = new PassiveScene1();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles );
+		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	}
 
@@ -274,7 +274,7 @@ void TextTestApp::setup()
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-	currentScene->setup( myFont, iconFactory, fgParticles );
+	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 	iconFactory.init();
 	
@@ -418,8 +418,8 @@ void TextTestApp::draw()
 	// because the Fbo's have their origin in the LOWER-left corner,
 	// flip the Y-axis before drawing
 	gl::pushModelView();
-	gl::translate( Vec2f(0, viewport.getHeight() ) );
-	gl::scale( Vec3f(1, -1, 1) );
+	gl::translate( Vec2f(0, 0 ) );// viewport.getHeight() ) );
+	gl::scale( Vec3f(1, 1, 1) );
 
 	// draw the 3 Fbo's 
 	//gl::color( Color::white() );

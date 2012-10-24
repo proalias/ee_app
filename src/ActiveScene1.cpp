@@ -7,7 +7,7 @@ ActiveScene1::ActiveScene1()
 	showHand=false;
 }
 
-void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
+void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
 {
 	font = &thefont;
 	font->clear();

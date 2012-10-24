@@ -168,13 +168,6 @@ void Background::draw()
 	gl::popMatrices();
 }
 
-
-
-
-
-
-
-
 // TODO - THESE SHOULD NOT BE HERE> ITS A LOOK UP THAT BELONGS ON A SKELETON CLASS
 // REFACTOR ONCE THAT IS BUILT
 

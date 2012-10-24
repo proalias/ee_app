@@ -10,7 +10,7 @@ PassiveScene2::PassiveScene2()
 	_id = 2; // for boost signal
 }
 
-void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles )
+void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 )
 {
 	font = &thefont;
 	iconFactory =  &theIconFactory;
@@ -127,7 +127,6 @@ void PassiveScene2::showFrame7()
 {
 	font->animateOut();
 
-	
 	for (int i = 0; i < placeMarks.size(); i++){
 		placeMarks[i]->disperseParticles();
 	}

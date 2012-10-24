@@ -12,7 +12,7 @@ class PassiveScene3: public SceneBase {
 public:
 
 	// inherited and overridden
-	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles );
+	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 );
 	void update();
 	void draw();
 
