@@ -114,6 +114,7 @@
     <ClCompile Include="..\src\IconRenderer.cpp" />
     <ClCompile Include="..\src\NobleeBold.cpp" />
     <ClCompile Include="..\src\NobleeRegular.cpp" />
+    <ClCompile Include="..\src\OutlineParams.cpp" />
     <ClCompile Include="..\src\Particle.cpp" />
     <ClCompile Include="..\src\FontRenderer.cpp" />
     <ClCompile Include="..\src\ParticleA.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="..\include\IconRenderer.h" />
     <ClInclude Include="..\include\NobleeBold.h" />
     <ClInclude Include="..\include\NobleeRegular.h" />
+    <ClInclude Include="..\include\OutlineParams.h" />
     <ClInclude Include="..\include\Particle.h" />
     <ClInclude Include="..\include\FontRenderer.h" />
     <ClInclude Include="..\include\ParticleA.h" />

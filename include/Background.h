@@ -10,6 +10,8 @@
 #include "ParticleA.h"
 #include "CinderClip.h"
 
+#include "OutlineParams.h"
+
 //#include "FireFlyEffect.h"
 
 
@@ -38,11 +40,11 @@ public:
 	void drawGrid( std::vector<ParticleA> &fieldLayerContainer, int, float );
 
 	// TODO - maybe force these in the constuctor?
-	std::vector<CinderClip> * repelClips;
+	std::vector<CinderClip>* repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
-	float Background::getForceForIndex(int index);
-	float Background::getMinDistForIndex(int index);
+
+	OutlineParams* outlineParams;
 
 	Background(void);
 

@@ -11,7 +11,7 @@ CinderClip::CinderClip(void)
 	scaleY=1;
 
 	//new properties
-	minDist=100;
+	minDist=50;
 	k=100;
 }
 
