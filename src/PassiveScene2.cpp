@@ -122,7 +122,7 @@ void PassiveScene2::showFrame6()
 	font->addLine( "      MOBILE #4GEE", 3 );
 	font->addLine( "         ONLY ON EE", 2 );
 	font->animateIn();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
 }
 
 void PassiveScene2::showFrame7()

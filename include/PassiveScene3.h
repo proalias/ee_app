@@ -11,11 +11,19 @@ class PassiveScene3: public SceneBase {
  
 public:
 
+	gl::Texture bgImage;
+
 	float leftShift;
 
+	bool isFrame1;
 	bool isFrame2;
+	bool isFrame3;
+	bool isFrame4;
 
-	float alphaValue;
+	float alphaValue; // of the particles
+
+	float imageAlpha;
+
 
 	float gridSpeed;
 	float particleSpeed;

@@ -158,7 +158,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -245,7 +245,8 @@ void TextTestApp::setup()
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
 	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
 
-	for (int i=0; i<40; i++){
+	for (int i=0; i<40; i++)
+	{
 		CinderClip cinderClip = CinderClip();
 		cinderClip.x = -200;
 		cinderClip.y = -200;
@@ -354,21 +355,17 @@ void TextTestApp::update()
 
 
 	if ( mKinect->isCapturing() ) {
-			mKinect->update();
-			updateSkeleton();
-		}else {
-			// If Kinect initialization failed, try again every 90 frames
-			if ( getElapsedFrames() % 90 == 0 ) {
-				mKinect->start();
-			}
-		
-
+		mKinect->update();
+		updateSkeleton();
+	}else {
+		// If Kinect initialization failed, try again every 90 frames
+		if ( getElapsedFrames() % 90 == 0 ) {
+			mKinect->start();
+		}
 	}
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
-	
-	
 }
 
 
@@ -393,23 +390,27 @@ void TextTestApp::draw()
 		gl::translate( Vec3f(-1, 1, 1) );
 	}
 
+	gl::enableAlphaBlending();
+	gl::enableAdditiveBlending();
 
 	mbackground.draw();
 
 	drawSkeleton();
 
+	// FONT NOW GETS RENDERED AFTER SCENE SO WE CAN OVERRIDE DRAW OPERATION IF REQUIRED
+	currentScene->draw();
 
-	gl::enableAdditiveBlending();
-	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
 
-	//gl::color( Color( 1, 1, 1 ) );
-
-
 	//fgParticles.draw();
-	
-	currentScene->draw();
-	
+
+	// kill this all and refresh
+	gl::disableAlphaBlending();
+	//gl::enableAlphaBlending();
+	gl::enableAdditiveBlending();
+
+	//gl::color( ColorA( 1, 1, 1, 1 ) );
+
 	// store our viewport, so we can restore it later
 	Area viewport = gl::getViewport();
 
@@ -418,15 +419,10 @@ void TextTestApp::draw()
 	mFboScene.bindFramebuffer();
 		gl::pushMatrices();
 		gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
-			gl::clear( ColorA( 0,0,0,0 ));
-			
+			gl::clear( ColorA( 0,0,0,1 ));
 			fgParticles.draw();
-			
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
-
 			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
-
-
 		gl::popMatrices();
 	mFboScene.unbindFramebuffer();
 
@@ -498,6 +494,9 @@ void TextTestApp::draw()
 	if (flipScreen == true){
 		gl::popMatrices();
 	}
+
+	// start fresh
+	gl::disableAlphaBlending();
 
 	//OutlineParams::getInstance()->draw();
 }

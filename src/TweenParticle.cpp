@@ -76,8 +76,7 @@ void TweenParticle::draw(){
 
 	
 	//gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
-	
-	
+
 
 	Rectf rect = Rectf(xpos - rad*2 + xJitter, ypos - rad*2 + yJitter,xpos+rad*2 + xJitter, ypos+rad*2+ yJitter);
 	gl::draw(*particleTexture,rect);
