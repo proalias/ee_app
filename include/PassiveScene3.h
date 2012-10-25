@@ -33,6 +33,8 @@ public:
 	PassiveScene3(void);
 	//~PassiveScene2(void);
 
+	float gridZ;
+	
  private:
 	private:
 	CueRef mCue;

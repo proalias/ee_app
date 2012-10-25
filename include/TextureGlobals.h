@@ -16,8 +16,9 @@ private:
 
     TextureGlobals()
     {
-        //private constructor
+
 		gl::Texture particleTexture =  gl::Texture();
+		particleTextures.push_back(particleTexture);
 		particleTextures.push_back(particleTexture);
 		particleTextures.push_back(particleTexture);
 		particleTextures.push_back(particleTexture);

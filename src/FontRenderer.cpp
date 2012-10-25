@@ -397,7 +397,11 @@ void FontRenderer::addLine( const std::string &copy, int size )
 		{
 			float x = ((character[i][0] + xPosition) * size ) + layoutXPos;
 			float y = (character[i][1] * size ) + layoutYPos;
-			newline.push_back( TweenParticle( x , y , size*2.5 , false) );
+			TweenParticle p = (TweenParticle( x , y , size*2.5 , false));
+			if (currentColor.r != 1.0){
+				p.isYellow(true);
+			}
+			newline.push_back(p);
 
 		}
 
@@ -438,7 +442,7 @@ void FontRenderer::animateIn(){
 		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.001){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.01){
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.5,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
@@ -465,8 +469,7 @@ void FontRenderer::animateOut(){
 void FontRenderer::draw()
 {
 
-	gl::color(currentColor);
-
+	
 	for (int j=0;j<lines.size();j++){
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){

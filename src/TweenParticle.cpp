@@ -6,7 +6,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	xpos = pX;
 	ypos = pY;
 	rad = pRad;
-	snapback = ci::randFloat(1.3);
+	snapback = ci::randFloat(1.3 + 0.8);
 	color = Color(1.0,1.0,1.0);
 
 	mDestRad = pRad;
@@ -18,6 +18,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	xJitter = 0;
 	yJitter = 0;
 
+	
 	sparking = false;
 
 	if (!isRandomised){
@@ -31,6 +32,14 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(textureType);
 	
+}
+
+void TweenParticle::isYellow( bool isYellow = false){
+	//if (isYellow == true){
+	//	particleTexture = TextureGlobals::getInstance()->getParticleTexture(7);
+	//}else{
+	//	particleTexture = TextureGlobals::getInstance()->getParticleTexture(0);
+	//}
 }
 
 

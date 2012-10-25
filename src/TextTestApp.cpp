@@ -33,6 +33,7 @@
 #include "PassiveScene4.h"
 #include "ShopConfig.h"
 //#include "ActiveScene1.h"
+#include "OutlineParams.h"
 
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
@@ -71,6 +72,7 @@ class TextTestApp : public AppNative {
 	gl::Texture particleImg;
 	gl::Texture mSimpleTexture;
 
+	Vec2f getMidPoint(Vec2f p0, Vec2f p1);
 
 	FontRenderer myFont;
  
@@ -81,6 +83,10 @@ class TextTestApp : public AppNative {
 
 	bool flipScreen;
 	
+
+	bool hideBackground;
+
+
 	std::vector<TweenParticle> pointsContainer;
 	std::vector<TweenParticle> animatingParticles;
 	
@@ -108,6 +114,8 @@ class TextTestApp : public AppNative {
 	Timer textAnimationTimer;
 	//ParticleImageContainer pTextures;
 
+	
+	std::vector<TweenParticle> userParticles;
 
 private:
 	// Kinect
@@ -150,7 +158,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -197,7 +205,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
-	
+	hideBackground = false;
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
@@ -205,6 +213,8 @@ void TextTestApp::setup()
 	// setup our blur Fbo's, smaller ones will generate a bigger blur
 	mFboBlur1 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
 	mFboBlur2 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
+
+	OutlineParams::getInstance()->init();
 
 	// load and compile the shaders
 	try { 
@@ -235,11 +245,16 @@ void TextTestApp::setup()
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
 	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
 
-	for (int i=0; i<20; i++){
+	for (int i=0; i<40; i++){
 		CinderClip cinderClip = CinderClip();
 		cinderClip.x = -200;
 		cinderClip.y = -200;
 		repelClips.push_back(cinderClip);
+
+		////
+		TweenParticle userParticle = TweenParticle(cinderClip.x, cinderClip.y,10,true);
+		userParticles.push_back(userParticle);
+
 	}
 
 	mbackground.setup();
@@ -272,12 +287,16 @@ void TextTestApp::setup()
 	gl::Texture particleTexture6 = loadImage(loadAsset( "background-particle.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,6);
 
+	gl::Texture particleTexture7 = loadImage(loadAsset( "ParticleFullONYellow.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,7);
+
 
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 100 );
 	//fgParticles.init();
+	fgParticles.setRepelClips(repelClips);
 
 	fgParticles.setRepelClips( repelClips );
 
@@ -288,7 +307,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene3();
+	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
@@ -334,8 +353,6 @@ void TextTestApp::update()
 	fgParticles.update();
 
 
-
-	
 	if ( mKinect->isCapturing() ) {
 			mKinect->update();
 			updateSkeleton();
@@ -364,6 +381,10 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::draw()
 {
+	// this pair of lines is the standard way to clear the screen in OpenGL
+	glClearColor( 0,0,0,1 );
+	glClear( GL_COLOR_BUFFER_BIT );
+
 	if (flipScreen==true){
 		gl::pushMatrices();
 		
@@ -477,6 +498,8 @@ void TextTestApp::draw()
 	if (flipScreen == true){
 		gl::popMatrices();
 	}
+
+	//OutlineParams::getInstance()->draw();
 }
 
 void TextTestApp::drawSkeleton(){
@@ -517,11 +540,27 @@ void TextTestApp::drawSkeleton(){
 
 
 				Vec3f destination		= skeletonIt->at( bone.getStartJoint() ).getPosition();
+
+				Vec3f end		= skeletonIt->at( bone.getEndJoint() ).getPosition();
+				
+
+				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
+				
 				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
+				Vec2f midPoint = getMidPoint(destinationScreen, endScreen);
+
 				repelClips[boneIndex].x = destinationScreen.x*2;
 				repelClips[boneIndex].y = destinationScreen.y*2;
+				repelClips[boneIndex].zDist = position.z;
+
+
+				//update  midpoint clip
+				repelClips[boneIndex+20].x =  midPoint.x*2;
+				repelClips[boneIndex+20].y =  midPoint.y*2;
+				repelClips[boneIndex+20].zDist = position.z;
+
 
 				//gl::color(Color(1.0,0.0,0.0));
 				//gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
@@ -536,11 +575,10 @@ void TextTestApp::drawSkeleton(){
 					gl::drawLine( position, destination );
 				}
 				*/
-
-
 				//draw bone specific stuff here
 				switch(boneIt->first){
 						case NUI_SKELETON_POSITION_HIP_CENTER:
+							//repelClips[NUI_SKELETON_POSITION_HIP_CENTER].set= outlineParams.
 							//draw hip center
 				 			break;
 					 
@@ -603,26 +641,45 @@ void TextTestApp::drawSkeleton(){
 							break;
 				}
 
-
-				
-
-				// Draw joint
-				//gl::drawSphere( position, 0.025f, 16 );
-
-				// Draw joint orientation
-				//glLineWidth( 0.5f );
-				gl::color( ColorAf::white() );
-				//gl::drawVector( position, position + direction, 0.05f, 0.01f );
-
 			}
 
-		}	
+		}
+		
 	}
-	 
+
+	
+	//show the repel clip forces
+	if (OutlineParams::getInstance()->showForces == true){
+		for (int i = 0;i < repelClips.size(); i++){
+			repelClips[i].k = OutlineParams::getInstance()->getForceForIndex(i);
+			repelClips[i].minDist = OutlineParams::getInstance()->getMinDistForIndex(i);
+			gl::color(ColorA(1.0,0.0,0.0,0.5));
+			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
+			gl::color(ColorA(0.0,1.0,0.0,0.5));
+			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getMinDistForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
+		}
+	}
+
+	//draw the user in particles 
+	bool drawUser = false; 
+	if (drawUser==true){
+		for (int i = 0;i < repelClips.size(); i++){
+			userParticles[i].xpos = repelClips[i].x;
+			userParticles[i].ypos = repelClips[i].y;
+
+			userParticles[i].rad = OutlineParams::getInstance()->getMinDistForIndex(i) - (repelClips[i].zDist*repelClips[i].zDist);
+			userParticles[i].update(getElapsedSeconds());
+			userParticles[i].draw();
+		}
+	}
+};
 
 
-
-
+Vec2f TextTestApp::getMidPoint(Vec2f p0, Vec2f p1){
+	
+	float midx = (p0.x + p1.x) / 2;
+	float midy = (p0.y + p1.y) / 2;
+	return Vec2f(midx, midy);
 }
 
 

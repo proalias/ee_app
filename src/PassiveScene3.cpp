@@ -10,6 +10,9 @@ PassiveScene3::PassiveScene3()
 	alphaValue=0.7;
 
 	leftShift=4;
+	
+	gridSpeed=1.1;
+	gridZ = 0;
 }
 
 void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer )
@@ -26,7 +29,6 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles = &thefgParticles;
 
-	fgParticles->overrideDrawMethodInScene = true;
 
 	//fgParticles->mParticles.clear();
 
@@ -35,12 +37,13 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	//}
 	fgParticles->hide();
 
+
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 	otherParticleTexture = TextureGlobals::getInstance()->getParticleTexture(5);
 	
 	gridLayer = &thegridLayer;
 
-	gridSpeed=0;
+	gridSpeed=0.1;
 	particleSpeed=0;
 
 	// create a particle
@@ -57,19 +60,20 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	localParticles.push_back( particle );
 
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 12 );
 }
 
 void PassiveScene3::showFrame2(){
 
 	isFrame2=true;
-
+	fgParticles->overrideDrawMethodInScene = true;
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 2 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene3::showFrame3(){
 	
+	isFrame2=false;
 	font->clear();
 	font->setPosition(300,100);
 	font->setColor(Color(1.0,1.0,1.0));
@@ -83,14 +87,18 @@ void PassiveScene3::showFrame3(){
 }
 
 void PassiveScene3::showFrame4(){
+	
+	fgParticles->overrideDrawMethodInScene = false;
+	fgParticles->show();
+	_signal(this);
+
 	font->animateOut();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 5 );
 }
 
 void PassiveScene3::showFrame5(){
-	fgParticles->overrideDrawMethodInScene = false;
 	//fgParticles.over
-	_signal(this);
+	
 }
 
 void PassiveScene3::update()
@@ -105,19 +113,26 @@ void PassiveScene3::draw()
 	//	alphaValue;
 	//}
 
-
 	if(isFrame2)
 	{
-		alphaValue-=0.02;
+		//alphaValue-=0.08;
 
 		// ZOOM THE GRID
-		gridSpeed+=12;
+		if (gridSpeed < 33.0){
+			gridSpeed = gridSpeed * 3.5f;
+		}
+
+		gridZ += gridSpeed;
 	
+
+
 		for( int i=0; i<4; i++ ){
-			gl::color( 1, 1, 1, alphaValue );
+			gl::color( 1, 1, 1, 0.7 );
 			gl::pushMatrices();
-			gl::translate( 0, 0, gridSpeed*i );
-	
+			float speed = int(gridSpeed)%100;
+			float tZ = (int(gridZ) % 100) + i*12;
+			gl::translate( 0, 0, tZ);
+		
 			int count=0;
 
 			for( vector<ParticleA>::iterator p = gridLayer->begin(); p != gridLayer->end(); ++p ){
@@ -130,7 +145,14 @@ void PassiveScene3::draw()
 				}
 				else
 				{
+
 //					gl::drawSolidCircle( Vec2f(p->x,p->y), 20 );
+
+//					float rad = p->width + (p->getVx()+p->getVy())/5;
+					
+	//				Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
+					//Rectf rect = Rectf(xpos - rad*2 + xJitter, ypos - rad*2 + yJitter,xpos+rad*2 + xJitter, ypos+rad*2+ yJitter);
+		//			gl::draw(*TextureGlobals::getInstance()->getParticleTexture(0),rect);
 
 				}
 				count++;

@@ -104,7 +104,7 @@ void PassiveScene2::showFrame4()
 	// TODO - get the actual city name from the config
 	font->addLine( ShopConfig::getInstance()->location, 3 );
 	font->animateIn();
-	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 3 );
+	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 14 );
 }
 
 void PassiveScene2::showFrame5()

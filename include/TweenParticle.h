@@ -30,6 +30,8 @@ public:
 	Color color;
 	bool moving;
 	int textureType;
+	
+	void isYellow( bool isYellow);
 
 	bool jitters;
 	gl::Texture* particleTexture;
