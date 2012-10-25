@@ -78,7 +78,7 @@ void Background::update()
 
 void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offset, float size )
 {
-	int SPACING = 40;
+	int SPACING = 80;
 
 	int COLUMNS = (cinder::app::getWindowWidth() / SPACING);
 	int ROWS = (cinder::app::getWindowHeight()  / SPACING);
