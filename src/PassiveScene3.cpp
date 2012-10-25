@@ -130,7 +130,7 @@ void PassiveScene3::draw()
 				}
 				else
 				{
-					gl::drawSolidCircle( Vec2f(p->x,p->y), 20 );
+//					gl::drawSolidCircle( Vec2f(p->x,p->y), 20 );
 
 				}
 				count++;
