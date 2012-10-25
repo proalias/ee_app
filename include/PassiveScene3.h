@@ -11,8 +11,17 @@ class PassiveScene3: public SceneBase {
  
 public:
 
-	float testVar;
+	float leftShift;
+
+	bool isFrame2;
+
+	float alphaValue;
+
+	float gridSpeed;
+	float particleSpeed;
+
 	gl::Texture* particleTexture;
+	gl::Texture* otherParticleTexture;
 
 	std::list<ParticleA> localParticles;
 
@@ -24,6 +33,8 @@ public:
 	PassiveScene3(void);
 	//~PassiveScene2(void);
 
+	float gridZ;
+	
  private:
 	private:
 	CueRef mCue;

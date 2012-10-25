@@ -20,6 +20,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles = &thefgParticles;
 	//fgParticles->destroy(); // TODO - call hide not destroy
+	fgParticles->show();
 
 	arrow1 = IconRenderer();
 	arrow1.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );

@@ -21,6 +21,9 @@ void OutlineParams::init(){
 
 		 showForces = false;
 
+		 midpointDefaultDistance = 50;
+		 midpointDefaultForce = 50;
+
 		 float forceDefault = 50;
 		 NUI_SKELETON_POSITION_HIP_CENTER_force = 100;
 		 NUI_SKELETON_POSITION_SPINE_force = 50;
@@ -90,6 +93,8 @@ void OutlineParams::init(){
 	mParams.addParam( "ANKLE_RIGHT_force",			&NUI_SKELETON_POSITION_ANKLE_RIGHT_force, 									"min=0.0 max=2000.0 step=5.0", false);
 	mParams.addParam( "FOOT_RIGHT_force",			&NUI_SKELETON_POSITION_FOOT_RIGHT_force, 									"min=0.0 max=2000.0 step=5.0", false);
 
+	mParams.addParam( "FOOT_RIGHT_force",			&midpointDefaultForce,					 									"min=0.0 max=2000.0 step=5.0", false);
+
 	
 	mParams.addSeparator();
 	mParams.addText( "ATTRACTOR DISTANCE" );
@@ -115,6 +120,7 @@ void OutlineParams::init(){
 	mParams.addParam( "ANKLE_RIGHT_distance",			&NUI_SKELETON_POSITION_ANKLE_RIGHT_distance, 									"min=0.0 max=2000.0 step=5.0", false);
 	mParams.addParam( "FOOT_RIGHT_distance",			&NUI_SKELETON_POSITION_FOOT_RIGHT_distance, 									"min=0.0 max=2000.0 step=5.0", false);
 
+	mParams.addParam( "FOOT_RIGHT_force",			&midpointDefaultDistance,					 									"min=0.0 max=2000.0 step=5.0", false);
 
 	mParams.addParam( "SHOW FORCES",			&showForces,"", false);
 
@@ -211,7 +217,7 @@ float OutlineParams::getForceForIndex(int index)
 			force = NUI_SKELETON_POSITION_FOOT_RIGHT_force;
 			break;
 		default:
-			force = 100.0;
+			force =  midpointDefaultForce;
 		}
 	
 	return force;
@@ -303,7 +309,7 @@ float OutlineParams::getMinDistForIndex(int index)
 			minDist =  NUI_SKELETON_POSITION_FOOT_RIGHT_distance;
 			break;
 		default:
-			minDist = 100;
+			minDist = midpointDefaultDistance;
 		}
 	return minDist;
 }

@@ -13,6 +13,8 @@ CinderClip::CinderClip(void)
 	//new properties
 	minDist=50;
 	k=100;
+
+	zDist = 0;
 }
 
 ci::Vec2f CinderClip::getCenter(){

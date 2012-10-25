@@ -146,6 +146,8 @@ void ParticleA::update()
 	int k;
 	float minDist;
 
+
+
 	if (decays){
 		lifeSpan -= 1;
 
@@ -203,6 +205,7 @@ void ParticleA::update()
 
 		for ( int gc = 0; gc < __gravClips.size(); gc++ )
 		{
+
 			CinderClip clip = *__gravClips[gc];
 			dx = clip.x - x;
 			dy = clip.y - y;
@@ -216,7 +219,11 @@ void ParticleA::update()
 
 		for ( int rc= 0; rc < __repelClips.size(); rc++ )
 		{
+			
 			CinderClip clip = *__repelClips[rc];
+			if (	clip.x < 0 || clip.y < 0){
+				continue;
+			}
 			minDist = clip.minDist;//*__repelClips[rc].minDist;
 			k = clip.k;//__repelClips[rc].k;
 			dx = clip.x - x;

@@ -39,7 +39,6 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 
-#include "ContourFinder.h"
 
 #include <list>
 
@@ -81,14 +80,13 @@ class TextTestApp : public AppNative {
 
 	std::vector<CinderClip> repelClips;
 
-	
-	ContourFinderRef		mContourFinder;
-	std::vector<Contour>	mContours;
-	ci::Channel16u			mChannel;
-	
 
 	bool flipScreen;
 	
+
+	bool hideBackground;
+
+
 	std::vector<TweenParticle> pointsContainer;
 	std::vector<TweenParticle> animatingParticles;
 	
@@ -116,10 +114,8 @@ class TextTestApp : public AppNative {
 	Timer textAnimationTimer;
 	//ParticleImageContainer pTextures;
 
-	void					onDepthData( ci::Surface16u surface, const KinectSdk::DeviceOptions &deviceOptions );
 	
 	std::vector<TweenParticle> userParticles;
-
 
 private:
 	// Kinect
@@ -161,7 +157,8 @@ protected:
 
 void TextTestApp::prepareSettings( Settings *settings )
 {
-	bool isDeployed = flipScreen = false;
+
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		flipScreen = true;
@@ -208,7 +205,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 void TextTestApp::setup()
 {
-	
+	hideBackground = false;
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
@@ -248,7 +245,7 @@ void TextTestApp::setup()
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
 	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
 
-	for (int i=0; i<50; i++){
+	for (int i=0; i<40; i++){
 		CinderClip cinderClip = CinderClip();
 		cinderClip.x = -200;
 		cinderClip.y = -200;
@@ -290,14 +287,18 @@ void TextTestApp::setup()
 	gl::Texture particleTexture6 = loadImage(loadAsset( "background-particle.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,6);
 
+	gl::Texture particleTexture7 = loadImage(loadAsset( "ParticleFullONYellow.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,7);
+
 
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
-	fgParticles.setup( 1 );
-	
-	fgParticles.init();
+	fgParticles.setup( 100 );
+	//fgParticles.init();
 	fgParticles.setRepelClips(repelClips);
+
+	fgParticles.setRepelClips( repelClips );
 
 	// TO VIEW ACTIVE SCENE
 	//currentScene = new ActiveScene1();
@@ -312,8 +313,8 @@ void TextTestApp::setup()
 
 	iconFactory.init();
 	
-	Timer textAnimationTimer = Timer();
-	textAnimationTimer.start();
+	//Timer textAnimationTimer = Timer();
+	//textAnimationTimer.start();
 	
 	setupSkeletonTracker();
 }
@@ -329,7 +330,6 @@ void TextTestApp::setupSkeletonTracker(){
 	
 	mKinect->removeBackground();
 	// Add callbacks
-	mCallbackId = mKinect->addDepthCallback( &TextTestApp::onDepthData, this );
 
 	// Set the skeleton smoothing to remove jitters. Better smoothing means
 	// less jitters, but a slower response time.
@@ -353,31 +353,15 @@ void TextTestApp::update()
 	fgParticles.update();
 
 
-	
-	//mbackground.setRepelClips( repelClips ); 
-	
 	if ( mKinect->isCapturing() ) {
 			mKinect->update();
 			updateSkeleton();
-
-			if (false){//if ( mChannel ) {
-			// Find contours
-			mContours = mContourFinder->findContours( Channel8u( mChannel ) );
-			
-			// Scale contours to window
-			Vec2f scale = Vec2f( getWindowSize() ) / Vec2f( mChannel.getSize() );
-			for ( vector<Contour>::iterator contourIt = mContours.begin(); contourIt != mContours.end(); ++contourIt ) {
-				for ( vector<Vec2f>::iterator pointIt = contourIt->getPoints().begin(); pointIt != contourIt->getPoints().end(); ++pointIt ) {
-					pointIt->operator*=( scale );
-				}
-				contourIt->calcCentroid();
-			}
 		}else {
 			// If Kinect initialization failed, try again every 90 frames
 			if ( getElapsedFrames() % 90 == 0 ) {
 				mKinect->start();
 			}
-		}
+		
 
 	}
 
@@ -397,6 +381,10 @@ void TextTestApp::updateSkeleton()
 
 void TextTestApp::draw()
 {
+	// this pair of lines is the standard way to clear the screen in OpenGL
+	glClearColor( 0,0,0,1 );
+	glClear( GL_COLOR_BUFFER_BIT );
+
 	if (flipScreen==true){
 		gl::pushMatrices();
 		
@@ -460,8 +448,8 @@ void TextTestApp::draw()
 			gl::drawSolidRect( mFboBlur1.getBounds() );
 		gl::popMatrices();
 		mFboScene.unbindTexture();
-	mFboBlur1.unbindFramebuffer();	
-	
+	mFboBlur1.unbindFramebuffer();
+
  
 	// tell the shader to blur vertically and the size of 1 pixel
 	mShaderBlur.uniform("sampleOffset", Vec2f(0.0f, 1.0f/mFboBlur2.getHeight()));
@@ -511,7 +499,7 @@ void TextTestApp::draw()
 		gl::popMatrices();
 	}
 
-	OutlineParams::getInstance()->draw();
+	//OutlineParams::getInstance()->draw();
 }
 
 void TextTestApp::drawSkeleton(){
@@ -565,10 +553,14 @@ void TextTestApp::drawSkeleton(){
 
 				repelClips[boneIndex].x = destinationScreen.x*2;
 				repelClips[boneIndex].y = destinationScreen.y*2;
-				
+				repelClips[boneIndex].zDist = position.z;
+
+
 				//update  midpoint clip
-				repelClips[boneIndex*2].x =  midPoint.x*2;
-				repelClips[boneIndex*2].y =  midPoint.y*2;
+				repelClips[boneIndex+20].x =  midPoint.x*2;
+				repelClips[boneIndex+20].y =  midPoint.y*2;
+				repelClips[boneIndex+20].zDist = position.z;
+
 
 				//gl::color(Color(1.0,0.0,0.0));
 				//gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
@@ -656,47 +648,38 @@ void TextTestApp::drawSkeleton(){
 	}
 
 	
-
+	//show the repel clip forces
 	if (OutlineParams::getInstance()->showForces == true){
 		for (int i = 0;i < repelClips.size(); i++){
 			repelClips[i].k = OutlineParams::getInstance()->getForceForIndex(i);
 			repelClips[i].minDist = OutlineParams::getInstance()->getMinDistForIndex(i);
 			gl::color(ColorA(1.0,0.0,0.0,0.5));
-			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i));
+			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
 			gl::color(ColorA(0.0,1.0,0.0,0.5));
-			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getMinDistForIndex(i));
-			
-
-
+			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getMinDistForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
 		}
 	}
 
-	gl::color(ColorA(1.0,1.0,1.0,4.0));
-	
+	//draw the user in particles 
 	bool drawUser = false; 
 	if (drawUser==true){
 		for (int i = 0;i < repelClips.size(); i++){
-				userParticles[i].xpos = repelClips[i].x;
-				userParticles[i].ypos = repelClips[i].y;
+			userParticles[i].xpos = repelClips[i].x;
+			userParticles[i].ypos = repelClips[i].y;
 
-				userParticles[i].rad = OutlineParams::getInstance()->getMinDistForIndex(i);
-				userParticles[i].update(getElapsedSeconds());
-				userParticles[i].draw();
+			userParticles[i].rad = OutlineParams::getInstance()->getMinDistForIndex(i) - (repelClips[i].zDist*repelClips[i].zDist);
+			userParticles[i].update(getElapsedSeconds());
+			userParticles[i].draw();
 		}
 	}
 };
+
 
 Vec2f TextTestApp::getMidPoint(Vec2f p0, Vec2f p1){
 	
 	float midx = (p0.x + p1.x) / 2;
 	float midy = (p0.y + p1.y) / 2;
 	return Vec2f(midx, midy);
-}
-
-// Handles depth data
-void TextTestApp::onDepthData( Surface16u surface, const DeviceOptions &deviceOptions )
-{
-	mChannel = surface.getChannelRed();
 }
 
 

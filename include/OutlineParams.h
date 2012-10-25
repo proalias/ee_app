@@ -30,6 +30,10 @@ public:
 	float getForceForIndex(int index);
 	float getMinDistForIndex(int index);
 
+	
+	float midpointDefaultDistance;
+	float midpointDefaultForce;
+
 	ci::params::InterfaceGl				mParams;
 
 	float NUI_SKELETON_POSITION_HIP_CENTER_force;

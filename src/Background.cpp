@@ -80,11 +80,12 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 {
 	int SPACING = 40;
 
-	int COLUMNS = (cinder::app::getWindowWidth() / SPACING) + 2;
-	int ROWS = (cinder::app::getWindowHeight()  / SPACING) + 2;
+	int COLUMNS = (cinder::app::getWindowWidth() / SPACING);
+	int ROWS = (cinder::app::getWindowHeight()  / SPACING);
 
 	
 	//fieldLayerContainer.clear();
+
 
 	for( int j=0; j<ROWS; j++ ){
 		for( int i=0; i<COLUMNS; i++ ){
@@ -119,54 +120,56 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 		}
 	}
 
+	
 }
 
 void Background::draw()
 {
-	// this pair of lines is the standard way to clear the screen in OpenGL
-	glClearColor( 0,0,0,1 );
-	glClear( GL_COLOR_BUFFER_BIT );
-
+	
 	//gl::setMatricesWindow( getWindowSize() );
 
 	gl::draw( bgImage );
 
 
 	// draw the firefly
-	// ff.draw();
+	//ff.draw();
 
 
-	gl::enableAlphaBlending();
-	gl::color( 1, 1, 1, 0.8 );
-
-	for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
-		float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
-		Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
-		gl::draw(*particleTexture,rect);
-	}
-
-
-	gl::color( 1, 1, 1, 0.7 );
 	gl::pushMatrices();
-	gl::translate(0,0,-15);
+	gl::translate(20,20,0);
+
+		gl::color( 1, 1, 1, 0.8 );
+
+		for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
+			float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
+			Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
+			gl::draw(*particleTexture,rect);
+		}
+
+
+		gl::color( 1, 1, 1, 0.7 );
+		gl::pushMatrices();
+		gl::translate(0,0,-15);
 	
-	for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
-		float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 4;
-		Rectf rect = Rectf(p2->x+2 - p2->width - rad, p2->y+2 - p2->width - rad,p2->x+2 + p2->width + rad, p2->y+2 + p2->width + rad);
-		gl::draw(*particleTexture,rect);
-	}
-	gl::popMatrices();
+		for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
+			float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 4;
+			Rectf rect = Rectf(p2->x+2 - p2->width - rad, p2->y+2 - p2->width - rad,p2->x+2 + p2->width + rad, p2->y+2 + p2->width + rad);
+			gl::draw(*particleTexture,rect);
+		}
+		gl::popMatrices();
 
 	
-	gl::color( 1, 1, 1, 0.6 );
-	gl::pushMatrices();
-	gl::translate(0,0,-30);
+		gl::color( 1, 1, 1, 0.6 );
+		gl::pushMatrices();
+		gl::translate(0,0,-30);
 	
-	for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
-		float rad = p->width + (p->getVx()+p->getVy())/5;
-		Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
-		gl::draw(*particleTexture,rect);
-	}
+		for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
+			float rad = p->width + (p->getVx()+p->getVy())/5;
+			Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
+			gl::draw(*particleTexture,rect);
+		}
+
+		gl::popMatrices();
 
 	gl::popMatrices();
 }

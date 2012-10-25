@@ -26,6 +26,9 @@ public:
 	float minDist;
 	float k;
 
+	//hack for z depth
+	float zDist;
+
 	ci::Vec2f getCenter();
 
 	CinderClip(void);

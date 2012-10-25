@@ -64,8 +64,8 @@
       <AdditionalIncludeDirectories>..\include;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;KinectSdk_d.lib;opencv_core230d.lib;opencv_imgproc230d.lib;opencv_video230d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\cinder\cinder_0.8.4_vc2010\blocks\Cinder-OpenCV\lib\vc10;..\..\..\blocks\Cinder-KinectSdk\lib;..\..\..\blocks\Cinder-OpenCV\lib;..\..\..\lib;..\..\..\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder_d.lib;KinectSdk_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\blocks\Cinder-KinectSdk\lib;..\..\..\lib;..\..\..\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -108,7 +108,9 @@
     <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
-    <ClCompile Include="..\src\ContourFinder.cpp" />
+    <ClCompile Include="..\src\FireFlyEffect.cpp" />
+    <ClCompile Include="..\src\FireFlyParticle.cpp" />
+    <ClCompile Include="..\src\FireFlyParticleController.cpp" />
     <ClCompile Include="..\src\ForegroundParticles.cpp" />
     <ClCompile Include="..\src\IconFactory.cpp" />
     <ClCompile Include="..\src\IconRenderer.cpp" />
@@ -128,6 +130,7 @@
     <ClCompile Include="..\src\TextTestApp.cpp" />
     <ClCompile Include="..\src\TextureGlobals.cpp" />
     <ClCompile Include="..\src\TweenParticle.cpp" />
+    <ClCompile Include="..\src\Vect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
@@ -135,7 +138,10 @@
     <ClInclude Include="..\include\Background.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
-    <ClInclude Include="..\include\ContourFinder.h" />
+    <ClInclude Include="..\include\FireFlyEffect.h" />
+    <ClInclude Include="..\include\FireFlyParticle.h" />
+    <ClInclude Include="..\include\FireFlyParticleController.h" />
+    <ClInclude Include="..\include\FireFlyWaveScheme.h" />
     <ClInclude Include="..\include\ForegroundParticles.h" />
     <ClInclude Include="..\include\Icon.h" />
     <ClInclude Include="..\include\IconFactory.h" />
