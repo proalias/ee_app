@@ -31,6 +31,7 @@ public:
 	bool moving;
 	int textureType;
 	
+	bool __isYellow;
 	void isYellow( bool isYellow);
 
 	bool jitters;

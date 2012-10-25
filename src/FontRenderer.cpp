@@ -442,7 +442,7 @@ void FontRenderer::animateIn(){
 		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.01){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.5,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
@@ -469,7 +469,8 @@ void FontRenderer::animateOut(){
 void FontRenderer::draw()
 {
 
-	
+	gl::color(Color(1.0,1.0,1.0));
+
 	for (int j=0;j<lines.size();j++){
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
@@ -498,7 +499,6 @@ void FontRenderer::draw()
 		//tickingCue->setInfinite();
 		//tickCued = true;
 	}
-
 	gl::color(Color(1.0,1.0,1.0));
 }
 

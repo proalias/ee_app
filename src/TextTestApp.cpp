@@ -158,9 +158,10 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
+		::ShowCursor(false);
 		flipScreen = true;
 		settings->setAlwaysOnTop(true);
 		settings->setBorderless(true);
@@ -361,8 +362,6 @@ void TextTestApp::update()
 			if ( getElapsedFrames() % 90 == 0 ) {
 				mKinect->start();
 			}
-		
-
 	}
 
 	double time = getElapsedSeconds();
@@ -385,6 +384,8 @@ void TextTestApp::draw()
 	glClearColor( 0,0,0,1 );
 	glClear( GL_COLOR_BUFFER_BIT );
 
+	
+
 	if (flipScreen==true){
 		gl::pushMatrices();
 		
@@ -393,18 +394,18 @@ void TextTestApp::draw()
 		gl::translate( Vec3f(-1, 1, 1) );
 	}
 
+	gl::color( ColorA(1.0,1.0,1.0,1.0));
+	gl::enableAdditiveBlending();
 
 	mbackground.draw();
 
 	drawSkeleton();
 
-
-	gl::enableAdditiveBlending();
-	gl::color( Color::white() ); // TODO - move the color into the font?
 	myFont.draw();
-
-	//gl::color( Color( 1, 1, 1 ) );
-
+	
+	
+	
+	
 
 	//fgParticles.draw();
 	
@@ -494,12 +495,12 @@ void TextTestApp::draw()
 
 	// restore the modelview matrix
 	gl::popModelView();
-
+	gl::disableAlphaBlending();
 	if (flipScreen == true){
 		gl::popMatrices();
 	}
 
-	//OutlineParams::getInstance()->draw();
+	OutlineParams::getInstance()->draw();
 }
 
 void TextTestApp::drawSkeleton(){

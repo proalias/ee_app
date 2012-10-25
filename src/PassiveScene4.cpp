@@ -69,13 +69,13 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	font->animateIn();
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 25 );
 
 }
 
 void PassiveScene4::showFrame2(){
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 3 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 7 );
 	
 	for (int i = 0; i < arrows.size(); i++){
 		arrows[i]->disperseParticles();

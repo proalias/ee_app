@@ -83,7 +83,7 @@ void PassiveScene3::showFrame3(){
 	font->addLine( "      FIBRE BROADBAND", 2 );
 	font->animateIn();
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 15 );
 }
 
 void PassiveScene3::showFrame4(){
