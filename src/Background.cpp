@@ -78,7 +78,7 @@ void Background::update()
 
 void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offset, float size )
 {
-	int SPACING = 40;
+	int SPACING = 38;
 
 	int COLUMNS = (cinder::app::getWindowWidth() / SPACING);
 	int ROWS = (cinder::app::getWindowHeight()  / SPACING);
@@ -98,13 +98,18 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 			particle.x = ( i*SPACING ) + offset;
 			particle.y = ( j*SPACING ) + offset;
 
+			//particle.setDamp(1);
+
 			//particle.setBounce(-1);
-			particle.setMaxSpeed(10);
+			particle.setMaxSpeed(15);
 			//particle.setEdgeBehavior("wrap");
 
 			//particle.setWander(3);
 			particle.setGrav(0);
-			particle.addSpringPoint( particle.x, particle.y, 0.01 ); // FORCES THE PARTICLE INTO POSITION
+			particle.addSpringPoint( particle.x, particle.y, 0.04 ); // FORCES THE PARTICLE INTO POSITION
+			
+			//particle.addGravPoint( particle.x, particle.y, 0.03 );
+
 
 			/*
 			for (int i=0; i<repelClips.size(); i++){
@@ -141,7 +146,7 @@ void Background::draw()
 		gl::color( 1, 1, 1, 0.8 );
 
 		for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
-			float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 2;
+			float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 1;
 			Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
 			gl::draw(*particleTexture,rect);
 		}
@@ -152,7 +157,7 @@ void Background::draw()
 		gl::translate(0,0,-15);
 	
 		for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
-			float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 4;
+			float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 2;
 			Rectf rect = Rectf(p2->x+2 - p2->width - rad, p2->y+2 - p2->width - rad,p2->x+2 + p2->width + rad, p2->y+2 + p2->width + rad);
 			gl::draw(*particleTexture,rect);
 		}

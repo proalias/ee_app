@@ -22,7 +22,7 @@ FontRenderer::FontRenderer(void)
 //creates a lookup table of grid points.
 void FontRenderer::populateGridPoints(){
 
-	int SPACING = 40;
+	int SPACING = 38;
 	float COLUMNS = 1280/SPACING;
 	float ROWS = 800/SPACING;
 	
@@ -51,7 +51,7 @@ ci::Vec2f FontRenderer::getNextPointOnGrid(){
 
 ci::Vec2f FontRenderer::getRandomPointOnGrid(){
 	
-	int SPACING = 40;
+	int SPACING = 38;
 
 	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
 	float ROWS = cinder::app::getWindowHeight()/SPACING;

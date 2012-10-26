@@ -4,7 +4,7 @@ void ParticleA::init()
 {
 	__vx				= 0.0;
 	__vy                = 0.0;
-	__k                 = 0.2;
+	__k                 = 0;//0.2;
 	__damp              = 0.9;
 	__bounce            = -0.5;
 	__grav              = 0;
@@ -451,22 +451,21 @@ void ParticleA::die(){
 
 void ParticleA::respawn(){
 
-		width = randFloat(3,10);
-		Vec2f p  = getRandomPointOnGrid();
+	width = randFloat(3,10);
+	Vec2f p  = getRandomPointOnGrid();
 
-		x=randFloat(app::getWindowWidth());
-		y=randFloat(app::getWindowHeight());
+	x=randFloat(app::getWindowWidth());
+	y=randFloat(app::getWindowHeight());
 
-		lifeSpan = 100 + randInt(200);
+	lifeSpan = 100 + randInt(200);
 
-		
-		dying = false;
+	dying = false;
 }
 
 
 ci::Vec2f ParticleA::getRandomPointOnGrid(){
 	
-	int SPACING = 40;
+	int SPACING = 38;
 
 	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
 	float ROWS = cinder::app::getWindowHeight()/SPACING;

@@ -158,7 +158,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -391,12 +391,18 @@ void TextTestApp::draw()
 		gl::translate( Vec3f(-1, 1, 1) );
 	}
 
+	gl::enableAlphaBlending();
+	gl::enableAdditiveBlending();
+
 	
 	drawSkeleton();
 	mbackground.draw();
 
+	drawSkeleton();
+
 	// FONT NOW GETS RENDERED AFTER SCENE SO WE CAN OVERRIDE DRAW OPERATION IF REQUIRED
 	currentScene->draw();
+
 	myFont.draw();
 	
 	
@@ -406,8 +412,10 @@ void TextTestApp::draw()
 	//fgParticles.draw();
 
 	// kill this all and refresh
+	gl::disableAlphaBlending();
 	//gl::disableAlphaBlending();
 	//gl::enableAlphaBlending();
+	gl::enableAdditiveBlending();
 	//
 	
 	//gl::enableAdditiveBlending();
@@ -501,7 +509,7 @@ void TextTestApp::draw()
 	gl::color( Color(1.0,1.0,1.0) );
 	
 
-	OutlineParams::getInstance()->draw();
+	//OutlineParams::getInstance()->draw();
 }
 
 void TextTestApp::drawSkeleton(){
@@ -532,22 +540,21 @@ void TextTestApp::drawSkeleton(){
 				//gl::color( color );
 
 				// Get position and rotation
-				const Bone& bone	= boneIt->second;
-				Vec3f position		= bone.getPosition();
+				const Bone& bone = boneIt->second;
+				Vec3f position = bone.getPosition();
 				
 				Matrix44f transform	= bone.getAbsoluteRotationMatrix();
 				Vec3f direction		= transform.transformPoint( position ).normalized();
-				direction			*= 0.05f;
-				position.z			*= -1.0f;
+				direction *= 0.05f;
+				position.z *= -1.0f;
 
+				Vec3f destination = skeletonIt->at( bone.getStartJoint() ).getPosition();
 
-				Vec3f destination		= skeletonIt->at( bone.getStartJoint() ).getPosition();
 				Vec3f end		= skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
-
 				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
 				
-				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
+				Vec2f positionScreen = Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
 
@@ -557,12 +564,46 @@ void TextTestApp::drawSkeleton(){
 				repelClips[boneIndex].y = positionScreen.y*2;
 				repelClips[boneIndex].zDist = position.z;
 
+				//boneIt->first
+
+
+				
+				if(boneIndex==3) // HEAD
+				{
+					repelClips[boneIndex].x = endScreen.x*2;
+					repelClips[boneIndex].y = (endScreen.y*2)-25;
+					repelClips[boneIndex].zDist = position.z;
+				}
+				else if(boneIndex==2) // SHOULDER CENTRE - (but appears to be on belly. so were calling belly)
+				{
+					repelClips[boneIndex].x = endScreen.x*2;
+					repelClips[boneIndex].y = (endScreen.y*2)+100;
+					repelClips[boneIndex].zDist = position.z;
+				}
+				else
+				{
+					repelClips[boneIndex].x = endScreen.x*2;
+					repelClips[boneIndex].y = endScreen.y*2;
+					repelClips[boneIndex].zDist = position.z;
+				}
+				
+
+			//	repelClips[boneIndex].x = position.x;//.x*2;
+			//	repelClips[boneIndex].y = position.y;//positionScreen.y*2;
+			//	repelClips[boneIndex].zDist = position.z;
+
+
+				//repelClips[boneIndex].x = endScreen.x*2;
+				//repelClips[boneIndex].y = endScreen.y*2;
+				//repelClips[boneIndex].zDist = position.z;
+
+
 
 				//update  midpoint clip
-				repelClips[boneIndex+20].x =  midPoint.x*2;
-				repelClips[boneIndex+20].y =  midPoint.y*2;
+				repelClips[boneIndex+20].x = midPoint.x*2;
+				repelClips[boneIndex+20].y = midPoint.y*2;
 				repelClips[boneIndex+20].zDist = position.z;
-
+				
 
 				//gl::color(Color(1.0,0.0,0.0));
 				//gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);

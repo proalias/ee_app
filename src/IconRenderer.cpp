@@ -19,7 +19,7 @@ void IconRenderer::disperseParticles(){
 
 ci::Vec2f IconRenderer::getRandomPointOnGrid(){
 	
-	int SPACING = 40;
+	int SPACING = 38;
 
 	float COLUMNS = cinder::app::getWindowWidth()/SPACING;
 	float ROWS = cinder::app::getWindowHeight()/SPACING;
