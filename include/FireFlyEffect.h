@@ -23,8 +23,8 @@ public:
 	std::vector<ci::Vec3f> waveScheme;
 	
 	std::vector<FireFlyParticleController> particles;
-	std::vector<FireFlyParticleController*> activeParticles;
-	std::vector<FireFlyParticleController*> waveParticles;
+	std::vector<FireFlyParticleController> activeParticles;
+	std::vector<FireFlyParticleController> waveParticles;
 
 	int rows;
 	int columns;
@@ -39,7 +39,7 @@ public:
 	void increment(void);
 	void decrement(void);
 	void draw(void);
-
+	
 	bool repel(void);
 
 };

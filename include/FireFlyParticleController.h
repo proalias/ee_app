@@ -46,7 +46,7 @@ public:
 	int columns;
 	
 //	FireFlyEffect * _grid;
-//	std::vector<FireFlyParticle> particles; // TODO - check this works and were not cloning.
+	//::vector<FireFlyParticle> particles; // TODO - check this works and were not cloning.
 	int _takeFrom;
 	float _waveSpeed;
 	
@@ -71,9 +71,13 @@ public:
 	bool repel(void);
 	bool applyFade(void);
 
-	std::vector<FireFlyParticleController> particles;
-
-	std::vector<FireFlyParticleController> * ffparticles;
+	std::vector<FireFlyParticleController>* ffparticles;
 	void setParticles( std::vector<FireFlyParticleController> &ffparticles );
+
+	std::vector<FireFlyParticleController>* activeParticles;
+	void setActiveParticles( std::vector<FireFlyParticleController> &theactiveParticles );
+
+	std::vector<FireFlyParticleController>* waveparticles;
+	void setWaveParticles( std::vector<FireFlyParticleController> &thewaveParticles );
 
 };

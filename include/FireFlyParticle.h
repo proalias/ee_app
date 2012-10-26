@@ -14,16 +14,13 @@ class FireFlyParticle {
  
 public:
 
-	float x;
-	float y;
-
 	Vect pos;
 	Vect targetPos;
 	Vect vel;
 		
 	bool isNormal;
 	bool isActive;
-	bool  isWave;
+	bool isWave;
 		
 	int fade;
 	bool fadeIn;
