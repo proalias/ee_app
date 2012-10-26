@@ -23,21 +23,25 @@ void Background::setRepelClips( std::vector<CinderClip> &rclips ) // TODO - if w
 	for( vector<ParticleA>::iterator gp = gridLayer1.begin(); gp != gridLayer1.end(); ++gp ){
 		for (int i=0; i<repelClips->size(); i++){
 			gp->addRepelClip( repelClips->at(i), outlineParams->getForceForIndex(i), outlineParams->getMinDistForIndex(i) );
-			///	gp->addGravClip( repelClips->at(i), 200 );
+			
+
+			gp->addRepelClip( repelClips->at(i), -2000, 2000 );
 		}
 	}
 	
 	for( vector<ParticleA>::iterator gp2 = gridLayer2.begin(); gp2 != gridLayer2.end(); ++gp2 ){
 		for (int i=0; i<repelClips->size(); i++){
 			gp2->addRepelClip( repelClips->at(i), outlineParams->getForceForIndex(i), outlineParams->getMinDistForIndex(i) );
-			///	gp2->addGravClip( repelClips->at(i), 200 );
+			
+			gp2->addRepelClip( repelClips->at(i), -2000, 2000 );
 		}
 	}
 
 	for( vector<ParticleA>::iterator gp3 = gridLayer3.begin(); gp3 != gridLayer3.end(); ++gp3 ){
 		for (int i=0; i<repelClips->size(); i++){
 			gp3->addRepelClip( repelClips->at(i), outlineParams->getForceForIndex(i), outlineParams->getMinDistForIndex(i) );
-			// gp3->addGravClip( repelClips->at(i), 200 );
+			
+			gp3->addRepelClip( repelClips->at(i), -2000, 2000 );
 		}
 	}
 	
@@ -146,7 +150,7 @@ void Background::draw()
 		gl::color( 1, 1, 1, 0.8 );
 
 		for( vector<ParticleA>::iterator p3 = gridLayer3.begin(); p3 != gridLayer3.end(); ++p3 ){
-			float rad = p3->width + (p3->getVx()+p3->getVy())/5 * 1;
+			float rad = p3->width + p3->width * (p3->getVx()+p3->getVy())/5 * 1;
 			Rectf rect = Rectf(p3->x-2 - p3->width - rad, p3->y-2 - p3->width - rad,p3->x-2 + p3->width + rad, p3->y-2 + p3->width + rad);
 			gl::draw(*particleTexture,rect);
 		}
@@ -157,7 +161,7 @@ void Background::draw()
 		gl::translate(0,0,-15);
 	
 		for( vector<ParticleA>::iterator p2 = gridLayer2.begin(); p2 != gridLayer2.end(); ++p2 ){
-			float rad = p2->width + (p2->getVx()+p2->getVy())/5 * 2;
+			float rad = p2->width + p2->width * (p2->getVx()+p2->getVy())/5 * 2;
 			Rectf rect = Rectf(p2->x+2 - p2->width - rad, p2->y+2 - p2->width - rad,p2->x+2 + p2->width + rad, p2->y+2 + p2->width + rad);
 			gl::draw(*particleTexture,rect);
 		}
@@ -169,7 +173,7 @@ void Background::draw()
 		gl::translate(0,0,-30);
 	
 		for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
-			float rad = p->width + (p->getVx()+p->getVy())/5;
+			float rad = p->width + p->width * (p->getVx()+p->getVy())/5;
 			Rectf rect = Rectf(p->x - p->width - rad, p->y - p->width - rad,p->x + p->width + rad, p->y + p->width + rad);
 			gl::draw(*particleTexture,rect);
 		}

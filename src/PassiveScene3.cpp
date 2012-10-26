@@ -249,7 +249,7 @@ void PassiveScene3::draw()
 			localParticles.clear();
 		}
 
-		particleSpeed +=30;
+		particleSpeed +=25;
 
 		gl::color( 1, 1, 1, 0.6 );
 		gl::pushMatrices();
