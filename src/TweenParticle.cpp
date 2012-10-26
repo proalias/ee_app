@@ -77,6 +77,7 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 void TweenParticle::draw(){
 
 	if (__isYellow == true){
+
 		gl::color(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g,ColorConstants::PRIMARY_YELLOW.b));
 		gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 		gl::color(1.0,1.0,1.0,1.0);
