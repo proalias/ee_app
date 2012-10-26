@@ -78,7 +78,7 @@ void Background::update()
 
 void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offset, float size )
 {
-	int SPACING = 80;
+	int SPACING = 40;
 
 	int COLUMNS = (cinder::app::getWindowWidth() / SPACING);
 	int ROWS = (cinder::app::getWindowHeight()  / SPACING);
@@ -133,7 +133,7 @@ void Background::draw()
 
 	// draw the firefly
 	//ff.draw();
-
+	gl::enableAlphaBlending();
 
 	gl::pushMatrices();
 	gl::translate(20,20,0);
@@ -172,4 +172,6 @@ void Background::draw()
 		gl::popMatrices();
 
 	gl::popMatrices();
+	gl::disableAlphaBlending();
+	gl::color( 1, 1, 1, 1 );
 }

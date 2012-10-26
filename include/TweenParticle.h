@@ -9,6 +9,7 @@
 #include "cinder\Perlin.h"
 #include "cinder\CinderMath.h"
 #include "TextureGlobals.h"
+#include "ColorConstants.h"
 //#include "ParticleImageContainer.h"
 
 using namespace cinder;

@@ -177,10 +177,10 @@ void ForegroundParticles::update()
 void ForegroundParticles::draw()
 {
 
-	if(!overrideDrawMethodInScene)
+	
 	{
-		//gl::enableAdditiveBlending();
-		//gl::enableAlphaBlending();
+		gl::enableAdditiveBlending();
+		gl::enableAlphaBlending();
 
 		//gl::color( 0, 0, 0, 0.8 );
 
@@ -191,7 +191,7 @@ void ForegroundParticles::draw()
 			gl::draw(*p->particleTexture,rect);
 		}
 
-		//gl::disableAlphaBlending();
+		gl::disableAlphaBlending();
 	}
 
 }
