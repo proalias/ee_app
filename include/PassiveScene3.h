@@ -15,6 +15,8 @@ public:
 
 	float leftShift;
 
+	float incrementer;
+
 	bool isFrame1;
 	bool isFrame2;
 	bool isFrame3;
