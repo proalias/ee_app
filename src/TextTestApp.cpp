@@ -158,7 +158,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		flipScreen = true;

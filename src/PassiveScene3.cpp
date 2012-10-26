@@ -244,12 +244,12 @@ void PassiveScene3::draw()
 	
 //		imageAlpha-=0.1;
 
-		if(particleSpeed>600){
+		if(particleSpeed>800){
 			particleSpeed=0;
 			localParticles.clear();
 		}
 
-		particleSpeed +=25;
+		particleSpeed +=50;
 
 		gl::color( 1, 1, 1, 0.6 );
 		gl::pushMatrices();
