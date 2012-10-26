@@ -16,7 +16,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	font->addLine( "COME IN", 4 );
 	font->addLine( "    AND SEE US", 4 );
-	font->animateIn();
+	//font->animateIn();
 	
 	iconFactory =  &theIconFactory;
 
@@ -74,7 +74,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 void PassiveScene4::showFrame2(){
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 3 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 7 );
 	
 	for (int i = 0; i < arrows.size(); i++){
 		arrows[i]->disperseParticles();
@@ -93,9 +93,6 @@ void PassiveScene4::showFrame4(){
 
 
 void PassiveScene4::draw(){
-
-	// TODO - this will flip the text too right?
-	/*
 
 	bool doorOnRight = ShopConfig::getInstance()->doorOnRight;
 	//some stores have doors on the left, so we need to reverse the direction of the arrows.
@@ -116,6 +113,5 @@ void PassiveScene4::draw(){
 	if(doorOnRight == true){
 		gl::popMatrices();
 	}
-	*/
 
 }

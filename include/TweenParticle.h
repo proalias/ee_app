@@ -9,6 +9,7 @@
 #include "cinder\Perlin.h"
 #include "cinder\CinderMath.h"
 #include "TextureGlobals.h"
+#include "ColorConstants.h"
 //#include "ParticleImageContainer.h"
 
 using namespace cinder;
@@ -31,6 +32,7 @@ public:
 	bool moving;
 	int textureType;
 	
+	bool __isYellow;
 	void isYellow( bool isYellow);
 
 	bool jitters;

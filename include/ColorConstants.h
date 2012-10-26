@@ -1,3 +1,6 @@
+#ifndef ColorConstants_h
+#define ColorConstants_h
+
 #include "cinder/Color.h"
 
 using namespace ci;
@@ -28,3 +31,4 @@ public:
 	~ColorConstants(void);
 };
 
+#endif

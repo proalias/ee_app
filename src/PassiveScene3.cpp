@@ -83,9 +83,9 @@ void PassiveScene3::showFrame2(){
 	isFrame2=true;
 	isFrame3=false;
 
-	fgParticles->overrideDrawMethodInScene = true;
+	fgParticles->overrideDrawMethodInScene = false;
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 2 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 3 );
 	//showFrame3();
 }
 
@@ -103,12 +103,13 @@ void PassiveScene3::showFrame3(){
 	font->setPosition(300,100);
 	font->setColor(Color(1.0,1.0,1.0));
 
-	font->addLine( "WITH SUPERFAST", 2 );
-	font->addLine( "      #4GEE AND", 2 );
-	font->addLine( "      FIBRE BROADBAND", 2 );
-	//font->animateIn();
+	font->addLine( "WITH SUPERFAST", 2.7 );
+	font->addLine( "      #4GEE AND", 2.7 );
+	font->addLine( "      FIBRE", 2.7);
+	font->addLine( "      BROADBAND", 2.7 );
+	font->animateIn();
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 15 );
 }
 
 void PassiveScene3::showFrame4(){
@@ -123,7 +124,6 @@ void PassiveScene3::showFrame4(){
 
 	font->animateOut();
 
-	_signal(this);
 
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 3 );
 }
@@ -142,28 +142,19 @@ void PassiveScene3::update()
 
 void PassiveScene3::draw()
 {
-	gl::disableAlphaBlending(); // remove the additive BLEND FUNC ( seems confusing but this is how it works )
-	gl::enableAlphaBlending(); // enables alpha. above call removes blend func AND alpha. so it's not pointless just trust this code
-
-	//if(isFrame1){
-	//	if(imageAlpha<100){
-	//		imageAlpha+=0.3;
-	//	}
-	//}
-
-//	if(isFrame3){
-//		imageAlpha-=0.1;
-//	}
-
-	gl::color( ColorA(1.0f, 1.0f, 1.0f, imageAlpha ) );
+	gl::disableAlphaBlending();
+	
 	gl::draw( bgImage );
+	gl::enableAdditiveBlending();
+	
+	gl::enableAlphaBlending();
+	gl::color( ColorA(1.0f, 1.0f, 1.0f, imageAlpha ) );
 
 	if(isFrame2)
 	{
 		imageAlpha+=0.06;
 
-		//gl::disableAlphaBlending();
-		//gl::enableAlphaBlending();
+		
 
 		alphaValue-=0.01;
 
@@ -286,7 +277,9 @@ void PassiveScene3::draw()
 		imageAlpha-=0.06;
 	}
 
-
+	gl::color( ColorA(1.0f, 1.0f, 1.0f, 1.0f ) );
 	// now image is drawn we can put our additive blend back on for textures.
-	gl::enableAdditiveBlending();
+	//gl::enableAdditiveBlending();
+	
+	gl::disableAlphaBlending();
 }

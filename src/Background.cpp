@@ -142,7 +142,7 @@ void Background::draw()
 
 	// draw the firefly
 	//ff.draw();
-
+	gl::enableAlphaBlending();
 
 	gl::pushMatrices();
 	gl::translate(20,20,0);
@@ -181,4 +181,6 @@ void Background::draw()
 		gl::popMatrices();
 
 	gl::popMatrices();
+	gl::disableAlphaBlending();
+	gl::color( 1, 1, 1, 1 );
 }

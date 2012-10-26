@@ -161,6 +161,7 @@ void TextTestApp::prepareSettings( Settings *settings )
 	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
+		::ShowCursor(false);
 		flipScreen = true;
 		settings->setAlwaysOnTop(true);
 		settings->setBorderless(true);
@@ -381,7 +382,7 @@ void TextTestApp::draw()
 	// this pair of lines is the standard way to clear the screen in OpenGL
 	glClearColor( 0,0,0,1 );
 	glClear( GL_COLOR_BUFFER_BIT );
-
+	
 	if (flipScreen==true){
 		gl::pushMatrices();
 		
@@ -393,6 +394,8 @@ void TextTestApp::draw()
 	gl::enableAlphaBlending();
 	gl::enableAdditiveBlending();
 
+	
+	drawSkeleton();
 	mbackground.draw();
 
 	drawSkeleton();
@@ -401,13 +404,21 @@ void TextTestApp::draw()
 	currentScene->draw();
 
 	myFont.draw();
+	
+	
+	
+	
 
 	//fgParticles.draw();
 
 	// kill this all and refresh
 	gl::disableAlphaBlending();
+	//gl::disableAlphaBlending();
 	//gl::enableAlphaBlending();
 	gl::enableAdditiveBlending();
+	//
+	
+	//gl::enableAdditiveBlending();
 
 	//gl::color( ColorA( 1, 1, 1, 1 ) );
 
@@ -467,7 +478,6 @@ void TextTestApp::draw()
 
 	// restore the viewport
 	gl::setViewport( viewport );
-
 	// because the Fbo's have their origin in the LOWER-left corner,
 	// flip the Y-axis before drawing
 	gl::pushModelView();
@@ -482,11 +492,12 @@ void TextTestApp::draw()
 
 	// draw our scene with the blurred version added as a blend
 	gl::color( Color::white() );
+	
+	gl::enableAdditiveBlending();
 	gl::draw( mFboScene.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
 
-	//gl::enableAdditiveBlending();
 	gl::draw( mFboBlur2.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
-	//gl::disableAlphaBlending();
+	gl::disableAlphaBlending();
 
 	// restore the modelview matrix
 	gl::popModelView();
@@ -494,11 +505,11 @@ void TextTestApp::draw()
 	if (flipScreen == true){
 		gl::popMatrices();
 	}
+	
+	gl::color( Color(1.0,1.0,1.0) );
+	
 
-	// start fresh
-	gl::disableAlphaBlending();
-
-	OutlineParams::getInstance()->draw();
+	//OutlineParams::getInstance()->draw();
 }
 
 void TextTestApp::drawSkeleton(){
@@ -526,7 +537,7 @@ void TextTestApp::drawSkeleton(){
 			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt, boneIndex++ ) {
 
 				// Set user color
-				gl::color( color );
+				//gl::color( color );
 
 				// Get position and rotation
 				const Bone& bone = boneIt->second;
@@ -539,16 +550,19 @@ void TextTestApp::drawSkeleton(){
 
 				Vec3f destination = skeletonIt->at( bone.getStartJoint() ).getPosition();
 
-				Vec3f end = skeletonIt->at( bone.getEndJoint() ).getPosition();
+				Vec3f end		= skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
 				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
 				
 				Vec2f positionScreen = Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
-				Vec2f midPoint = getMidPoint( destinationScreen, endScreen );
 
-				//int newBoneIndex = boneIt->first;
+				Vec2f midPoint = getMidPoint(destinationScreen, endScreen);
+
+				repelClips[boneIndex].x = positionScreen.x*2;
+				repelClips[boneIndex].y = positionScreen.y*2;
+				repelClips[boneIndex].zDist = position.z;
 
 				//boneIt->first
 

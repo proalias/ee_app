@@ -36,7 +36,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	
 	placeMarks.push_back(&placeMark2);
 
-	
+	/*
 	placeMark3 = IconRenderer();
 	placeMark3.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
 	placeMark3.pos = Vec2f(950.0,-200.0);
@@ -50,8 +50,8 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	placeMark4.pos = Vec2f(700,-200);
 	placeMark4.scale = 0.5;
 	
-	placeMarks.push_back(&placeMark4);
-
+	//placeMarks.push_back(&placeMark4);
+	*/
 
 	
 	placeMark5 = IconRenderer();
@@ -79,32 +79,33 @@ void PassiveScene2::showFrame2()
 	font->addLine( "4GEE IS HERE", 3 );
 	font->animateIn();
 
-	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.8));
-	cinder::app::timeline().apply(&placeMark2.pos,ci::Vec2f(placeMark2.pos.value().x,150.0), 2.0f ,cinder::EaseOutBounce(0.8));
+	cinder::app::timeline().apply(&placeMark2.pos,ci::Vec2f(placeMark2.pos.value().x,150.0), 2.0f ,cinder::EaseOutBounce(0.4));
 	//cinder::app::timeline().apply(&placeMark3.pos,ci::Vec2f(placeMark3.pos.value().x,400.0), 4.5f ,cinder::EaseOutBounce(0.8));
-	cinder::app::timeline().apply(&placeMark4.pos,ci::Vec2f(placeMark4.pos.value().x,750.0), 5.0f ,cinder::EaseOutBounce(0.8));
-	cinder::app::timeline().apply(&placeMark5.pos,ci::Vec2f(placeMark5.pos.value().x,370.0), 4.0f ,cinder::EaseOutBounce(0.8));
-	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.8));
+	//cinder::app::timeline().apply(&placeMark4.pos,ci::Vec2f(placeMark4.pos.value().x,750.0), 5.0f ,cinder::EaseOutBounce(0.8));
+	cinder::app::timeline().apply(&placeMark5.pos,ci::Vec2f(placeMark5.pos.value().x,370.0), 4.0f ,cinder::EaseOutBounce(0.4));
+	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.4));
 
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 8 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene2::showFrame3()
 {
 	font->animateOut();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 0.2 );
+	
 }
 
 void PassiveScene2::showFrame4()
 {
 	font->clear();
-	font->setPosition(370.0,450.0);
+	font->setPosition(380.0,500.0);
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
 	// TODO - get the actual city name from the config
 	font->addLine( ShopConfig::getInstance()->location, 3 );
 	font->animateIn();
-	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 14 );
+	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 10 );
+	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
 }
 
 void PassiveScene2::showFrame5()
