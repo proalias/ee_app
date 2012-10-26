@@ -1,7 +1,7 @@
 #include "ColorConstants.h"
 
 const Color ColorConstants::PRIMARY_TEAL( 1.0f/255*0, 1.0f/255*156, 1.0f/255*156 );
-const Color ColorConstants::PRIMARY_YELLOW( 1.0f/255*254, 1.0f/255*230, 1.0f/255*156 );
+const Color ColorConstants::PRIMARY_YELLOW( 1.0f/255*255, 1.0f/255*230, 1.0f/255*0 );
 
 const Color ColorConstants::TINT_TEAL_LIGHT( 1.0f/255*109, 1.0f/255*206, 1.0f/255*208 );
 const Color ColorConstants::TINT_YELLOW( 1.0f/255*253, 1.0f/255*232, 1.0f/255*129 );

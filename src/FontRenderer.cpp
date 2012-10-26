@@ -446,6 +446,7 @@ void FontRenderer::animateIn(){
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.5,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
+				
 			}
 		}
 }
