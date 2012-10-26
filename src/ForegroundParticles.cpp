@@ -178,12 +178,14 @@ void ForegroundParticles::draw()
 {
 
 	
-	{
+	//{
 		gl::enableAdditiveBlending();
 		gl::enableAlphaBlending();
 
 		//gl::color( 0, 0, 0, 0.8 );
 
+		if(!overrideDrawMethodInScene)
+		{
 		// TODO - may be passing foreground particles into scenes. but still probs drawn here
 		for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 			//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );		
@@ -191,7 +193,9 @@ void ForegroundParticles::draw()
 			gl::draw(*p->particleTexture,rect);
 		}
 
+		}
+
 		gl::disableAlphaBlending();
-	}
+	//}
 
 }

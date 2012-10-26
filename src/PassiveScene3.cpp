@@ -37,13 +37,6 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-
-
-	//fgParticles->mParticles.clear();
-
-	//if(fgParticles->mParticles.size()<1){
-	//	fgParticles->setup( 100 );
-	//}
 	fgParticles->hide();
 
 
@@ -52,14 +45,13 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	catch( const std::exception &e ) { console() << "Could not load texture: " << e.what() << std::endl; }
 
 
-
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
 	otherParticleTexture = TextureGlobals::getInstance()->getParticleTexture(5);
 	
 	gridLayer = &thegridLayer;
 
 	gridSpeed=0.1;
-	particleSpeed=0;
+	particleSpeed=50;
 
 	// create a particle
 	ParticleA particle = ParticleA();
@@ -74,6 +66,8 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	particle.setGrav(0);
 	localParticles.push_back( particle );
 
+	fgParticles->overrideDrawMethodInScene = true;
+
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
 }
 
@@ -83,7 +77,7 @@ void PassiveScene3::showFrame2(){
 	isFrame2=true;
 	isFrame3=false;
 
-	fgParticles->overrideDrawMethodInScene = false;
+	//fgParticles->overrideDrawMethodInScene = true;
 	font->animateOut();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 3 );
 	//showFrame3();
@@ -97,7 +91,6 @@ void PassiveScene3::showFrame3(){
 	isFrame4=false;
 
 	particleSpeed=0;
-
 
 	font->clear();
 	font->setPosition(300,100);
@@ -119,18 +112,15 @@ void PassiveScene3::showFrame4(){
 	isFrame3=false;
 	isFrame4=true;
 
-	fgParticles->overrideDrawMethodInScene = false;
-	fgParticles->show();
+//	fgParticles->overrideDrawMethodInScene = false;
 
 	font->animateOut();
-
 
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 3 );
 }
 
 void PassiveScene3::showFrame5(){
 	fgParticles->overrideDrawMethodInScene = false;
-	fgParticles->show();
 	//font->animateOut();
 	_signal(this);
 }
@@ -143,18 +133,17 @@ void PassiveScene3::update()
 void PassiveScene3::draw()
 {
 	gl::disableAlphaBlending();
-	
-	gl::draw( bgImage );
-	gl::enableAdditiveBlending();
-	
 	gl::enableAlphaBlending();
 	gl::color( ColorA(1.0f, 1.0f, 1.0f, imageAlpha ) );
+
+	gl::draw( bgImage );
+
+	gl::enableAdditiveBlending();
+	
 
 	if(isFrame2)
 	{
 		imageAlpha+=0.06;
-
-		
 
 		alphaValue-=0.01;
 
@@ -185,49 +174,6 @@ void PassiveScene3::draw()
 			}
 			gl::popMatrices();
 		}
-	/*
-		
-		//if(gridSpeed>150)
-	//	{
-			// ZOOM INDIVIDUAL PARTICLES
-		if(particleSpeed>450){
-			particleSpeed=0;
-			localParticles.clear();
-		}
-
-		particleSpeed +=25;
-
-		gl::color( 1, 1, 1, 0.6 );
-		gl::pushMatrices();
-		gl::translate(0,0,particleSpeed);
-	
-		//if(i==0){
-		for( int i=0; i<14; i++ ){
-			ParticleA particle = ParticleA();
-			particle.init();
-			particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-			particle.width = randFloat(3,10);
-			particle.x=randFloat(getWindowWidth());
-			particle.y=randFloat(getWindowHeight());
-			particle.setMaxSpeed(0);
-			particle.setEdgeBehavior("wrap");
-			particle.setWander(0);
-			particle.setGrav(0);
-
-			localParticles.push_back( particle );
-		}
-		//gl::translate(0,0,testVar*i);
-
-		for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p ){		
-			Rectf rect = Rectf(p->x - p->width, p->y - p->width, p->x + p->width, p->y + p->width);
-			gl::draw( *otherParticleTexture, rect ); // TODO - change for the foreground texture
-			//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
-		}
-
-			gl::popMatrices();	
-	//	}
-
-	*/
 	}
 
 	
@@ -236,7 +182,7 @@ void PassiveScene3::draw()
 //		imageAlpha-=0.1;
 
 		if(particleSpeed>800){
-			particleSpeed=0;
+			particleSpeed=50;
 			localParticles.clear();
 		}
 
@@ -247,7 +193,7 @@ void PassiveScene3::draw()
 		gl::translate(0,0,particleSpeed);
 	
 		//if(i==0){
-	for( int i=0; i<14; i++ ){
+	for( int i=0; i<10; i++ ){
 		ParticleA particle = ParticleA();
 		particle.init();
 		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
