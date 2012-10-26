@@ -158,7 +158,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
