@@ -246,7 +246,8 @@ void TextTestApp::setup()
 	mCamera.setCenterOfInterestPoint( Vec3f(0.0f, 2.0f, 0.0f) );
 	mCamera.setPerspective( 60.0f, getWindowAspectRatio(), 1.0f, 1000.0f );
 
-	for (int i=0; i<40; i++){
+	for (int i=0; i<40; i++)
+	{
 		CinderClip cinderClip = CinderClip();
 		cinderClip.x = -200;
 		cinderClip.y = -200;
@@ -355,19 +356,17 @@ void TextTestApp::update()
 
 
 	if ( mKinect->isCapturing() ) {
-			mKinect->update();
-			updateSkeleton();
-		}else {
-			// If Kinect initialization failed, try again every 90 frames
-			if ( getElapsedFrames() % 90 == 0 ) {
-				mKinect->start();
-			}
+		mKinect->update();
+		updateSkeleton();
+	}else {
+		// If Kinect initialization failed, try again every 90 frames
+		if ( getElapsedFrames() % 90 == 0 ) {
+			mKinect->start();
+		}
 	}
 
 	double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
-	
-	
 }
 
 
@@ -383,9 +382,7 @@ void TextTestApp::draw()
 	// this pair of lines is the standard way to clear the screen in OpenGL
 	glClearColor( 0,0,0,1 );
 	glClear( GL_COLOR_BUFFER_BIT );
-
 	
-
 	if (flipScreen==true){
 		gl::pushMatrices();
 		
@@ -394,13 +391,12 @@ void TextTestApp::draw()
 		gl::translate( Vec3f(-1, 1, 1) );
 	}
 
-	gl::color( ColorA(1.0,1.0,1.0,1.0));
-	gl::enableAdditiveBlending();
-
+	
+	drawSkeleton();
 	mbackground.draw();
 
-	drawSkeleton();
-
+	// FONT NOW GETS RENDERED AFTER SCENE SO WE CAN OVERRIDE DRAW OPERATION IF REQUIRED
+	currentScene->draw();
 	myFont.draw();
 	
 	
@@ -408,9 +404,16 @@ void TextTestApp::draw()
 	
 
 	//fgParticles.draw();
+
+	// kill this all and refresh
+	//gl::disableAlphaBlending();
+	//gl::enableAlphaBlending();
+	//
 	
-	currentScene->draw();
-	
+	//gl::enableAdditiveBlending();
+
+	//gl::color( ColorA( 1, 1, 1, 1 ) );
+
 	// store our viewport, so we can restore it later
 	Area viewport = gl::getViewport();
 
@@ -419,15 +422,10 @@ void TextTestApp::draw()
 	mFboScene.bindFramebuffer();
 		gl::pushMatrices();
 		gl::setMatricesWindow( viewport.getWidth(), viewport.getHeight(), false );
-			gl::clear( ColorA( 0,0,0,0 ));
-			
+			gl::clear( ColorA( 0,0,0,1 ));
 			fgParticles.draw();
-			
 			//gl::drawSolidCircle( Vec2f(50,50), 20 );
-
 			//gl::draw( mFboScene.getTexture() );//TODO - screenshot?
-
-
 		gl::popMatrices();
 	mFboScene.unbindFramebuffer();
 
@@ -472,7 +470,6 @@ void TextTestApp::draw()
 
 	// restore the viewport
 	gl::setViewport( viewport );
-
 	// because the Fbo's have their origin in the LOWER-left corner,
 	// flip the Y-axis before drawing
 	gl::pushModelView();
@@ -487,18 +484,22 @@ void TextTestApp::draw()
 
 	// draw our scene with the blurred version added as a blend
 	gl::color( Color::white() );
+	
+	gl::enableAdditiveBlending();
 	gl::draw( mFboScene.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
 
-	//gl::enableAdditiveBlending();
 	gl::draw( mFboBlur2.getTexture(), Rectf(0, 0, viewport.getWidth(), viewport.getHeight() ));
-	//gl::disableAlphaBlending();
+	gl::disableAlphaBlending();
 
 	// restore the modelview matrix
 	gl::popModelView();
-	gl::disableAlphaBlending();
+
 	if (flipScreen == true){
 		gl::popMatrices();
 	}
+	
+	gl::color( Color(1.0,1.0,1.0) );
+	
 
 	OutlineParams::getInstance()->draw();
 }
@@ -528,7 +529,7 @@ void TextTestApp::drawSkeleton(){
 			for ( Skeleton::const_iterator boneIt = skeletonIt->cbegin(); boneIt != skeletonIt->cend(); ++boneIt, boneIndex++ ) {
 
 				// Set user color
-				gl::color( color );
+				//gl::color( color );
 
 				// Get position and rotation
 				const Bone& bone	= boneIt->second;
@@ -541,7 +542,6 @@ void TextTestApp::drawSkeleton(){
 
 
 				Vec3f destination		= skeletonIt->at( bone.getStartJoint() ).getPosition();
-
 				Vec3f end		= skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
 
@@ -550,10 +550,11 @@ void TextTestApp::drawSkeleton(){
 				Vec2f positionScreen	= Vec2f( mKinect->getSkeletonVideoPos( position ) );
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
+
 				Vec2f midPoint = getMidPoint(destinationScreen, endScreen);
 
-				repelClips[boneIndex].x = destinationScreen.x*2;
-				repelClips[boneIndex].y = destinationScreen.y*2;
+				repelClips[boneIndex].x = positionScreen.x*2;
+				repelClips[boneIndex].y = positionScreen.y*2;
 				repelClips[boneIndex].zDist = position.z;
 
 

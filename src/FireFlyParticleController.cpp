@@ -22,19 +22,15 @@ void FireFlyParticleController::setParticles( std::vector<FireFlyParticleControl
 	ffparticles = &theffparticles;
 }
 
-/*
-void FireFlyParticleController::setActiveParticles( std::vector<FireFlyParticleController> &theffparticles )
+void FireFlyParticleController::setActiveParticles( std::vector<FireFlyParticleController> &theactiveparticles )
 {
-	ffparticles = &theffparticles;
+	activeParticles = &theactiveparticles;
 }
 
-void FireFlyParticleController::setWaveParticles( std::vector<FireFlyParticleController> &theffparticles )
+void FireFlyParticleController::setWaveParticles( std::vector<FireFlyParticleController> &thewaveparticles )
 {
-	ffparticles = &theffparticles;
+	waveparticles = &thewaveparticles;
 }
-*/
-
-
 
 
 FireFlyParticleController::FireFlyParticleController( float initX,
@@ -178,12 +174,12 @@ bool FireFlyParticleController::checkPath()
 	{
 		neighborParticleIndex = _neighborParticles[i];
 				
-		if (particles[neighborParticleIndex].isOccupied && particles[neighborParticleIndex].borderFlag) {
+		if (ffparticles->at(neighborParticleIndex).isOccupied && ffparticles->at(neighborParticleIndex).borderFlag) {
 			possibleNeighbors.push_back(neighborParticleIndex);
 			break;
-		} else if(particles[neighborParticleIndex].index == previousIndex) {
+		} else if(ffparticles->at(neighborParticleIndex).index == previousIndex) {
 			continue;
-		} else if(particles[neighborParticleIndex].isOccupied) {
+		} else if(ffparticles->at(neighborParticleIndex).isOccupied) {
 			possibleNeighbors.push_back(neighborParticleIndex);
 		}
 	} 
@@ -206,17 +202,17 @@ bool FireFlyParticleController::checkPath()
 			
 	_takeFrom = chosenIndex;
 			
-	particles[activeNeighbor].giveTo = neighborOrder[_takeFrom];
-	particles[activeNeighbor].previousIndex = index;
+	ffparticles->at(activeNeighbor).giveTo = neighborOrder[_takeFrom];
+	ffparticles->at(activeNeighbor).previousIndex = index;
 			
 	checkWave();
 			
-	particle.pos.copyFrom(particles[activeNeighbor].particlePos);
+	particle.pos.copyFrom(ffparticles->at(activeNeighbor).particlePos);
 
 	isOccupied = false;
 	isActive = true;
 			
-	//_grid.activeParticles.push( particles[activeNeighbor] );  // TODO - pass in neigororder and active particles
+	activeParticles->push_back( ffparticles->at(activeNeighbor) );
 	
 	return true;
 }
@@ -234,7 +230,6 @@ void FireFlyParticleController::setParticleFollow()
 	
 void FireFlyParticleController::checkWave()
 {	
-
 	/*
 	var waveNextIndexes : Array = _grid.waveStartScheme["" + _takeFrom + "" + giveTo + ""];
 			
@@ -260,8 +255,8 @@ void FireFlyParticleController::checkWave()
 			trace("waveNextIndex not found for: ", _neighborParticles[waveNextIndexes[i]]);	
 		}
 	}
-
 	*/
+	
 }
 
 
@@ -293,7 +288,7 @@ bool FireFlyParticleController::makeWave()
 		Vect force = particlePos.clone();
 		int	exciterIndex = _neighborParticles[exciter];
 				
-		force.minusEq(particles[exciterIndex].pos);
+		force.minusEq(ffparticles->at(exciterIndex).pos);
 				
 		if (force.magnitude() > 1) {
 			if (exciter > 3) {
@@ -322,7 +317,7 @@ bool FireFlyParticleController::reactToWave()
 		return false;
 	}
 			
-	//var considerParticles : Array = _grid.waveScheme[ _grid.neighborOrder[ exciter ] ];
+	//var considerParticles : Array = waveScheme[ neighborOrder[ exciter ] ];
 	// TODO
 	std::vector<int> considerParticles;// = { 0, 1, 2, 4, 5 };
 	considerParticles.push_back(0);
@@ -342,7 +337,7 @@ bool FireFlyParticleController::reactToWave()
 	for( int i=0;  i < len; i++) {
 
 		considerParticlesIndex = considerParticles[i];
-		controller = particles[ _neighborParticles[considerParticlesIndex] ];
+		controller = ffparticles->at( _neighborParticles[considerParticlesIndex] );
 				
 		if (!controller.isOccupied || controller.isActive || controller.particle.isActive || controller.borderFlag) {
 			continue;
@@ -383,7 +378,7 @@ bool FireFlyParticleController::repel()
 	if (particle.isActive || particle.isWave) {				
 		return false;	
 	}
-
+	/*
 	Vect thisParticlePos = this->particle.pos.clone();
 	Vect repelForce = thisParticlePos.clone();
 	float distanceToRepel = (particles[1].particlePos.x - particles[0].particlePos.x);
@@ -393,7 +388,7 @@ bool FireFlyParticleController::repel()
 	Vect borderParticlePos;
 	int totalRepelForce = 0;
 	float dampen = 0.2;
-	FireFlyParticle borderParticle;
+	//FireFlyParticle borderParticle;
 			
 	for ( int i = 3; i >=0; i--)
 	{
@@ -401,7 +396,7 @@ bool FireFlyParticleController::repel()
 			continue;	
 		}
 				
-		borderParticle = particles[_neighborParticles[i]].particle;
+		FireFlyParticle borderParticle = particles[_neighborParticles[i]].particle;
 				
 		repelForce.copyFrom(thisParticlePos);				
 		repelForce.minusEq(borderParticle.pos);
@@ -422,7 +417,7 @@ bool FireFlyParticleController::repel()
 	} else {
 		isRepelling = false;
 	}
-
+	*/
 	return true;
 }
 
@@ -433,24 +428,24 @@ bool FireFlyParticleController::applyFade()
 
 	// TODO - nail this 
 
-	/*
+	
 	if (particle.pos.equals(particlePos)) {
 		return false;
 	}
 
-	int defaultDistance = particles[1].particlePos.x - particles[0].particlePos.x;
+	int defaultDistance = ffparticles->at(1).particlePos.x - ffparticles->at(0).particlePos.x;
 	float scaler = defaultDistance/15;
-	Vect tempPos = this->particle.pos.clone();
-	int distanceFromOriginalPos = tempPos.minusEq(particlePos).magnitude();
+	Vect tempPos = particle.pos.clone();
+	int distanceFromOriginalPos = particle.pos.x;//tempPos.minusEq(particlePos).magnitude();
 	int fade = floor((distanceFromOriginalPos * scaler / defaultDistance) * 10);
 				
-	fade = fade > 10 ? 10 : (fade < 1 ? 1 : (0.5 + fade) | 0);
+	//fade = fade > 10 ? 10 : (fade < 1 ? 1 : (0.5 + fade) | 0);
 			
 	particle.fade = distanceFromOriginalPos > 0 ? (fade > 0 ? fade : 1) : 1;
 			
 	return true;
 
-	*/
 
-	return false;
+
+//	return false;
 }

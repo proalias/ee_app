@@ -442,7 +442,7 @@ void FontRenderer::animateIn(){
 		float t = 0;////offset each time value slightly
 
 		for (int j=0;j<lines.size();j++){
-			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=0.005){
+			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p , t+=(0.005*float(j))){
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.5,getElapsedSeconds()+t,p->rad);
 				p->update(ci::app::getElapsedSeconds());
 				p->rad = 0;
@@ -468,9 +468,13 @@ void FontRenderer::animateOut(){
 
 void FontRenderer::draw()
 {
+	//gl::disableAlphaBlending(); // remove the additive BLEND FUNC ( seems confusing but this is how it works )
+	gl::enableAlphaBlending(); // enables alpha. above call removes blend func AND alpha. so it's not pointless just trust this code
+	//gl::enableAdditiveBlending();
+	
+	//gl::color(ColorA(1.0,1.0,1.0,1.0));
 
-	gl::color(Color(1.0,1.0,1.0));
-
+	
 	for (int j=0;j<lines.size();j++){
 		animationInProgress = false;
 		for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p ){
@@ -499,7 +503,9 @@ void FontRenderer::draw()
 		//tickingCue->setInfinite();
 		//tickCued = true;
 	}
-	gl::color(Color(1.0,1.0,1.0));
+
+	gl::disableAlphaBlending();
+	//gl::color(Color(1.0,1.0,1.0));
 }
 
 

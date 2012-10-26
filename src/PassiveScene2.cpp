@@ -79,7 +79,6 @@ void PassiveScene2::showFrame2()
 	font->addLine( "4GEE IS HERE", 3 );
 	font->animateIn();
 
-	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
 	cinder::app::timeline().apply(&placeMark2.pos,ci::Vec2f(placeMark2.pos.value().x,150.0), 2.0f ,cinder::EaseOutBounce(0.4));
 	//cinder::app::timeline().apply(&placeMark3.pos,ci::Vec2f(placeMark3.pos.value().x,400.0), 4.5f ,cinder::EaseOutBounce(0.8));
 	//cinder::app::timeline().apply(&placeMark4.pos,ci::Vec2f(placeMark4.pos.value().x,750.0), 5.0f ,cinder::EaseOutBounce(0.8));
@@ -87,24 +86,25 @@ void PassiveScene2::showFrame2()
 	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.4));
 
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 8 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene2::showFrame3()
 {
 	font->animateOut();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 0.2 );
+	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
 }
 
 void PassiveScene2::showFrame4()
 {
 	font->clear();
-	font->setPosition(370.0,450.0);
+	font->setPosition(380.0,500.0);
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
 	// TODO - get the actual city name from the config
 	font->addLine( ShopConfig::getInstance()->location, 3 );
 	font->animateIn();
-	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 14 );
+	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 10 );
 }
 
 void PassiveScene2::showFrame5()
@@ -122,7 +122,7 @@ void PassiveScene2::showFrame6()
 	font->addLine( "      MOBILE #4GEE", 3 );
 	font->addLine( "         ONLY ON EE", 2 );
 	font->animateIn();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
 }
 
 void PassiveScene2::showFrame7()

@@ -11,9 +11,6 @@ using namespace std;
 
 FireFlyParticle::FireFlyParticle()
 {	
-	x=0;
-	y=0;
-
 	isNormal = true;
 	isActive = false;
 	isWave = false;
@@ -76,12 +73,9 @@ void FireFlyParticle::update()
 	}
 
 	//scaleX = scaleY = _fadeSizes[this.fade];
-
-	x = pos.x;
-	y = pos.y; // TODO - dont think i need this if i got pos
 }
 
 void FireFlyParticle::draw()
 {
-	gl::drawSolidCircle( Vec2f(x,y), 2 );
+	gl::drawSolidCircle( Vec2f(pos.x,pos.y), _fadeSizes[fade] );//2 );//_fadeSizes[fade] );
 }

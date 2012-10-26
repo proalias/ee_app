@@ -9,12 +9,14 @@ PassiveScene4::PassiveScene4()
 void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer )
 {
 	font = &thefont;
+
 	font->clear();
-	font->setPosition(250.0,100.0);
+	font->setPosition(300,100);
 	font->setColor(Color(1.0,1.0,1.0));
 
 	font->addLine( "COME IN", 4 );
 	font->addLine( "    AND SEE US", 4 );
+	//font->animateIn();
 	
 	iconFactory =  &theIconFactory;
 
@@ -67,10 +69,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 16.0f ,cinder::EaseInExpo()).loop(true);
 	cinder::app::timeline().apply(&arrow5.pos,Vec2f(1600,50),ci::Vec2f(-300.0,arrow5.pos.value().y), 10.0f ,cinder::EaseInExpo()).loop(true);
 
-	font->animateIn();
-
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 25 );
-
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
 }
 
 void PassiveScene4::showFrame2(){
@@ -95,7 +94,6 @@ void PassiveScene4::showFrame4(){
 
 void PassiveScene4::draw(){
 
-	
 	bool doorOnRight = ShopConfig::getInstance()->doorOnRight;
 	//some stores have doors on the left, so we need to reverse the direction of the arrows.
 	//todo - read orientation from config
@@ -115,4 +113,5 @@ void PassiveScene4::draw(){
 	if(doorOnRight == true){
 		gl::popMatrices();
 	}
+
 }

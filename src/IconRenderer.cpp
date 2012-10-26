@@ -35,6 +35,16 @@ void IconRenderer::setPoints( std::vector<TweenParticle> &points){
 }
 
 void IconRenderer::draw(){
+
+
+		// kill this all and refresh
+	gl::disableAlphaBlending();
+	gl::enableAlphaBlending();
+	gl::enableAdditiveBlending();
+
+	gl::color( ColorA( 1, 1, 1, 1 ) );
+
+
 	gl::pushMatrices();
 	gl::translate(pos.value().x, pos.value().y, 0.0);
 	gl::scale(scale.value(), scale.value(), 1.0);
@@ -43,4 +53,10 @@ void IconRenderer::draw(){
 		p->draw();
 	}
 	gl::popMatrices();
+
+
+
+	gl::disableAlphaBlending();
+
+
 }

@@ -1,5 +1,6 @@
 #include "TweenParticle.h"
 
+
 TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 {
 	moving = false;
@@ -75,12 +76,16 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 
 void TweenParticle::draw(){
 
-	if (__isYellow){
-		//gl::color(Color(ColorConstants::PROMM
-		//gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
+	if (__isYellow == true){
+		gl::color(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g,ColorConstants::PRIMARY_YELLOW.b));
+		gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
+		gl::color(1.0,1.0,1.0);
+		return;
 	}
 	
+	//gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 
+		
 	Rectf rect = Rectf(xpos - rad*2 + xJitter, ypos - rad*2 + yJitter,xpos+rad*2 + xJitter, ypos+rad*2+ yJitter);
 	gl::draw(*particleTexture,rect);
 	
