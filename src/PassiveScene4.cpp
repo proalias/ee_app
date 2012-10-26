@@ -16,7 +16,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	font->addLine( "COME IN", 4 );
 	font->addLine( "    AND SEE US", 4 );
-	//font->animateIn();
+	font->animateIn();
 	
 	iconFactory =  &theIconFactory;
 

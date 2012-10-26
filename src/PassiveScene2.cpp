@@ -101,7 +101,6 @@ void PassiveScene2::showFrame4()
 	font->clear();
 	font->setPosition(380.0,500.0);
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
-	// TODO - get the actual city name from the config
 	font->addLine( ShopConfig::getInstance()->location, 3 );
 	font->animateIn();
 	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 10 );
