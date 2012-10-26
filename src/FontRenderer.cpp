@@ -398,7 +398,7 @@ void FontRenderer::addLine( const std::string &copy, int size )
 			float x = ((character[i][0] + xPosition) * size ) + layoutXPos;
 			float y = (character[i][1] * size ) + layoutYPos;
 			TweenParticle p = (TweenParticle( x , y , size*2.5 , false));
-			if (currentColor.r != 1.0){
+			if (currentColor.b != 1.0){
 				p.isYellow(true);
 			}
 			newline.push_back(p);
