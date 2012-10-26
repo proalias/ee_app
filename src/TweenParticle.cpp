@@ -37,11 +37,11 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 
 void TweenParticle::isYellow( bool isYellow = false){
 	__isYellow = isYellow;
-	if (isYellow == true){
-		particleTexture = TextureGlobals::getInstance()->getParticleTexture(7);
-	}else{
-		particleTexture = TextureGlobals::getInstance()->getParticleTexture(0);
-	}
+	//if (isYellow == true){
+	//	particleTexture = TextureGlobals::getInstance()->getParticleTexture(7);
+	//}else{
+	//	particleTexture = TextureGlobals::getInstance()->getParticleTexture(0);
+	//}
 }
 
 
@@ -79,7 +79,7 @@ void TweenParticle::draw(){
 	if (__isYellow == true){
 		gl::color(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g,ColorConstants::PRIMARY_YELLOW.b));
 		gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
-		gl::color(1.0,1.0,1.0);
+		gl::color(1.0,1.0,1.0,1.0);
 		return;
 	}
 	

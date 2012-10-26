@@ -93,7 +93,7 @@ void PassiveScene2::showFrame3()
 {
 	font->animateOut();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 0.2 );
-	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
+	
 }
 
 void PassiveScene2::showFrame4()
@@ -105,6 +105,7 @@ void PassiveScene2::showFrame4()
 	font->addLine( ShopConfig::getInstance()->location, 3 );
 	font->animateIn();
 	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 10 );
+	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
 }
 
 void PassiveScene2::showFrame5()
