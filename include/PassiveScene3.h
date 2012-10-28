@@ -22,6 +22,8 @@ public:
 	bool isFrame3;
 	bool isFrame4;
 
+	bool showTerms;
+
 	float alphaValue; // of the particles
 
 	float imageAlpha;

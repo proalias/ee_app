@@ -377,7 +377,6 @@ std::vector<Vec2f> FontRenderer::getCharacter( char character )
 	return points;
 }
 
-// TODO - pass in an init position for x and y
 void FontRenderer::addLine( const std::string &copy, int size )
 {
 	std::vector<TweenParticle> newline = vector<TweenParticle>();
@@ -388,6 +387,21 @@ void FontRenderer::addLine( const std::string &copy, int size )
 	for( int i=0; i<copy.length(); i++ )
 	{
 		char theChar = copy[i];
+
+		if (theChar == *"<")
+		{
+			if (copy[i+1]== *"Y" && copy[i+2]== *">"){
+				currentColor = Color(ColorConstants::PRIMARY_YELLOW.r, ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b);
+				i += 3;
+				theChar = copy[i];
+			}else if (copy[i+1] == *"/" && copy[i+2] == *"Y" && copy[i+3]== *">")
+			{
+				currentColor = Color(1.0, 1.0, 1.0);
+				i += 4;
+				theChar = copy[i];
+			}
+
+		}
 
 		std::vector<Vec2f> character = FontRenderer::getCharacter( theChar );
 		
@@ -400,6 +414,8 @@ void FontRenderer::addLine( const std::string &copy, int size )
 			TweenParticle p = (TweenParticle( x , y , size*2.5 , false));
 			if (currentColor.b != 1.0){
 				p.isYellow(true);
+			}else{
+				p.isYellow(false);
 			}
 			newline.push_back(p);
 
@@ -432,6 +448,7 @@ void FontRenderer::addLine( const std::string &copy, int size )
 	
 	layoutYPos += lineHeight * 2;
 }
+
 
 void FontRenderer::setColor(ci::Color color){
 	currentColor = color;

@@ -5,6 +5,7 @@
 #include "cinder/Easing.h"
 #include "ColorConstants.h"
 #include "ShopConfig.h"
+#include "cinder\gl\gl.h"
 
 PassiveScene2::PassiveScene2()
 {
@@ -123,10 +124,12 @@ void PassiveScene2::showFrame6()
 	font->addLine( "         ONLY ON EE", 2 );
 	font->animateIn();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
+	showTerms = true;
 }
 
 void PassiveScene2::showFrame7()
 {
+	showTerms = false;
 	font->animateOut();
 
 	for (int i = 0; i < placeMarks.size(); i++){
@@ -149,6 +152,16 @@ void PassiveScene2::draw()
 {
 	for (int i = 0; i < placeMarks.size(); i++){
 		placeMarks[i]->draw();
+	}
+
+	if (showTerms==true){
+		ci::gl::pushMatrices();
+		ci::gl::translate(0,800-142,0);
+		ci::gl::enableAlphaBlending();
+		ci::gl::draw(*TextureGlobals::getInstance()->getParticleTexture(8));
+		
+		ci::gl::disableAlphaBlending();
+		ci::gl::popMatrices();
 	}
 	//locationLabel.draw();
 }

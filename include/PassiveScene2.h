@@ -19,7 +19,7 @@ public:
 	//~PassiveScene2(void);
 
  private:
-
+	bool showTerms;
 	std::vector<IconRenderer*> placeMarks;
 	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4, placeMark5, placeMark6;
 

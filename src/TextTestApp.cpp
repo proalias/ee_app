@@ -159,7 +159,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -191,7 +191,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	case 3:
-		currentScene = new PassiveScene3();
+		currentScene = new PassiveScene4();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
@@ -294,6 +294,15 @@ void TextTestApp::setup()
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,7);
 
 
+	
+	gl::Texture terms1Texture = loadImage(loadAsset( "terms1.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(terms1Texture,8);
+
+	//gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
+	//TextureGlobals::getInstance()->setParticleTexture(particleTexture6,9);
+
+
+
 	myFont = FontRenderer();
 	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
@@ -310,7 +319,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene3();
+	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
@@ -510,7 +519,7 @@ void TextTestApp::draw()
 	gl::color( Color(1.0,1.0,1.0) );
 	
 
-	OutlineParams::getInstance()->draw();
+	//OutlineParams::getInstance()->draw();
 }
 
 void TextTestApp::drawSkeleton(){
