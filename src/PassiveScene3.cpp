@@ -18,10 +18,12 @@ PassiveScene3::PassiveScene3()
 
 	imageAlpha=0;
 
-	leftShift=4;
+	leftShift=0;
 	
 	gridSpeed=1.1;
 	gridZ = 0;
+
+	incrementer=0;
 }
 
 void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer )
@@ -100,9 +102,9 @@ void PassiveScene3::showFrame3(){
 	font->addLine( "      #4GEE AND", 2.7 );
 	font->addLine( "      FIBRE", 2.7);
 	font->addLine( "      BROADBAND", 2.7 );
-	font->animateIn();
+	//font->animateIn();
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 15 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene3::showFrame4(){
@@ -116,7 +118,7 @@ void PassiveScene3::showFrame4(){
 
 	font->animateOut();
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 3 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
 }
 
 void PassiveScene3::showFrame5(){
@@ -145,15 +147,23 @@ void PassiveScene3::draw()
 	{
 		imageAlpha+=0.06;
 
-		alphaValue-=0.01;
+		alphaValue-=0.04;
 
-		// ZOOM THE GRID
-		gridSpeed+=12;
-	
-		for( int i=1; i<6; i++ ){
+		if(gridSpeed<30){
+			// ZOOM THE GRID
+			gridSpeed+=incrementer;
+			incrementer++;
+		}else
+		{
+			gridSpeed+=incrementer;
+		}
+
+		leftShift++;
+
+		for( int i=3; i<9; i++ ){
 			gl::color( 1, 1, 1, alphaValue );
 			gl::pushMatrices();
-			gl::translate( 0, 0, gridSpeed*i );
+			gl::translate( leftShift/2, 0, gridSpeed*i );
 	
 			int count=0;
 
@@ -177,11 +187,11 @@ void PassiveScene3::draw()
 	}
 
 	
-	if(isFrame3){
+	if(!isFrame1){
 	
 //		imageAlpha-=0.1;
 
-		if(particleSpeed>800){
+		if(particleSpeed>1000){
 			particleSpeed=50;
 			localParticles.clear();
 		}
@@ -192,21 +202,21 @@ void PassiveScene3::draw()
 		gl::pushMatrices();
 		gl::translate(0,0,particleSpeed);
 	
-		//if(i==0){
-	for( int i=0; i<10; i++ ){
-		ParticleA particle = ParticleA();
-		particle.init();
-		particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-		particle.width = randFloat(3,10);
-		particle.x=randFloat(getWindowWidth());
-		particle.y=randFloat(getWindowHeight());
-		particle.setMaxSpeed(0);
-		particle.setEdgeBehavior("wrap");
-		particle.setWander(0);
-		particle.setGrav(0);
+			//if(i==0){
+		for( int i=0; i<10; i++ ){
+			ParticleA particle = ParticleA();
+			particle.init();
+			particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
+			particle.width = randFloat(3,10);
+			particle.x=randFloat(getWindowWidth());
+			particle.y=randFloat(getWindowHeight());
+			particle.setMaxSpeed(0);
+			particle.setEdgeBehavior("wrap");
+			particle.setWander(0);
+			particle.setGrav(0);
 
-		localParticles.push_back( particle );
-	}
+			localParticles.push_back( particle );
+		}
 		//gl::translate(0,0,testVar*i);
 
 		for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p ){		

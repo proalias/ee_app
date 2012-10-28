@@ -191,7 +191,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	case 3:
-		currentScene = new PassiveScene4();
+		currentScene = new PassiveScene3();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
@@ -310,7 +310,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene1();
+	currentScene = new PassiveScene3();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
@@ -551,7 +551,7 @@ void TextTestApp::drawSkeleton(){
 
 				Vec3f destination = skeletonIt->at( bone.getStartJoint() ).getPosition();
 
-				Vec3f end		= skeletonIt->at( bone.getEndJoint() ).getPosition();
+				Vec3f end = skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
 				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
 				
