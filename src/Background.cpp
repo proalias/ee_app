@@ -110,7 +110,7 @@ void Background::drawGrid( std::vector<ParticleA> &fieldLayerContainer, int offs
 
 			//particle.setWander(3);
 			particle.setGrav(0);
-			particle.addSpringPoint( particle.x, particle.y, 0.04 ); // FORCES THE PARTICLE INTO POSITION
+			particle.addSpringPoint( particle.x, particle.y, 0.4 ); // FORCES THE PARTICLE INTO POSITION
 			
 			//particle.addGravPoint( particle.x, particle.y, 0.03 );
 
