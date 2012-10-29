@@ -29,6 +29,8 @@ using std::list;
 ForegroundParticles::ForegroundParticles(void)
 {
 	overrideDrawMethodInScene = false;
+
+	particlesAlpha=1;
 }
 
 
@@ -182,11 +184,24 @@ void ForegroundParticles::draw()
 		gl::enableAdditiveBlending();
 		gl::enableAlphaBlending();
 
-		//gl::color( 0, 0, 0, 0.8 );
+		gl::color( ColorA(1.0f, 1.0f, 1.0f, particlesAlpha ) );
 
-		if(!overrideDrawMethodInScene)
+		// fade scene in or out
+		if(!overrideDrawMethodInScene) // used to override now just hides here
 		{
-		// TODO - may be passing foreground particles into scenes. but still probs drawn here
+			if(particlesAlpha<1){
+				particlesAlpha+=0.1;
+			}
+		}else
+		{
+			if(particlesAlpha>0){
+				particlesAlpha-=0.1;
+			}
+		}
+
+		if(particlesAlpha>0) // dont bother drawing if they're not visible
+		{
+
 		for( list<ParticleA>::iterator p = mParticles.begin(); p != mParticles.end(); ++p ){
 			//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );		
 			Rectf rect = Rectf(p->x - p->width*2, p->y - p->width*2, p->x + p->width*2, p->y + p->width*2);
