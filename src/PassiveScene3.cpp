@@ -208,34 +208,33 @@ void PassiveScene3::draw()
 	//	gl::translate(0,0,particleSpeed);
 	
 			//if(i==0){
-		//for( int i=0; i<10; i++ ){
+	for( int i=0; i<2; i++ ){
 			ParticleA particle = ParticleA();
 			particle.init();
 			particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
 			particle.width = randFloat(3);
 			particle.x = (getWindowWidth()/2) + randFloat(-1,1);
 			particle.y = (getWindowHeight()/2) + randFloat(-1,1);
-			particle.setMaxSpeed(40);
+			particle.setMaxSpeed(80);
 			particle.setEdgeBehavior("remove");
 			particle.setWander(0);
 			particle.setDamp(2);
 			//particle.setGrav(10);
 
 			if(particle.x>getWindowWidth()/2){
-				particle.setVx( randFloat(20,50) );
+				particle.setVx( randFloat(10,80) );
 			}else{
-				particle.setVx( -randFloat(20,50) );
+				particle.setVx( -randFloat(10,80) );
 			}
 
 			if(particle.y>getWindowHeight()/2){
-				particle.setVy( randFloat(20,50) );
+				particle.setVy( randFloat(10,80) );
 			}else{
-				particle.setVy( -randFloat(20,50) );
+				particle.setVy( -randFloat(10,80) );
 			}
 
-
 			localParticles.push_back( particle );
-	//	}
+		}
 		//gl::translate(0,0,testVar*i);
 
 		for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p )
@@ -243,8 +242,8 @@ void PassiveScene3::draw()
 
 			p->update();
 
-			p->width+=7;
-			p->height+=7;
+			p->width+=14;
+			p->height+=14;
 
 			if (p->width>300){
 				p = localParticles.erase(p); // remove any big ones
