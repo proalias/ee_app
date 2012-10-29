@@ -38,7 +38,7 @@
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
-
+#include "cinder/Easing.h"
 
 #include <list>
 
@@ -73,6 +73,7 @@ class TextTestApp : public AppNative {
 	gl::Texture mSimpleTexture;
 
 	Vec2f getMidPoint(Vec2f p0, Vec2f p1);
+	Vec2f getPointOnLine( Vec2f p0, Vec2f p1, float t);
 
 	FontRenderer myFont;
  
@@ -158,7 +159,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -291,6 +292,15 @@ void TextTestApp::setup()
 
 	gl::Texture particleTexture7 = loadImage(loadAsset( "ParticleFullONYellow.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture6,7);
+
+
+	
+	gl::Texture terms1Texture = loadImage(loadAsset( "terms1.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(terms1Texture,8);
+
+	//gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
+	//TextureGlobals::getInstance()->setParticleTexture(particleTexture6,9);
+
 
 
 	myFont = FontRenderer();
@@ -558,72 +568,36 @@ void TextTestApp::drawSkeleton(){
 				Vec2f destinationScreen	= Vec2f( mKinect->getSkeletonVideoPos( destination ) );
 
 
-				Vec2f midPoint = getMidPoint(destinationScreen, endScreen);
-
-				repelClips[boneIndex].x = positionScreen.x*2;
-				repelClips[boneIndex].y = positionScreen.y*2;
-				repelClips[boneIndex].zDist = position.z;
-
+				
 				//boneIt->first
 
-
-				
-				if(boneIndex==3) // HEAD
-				{
-					repelClips[boneIndex].x = endScreen.x*2;
-					repelClips[boneIndex].y = (endScreen.y*2)-25;
-					repelClips[boneIndex].zDist = position.z;
-				}
-				else if(boneIndex==2) // SHOULDER CENTRE - (but appears to be on belly. so were calling belly)
-				{
-					repelClips[boneIndex].x = endScreen.x*2;
-					repelClips[boneIndex].y = (endScreen.y*2)+100;
-					repelClips[boneIndex].zDist = position.z;
-				}
-				else
-				{
-					repelClips[boneIndex].x = endScreen.x*2;
-					repelClips[boneIndex].y = endScreen.y*2;
-					repelClips[boneIndex].zDist = position.z;
-				}
-				
-
-			//	repelClips[boneIndex].x = position.x;//.x*2;
-			//	repelClips[boneIndex].y = position.y;//positionScreen.y*2;
-			//	repelClips[boneIndex].zDist = position.z;
-
-
-				//repelClips[boneIndex].x = endScreen.x*2;
-				//repelClips[boneIndex].y = endScreen.y*2;
-				//repelClips[boneIndex].zDist = position.z;
-
-
-
-				//update  midpoint clip
-				repelClips[boneIndex+20].x = midPoint.x*2;
-				repelClips[boneIndex+20].y = midPoint.y*2;
-				repelClips[boneIndex+20].zDist = position.z;
-				
-
-				//gl::color(Color(1.0,0.0,0.0));
-				//gl::drawSolidCircle( Vec2f(destinationScreen.x*2, destinationScreen.y*2), 20);
-
-				/*
-				// Draw generic bone stuff here
-				glLineWidth( 2.0f );
-				JointName startJoint = bone.getStartJoint();
-				if ( skeletonIt->find( startJoint ) != skeletonIt->end() ) {
-					Vec3f destination	= skeletonIt->find( startJoint )->second.getPosition();
-					destination.z		*= -1.0f;
-					gl::drawLine( position, destination );
-				}
-				*/
 				//draw bone specific stuff here
+
+
+				
+				repelClips[boneIndex].x = endScreen.x * 2;
+				repelClips[boneIndex].y = endScreen.y * 2;
+				repelClips[boneIndex].zDist = position.z;
+							
+
+				float midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+				Vec2f midPoint = getPointOnLine(destinationScreen,endScreen,midPointDist );
+				
+				if (midPointDist == 0){
+					//if the distance is 0, the joint doesn't need a midpoint.
+					repelClips[boneIndex+20].x = -200;
+					repelClips[boneIndex+20].y = -200;
+					repelClips[boneIndex+20].zDist = position.z;
+				}else{
+					repelClips[boneIndex+20].x = midPoint.x*2;
+					repelClips[boneIndex+20].y = midPoint.y*2;
+					repelClips[boneIndex+20].zDist = position.z;
+				}
+
 				switch(boneIt->first){
 						case NUI_SKELETON_POSITION_HIP_CENTER:
-							//repelClips[NUI_SKELETON_POSITION_HIP_CENTER].set= outlineParams.
 							//draw hip center
-				 			break;
+							break;
 					 
 						case NUI_SKELETON_POSITION_SPINE:
 							//draw spine
@@ -636,9 +610,27 @@ void TextTestApp::drawSkeleton(){
 				 			break;
 						case NUI_SKELETON_POSITION_SHOULDER_LEFT:
 							//draw left shoulder
+				
+
+
 							break;				 
 						case NUI_SKELETON_POSITION_ELBOW_LEFT:
 							//draw left elbow
+							
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.25  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[20].x = midPoint.x*2;
+							repelClips[20].y = midPoint.y*2;
+							repelClips[20].zDist = position.z;
+
+
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.75  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[21].x = midPoint.x*2;
+							repelClips[21].y = midPoint.y*2;
+							repelClips[21].zDist = position.z;
 							break;				 
 						case NUI_SKELETON_POSITION_WRIST_LEFT:
 							//draw left wrist
@@ -651,6 +643,21 @@ void TextTestApp::drawSkeleton(){
 							break;				 
 						case NUI_SKELETON_POSITION_ELBOW_RIGHT:
 							//draw right elbow
+							
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.25  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[23].x = midPoint.x*2;
+							repelClips[23].y = midPoint.y*2;
+							repelClips[23].zDist = position.z;
+
+
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.75  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[24].x = midPoint.x*2;
+							repelClips[24].y = midPoint.y*2;
+							repelClips[24].zDist = position.z;
 							break;				 
 						case NUI_SKELETON_POSITION_WRIST_RIGHT:
 							//draw right wrist
@@ -663,6 +670,21 @@ void TextTestApp::drawSkeleton(){
 							break;
 						case NUI_SKELETON_POSITION_KNEE_LEFT:
 							//draw left knee
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.25  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[27].x = midPoint.x*2;
+							repelClips[27].y = midPoint.y*2;
+							repelClips[27].zDist = position.z;
+
+
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.75  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[31].x = midPoint.x*2;
+							repelClips[31].y = midPoint.y*2;
+							repelClips[31].zDist = position.z;
+
 							break;
 						case NUI_SKELETON_POSITION_ANKLE_LEFT:
 							//draw left ankle
@@ -675,6 +697,22 @@ void TextTestApp::drawSkeleton(){
 							break;
 						case NUI_SKELETON_POSITION_KNEE_RIGHT:
 							//draw right knee
+							
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.25  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[32].x = midPoint.x*2;
+							repelClips[32].y = midPoint.y*2;
+							repelClips[32].zDist = position.z;
+
+
+							midPoint = getPointOnLine(destinationScreen,endScreen,0.75  );
+							midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
+							
+							repelClips[35].x = midPoint.x*2;
+							repelClips[35].y = midPoint.y*2;
+							repelClips[35].zDist = position.z;
+
 							break;
 						case NUI_SKELETON_POSITION_ANKLE_RIGHT:
 							//draw right ankle
@@ -682,6 +720,11 @@ void TextTestApp::drawSkeleton(){
 						case NUI_SKELETON_POSITION_FOOT_RIGHT:
 							//draw right foot
 							break;
+						default :
+
+							
+
+						break;
 				}
 
 			}
@@ -691,16 +734,18 @@ void TextTestApp::drawSkeleton(){
 	}
 
 	
+	gl::enableAlphaBlending();
 	//show the repel clip forces
 	if (OutlineParams::getInstance()->showForces == true){
 		for (int i = 0;i < repelClips.size(); i++){
 			repelClips[i].k = OutlineParams::getInstance()->getForceForIndex(i);
 			repelClips[i].minDist = OutlineParams::getInstance()->getMinDistForIndex(i);
-			gl::color(ColorA(1.0,0.0,0.0,0.5));
+			gl::color(ColorA(1.0,0.0,0.0,0.2));
 			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
-			gl::color(ColorA(0.0,1.0,0.0,0.5));
+			gl::color(ColorA(0.0,1.0,0.0,0.2));
 			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getMinDistForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
 		}
+		gl::color(ColorA(1.0,1.0,1.0,1.0));
 	}
 
 	//draw the user in particles 
@@ -716,6 +761,30 @@ void TextTestApp::drawSkeleton(){
 		}
 	}
 };
+
+Vec2f TextTestApp::getPointOnLine( Vec2f p0, Vec2f p1, float t){
+	
+	float lerpX, lerpY;
+
+	float d = 1.0;
+
+
+	float c, b;//change, begin
+
+	c = p1.x - p0.x;
+	b = p0.x;
+
+	lerpX = c*t/d + b;
+	
+	c = p1.y - p0.y;
+	b = p0.y;
+
+	lerpY = c*t/d + b;
+
+	Vec2f pointOnLine = Vec2f(lerpX, lerpY);
+	return pointOnLine;
+}
+
 
 
 Vec2f TextTestApp::getMidPoint(Vec2f p0, Vec2f p1){

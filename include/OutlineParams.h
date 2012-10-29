@@ -29,7 +29,7 @@ public:
 	void draw();
 	float getForceForIndex(int index);
 	float getMinDistForIndex(int index);
-
+	float getMidpointForIndex(int index);
 	
 	float midpointDefaultDistance;
 	float midpointDefaultForce;
@@ -80,6 +80,27 @@ public:
 	float NUI_SKELETON_POSITION_KNEE_RIGHT_distance;
 	float NUI_SKELETON_POSITION_ANKLE_RIGHT_distance;
 	float NUI_SKELETON_POSITION_FOOT_RIGHT_distance;
+
+	float NUI_SKELETON_POSITION_HIP_CENTER_midpoint;
+	float NUI_SKELETON_POSITION_SPINE_midpoint;
+	float NUI_SKELETON_POSITION_SHOULDER_CENTER_midpoint;
+	float NUI_SKELETON_POSITION_HEAD_midpoint;
+	float NUI_SKELETON_POSITION_SHOULDER_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_ELBOW_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_WRIST_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_HAND_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_SHOULDER_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_ELBOW_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_WRIST_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_HAND_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_HIP_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_KNEE_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_ANKLE_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_FOOT_LEFT_midpoint;
+	float NUI_SKELETON_POSITION_HIP_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_KNEE_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_ANKLE_RIGHT_midpoint;
+	float NUI_SKELETON_POSITION_FOOT_RIGHT_midpoint;
 
 	bool showForces;
 

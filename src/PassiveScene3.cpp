@@ -102,16 +102,18 @@ void PassiveScene3::showFrame3(){
 	font->setColor(Color(1.0,1.0,1.0));
 
 	font->addLine( "WITH SUPERFAST", 2.7 );
-	font->addLine( "      #4GEE AND", 2.7 );
+	font->addLine( "      <Y>#4GEE</Y> AND", 2.7 );
 	font->addLine( "      FIBRE", 2.7);
 	font->addLine( "      BROADBAND", 2.7 );
 	//font->animateIn();
+
+	showTerms = true;
 
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene3::showFrame4(){
-	
+	showTerms = false;	
 	isFrame1=false;
 	isFrame2=false;
 	isFrame3=false;
@@ -267,4 +269,14 @@ void PassiveScene3::draw()
 	//gl::enableAdditiveBlending();
 	
 	gl::disableAlphaBlending();
+
+	
+	if (showTerms==true){
+		ci::gl::pushMatrices();
+		ci::gl::translate(0,800-142,0);
+		ci::gl::enableAlphaBlending();
+		ci::gl::draw(*TextureGlobals::getInstance()->getParticleTexture(8));
+		ci::gl::disableAlphaBlending();
+		ci::gl::popMatrices();
+	}
 }

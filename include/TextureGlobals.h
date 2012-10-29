@@ -26,6 +26,8 @@ private:
 		particleTextures.push_back(particleTexture);
 		particleTextures.push_back(particleTexture);
 		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
+		particleTextures.push_back(particleTexture);
     }
 public:
     static TextureGlobals* getInstance();
