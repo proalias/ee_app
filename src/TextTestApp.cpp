@@ -117,6 +117,7 @@ class TextTestApp : public AppNative {
 
 	
 	std::vector<TweenParticle> userParticles;
+	void drawTitleSafeArea();
 
 private:
 	// Kinect
@@ -518,7 +519,8 @@ void TextTestApp::draw()
 	
 	gl::color( Color(1.0,1.0,1.0) );
 	
-
+	
+	drawTitleSafeArea();
 	//OutlineParams::getInstance()->draw();
 }
 
@@ -760,6 +762,8 @@ void TextTestApp::drawSkeleton(){
 			userParticles[i].draw();
 		}
 	}
+
+
 };
 
 Vec2f TextTestApp::getPointOnLine( Vec2f p0, Vec2f p1, float t){
@@ -799,6 +803,32 @@ Vec2f TextTestApp::getMidPoint(Vec2f p0, Vec2f p1){
 void TextTestApp::onSkeletonData( vector<Skeleton> skeletons, const DeviceOptions &deviceOptions )
 {
 	mSkeletons = skeletons;
+}
+
+void TextTestApp::drawTitleSafeArea(){
+
+
+	float w = 1280 - 600;
+	float halfW = w / 2;
+
+	Rectf leftRect = Rectf(0, 0, 108, 800);
+	Rectf rightRect = Rectf(1172, 0, 1280, 800);
+	
+	float aspectRatio = 0.75;
+
+
+
+	Rectf titleSafeRect = Rectf(halfW,0,1280 - halfW,800);
+
+	gl::color(Color(0.0,0.0,0.0));
+	glLineWidth(4);
+	gl::drawStrokedRect(titleSafeRect);
+	
+	/*
+	gl::color(Color(0.0,0.0,0.0));
+	gl::drawSolidRect(leftRect);
+	gl::drawSolidRect(rightRect);*/
+	gl::color(Color(1.0,1.0,1.0));
 }
 
 
