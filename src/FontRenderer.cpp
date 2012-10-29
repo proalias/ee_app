@@ -199,7 +199,9 @@ void FontRenderer::tick(int lineIndex){
 		return;
 	}
 
-
+	if (lines[lineIndex][particleIndexA].__isYellow || lines[lineIndex][particleIndexB].__isYellow ){
+		return;
+	}
 
 	//ensure A is lower than B
 	if (particleIndexA > particleIndexB){
@@ -223,6 +225,7 @@ void FontRenderer::tick(int lineIndex){
 			float rad = lines[lineIndex][particleIndexA].rad;
 
 			//lines[lineIndex][particleIndexB].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+			
 			lines[lineIndex][particleIndexA].animateTo(ci::Vec2f(bPosX,bPosY),1,getElapsedSeconds(),rad);
 
 			bPosX = lines[lineIndex][i+1].xpos;

@@ -24,7 +24,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	// show pin icons
 	placeMark1 = IconRenderer();
 	placeMark1.setPoints(iconFactory->getPointsForIcon(IconFactory::LOCATION_PIN) );
-	placeMark1.pos = Vec2f(250.0,-200);
+	placeMark1.pos = Vec2f(350.0,-200);
 	placeMark1.scale  = 2;
 	
 	placeMarks.push_back(&placeMark1);
@@ -75,7 +75,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 void PassiveScene2::showFrame2()
 {
 	font->clear();
-	font->setPosition(200.0,200.0);
+	font->setPosition(340.0,200.0);
 	font->setColor(Color(1.0,1.0,1.0));
 	font->addLine( "4GEE IS HERE", 3 );
 	font->animateIn();
@@ -83,7 +83,7 @@ void PassiveScene2::showFrame2()
 	cinder::app::timeline().apply(&placeMark2.pos,ci::Vec2f(placeMark2.pos.value().x,150.0), 2.0f ,cinder::EaseOutBounce(0.4));
 	//cinder::app::timeline().apply(&placeMark3.pos,ci::Vec2f(placeMark3.pos.value().x,400.0), 4.5f ,cinder::EaseOutBounce(0.8));
 	//cinder::app::timeline().apply(&placeMark4.pos,ci::Vec2f(placeMark4.pos.value().x,750.0), 5.0f ,cinder::EaseOutBounce(0.8));
-	cinder::app::timeline().apply(&placeMark5.pos,ci::Vec2f(placeMark5.pos.value().x,370.0), 4.0f ,cinder::EaseOutBounce(0.4));
+	cinder::app::timeline().apply(&placeMark5.pos,ci::Vec2f(placeMark5.pos.value().x,460.0), 4.0f ,cinder::EaseOutBounce(0.4));
 	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.4));
 
 
@@ -100,9 +100,9 @@ void PassiveScene2::showFrame3()
 void PassiveScene2::showFrame4()
 {
 	font->clear();
-	font->setPosition(380.0,500.0);
+	font->setPosition(480.0,520.0);
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
-	font->addLine( ShopConfig::getInstance()->location, 3 );
+	font->addLine( ShopConfig::getInstance()->location, 2 );
 	font->animateIn();
 	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 10 );
 	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
@@ -117,11 +117,11 @@ void PassiveScene2::showFrame5()
 void PassiveScene2::showFrame6()
 {
 	font->clear();
-	font->setPosition(200.0,100.0);
+	font->setPosition(350.0,100.0);
 	font->setColor(Color(1.0,1.0,1.0));
-	font->addLine( "SUPERFAST", 3 );
-	font->addLine( "      MOBILE #4GEE", 3 );
-	font->addLine( "         ONLY ON EE", 2 );
+	font->addLine( "SUPERFAST", 2.5 );
+	font->addLine( "      MOBILE #4GEE", 2.5 );
+	font->addLine( "       ONLY ON EE", 2.0 );
 	font->animateIn();
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
 	showTerms = true;

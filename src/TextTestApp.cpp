@@ -112,7 +112,7 @@ class TextTestApp : public AppNative {
 	void render();
 	void drawStrokedRect( const Rectf &rect );
 	
-	Timer textAnimationTimer;
+	Timer bgAnimationTimer;
 	//ParticleImageContainer pTextures;
 
 	
@@ -299,6 +299,10 @@ void TextTestApp::setup()
 	gl::Texture terms1Texture = loadImage(loadAsset( "terms1.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(terms1Texture,8);
 
+	
+	gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(terms2Texture,9);
+
 	//gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
 	//TextureGlobals::getInstance()->setParticleTexture(particleTexture6,9);
 
@@ -326,8 +330,7 @@ void TextTestApp::setup()
 
 	iconFactory.init();
 	
-	//Timer textAnimationTimer = Timer();
-	//textAnimationTimer.start();
+	Timer bgAnimationTimer = Timer();
 	
 	setupSkeletonTracker();
 }
@@ -520,7 +523,8 @@ void TextTestApp::draw()
 	gl::color( Color(1.0,1.0,1.0) );
 	
 	
-	drawTitleSafeArea();
+	//These are for debug only
+	//drawTitleSafeArea();
 	//OutlineParams::getInstance()->draw();
 }
 
@@ -533,15 +537,22 @@ void TextTestApp::drawSkeleton(){
 		// Set up 3D view
 		//gl::pushMatrices();
 		//gl::setMatrices( mCamera );
-		for(int k=0;k<repelClips.size();k++){
-			repelClips[k].x = -200;
-			repelClips[k].y = -200;
-		}
+		
 
 		// Iterate through skeletons
 		uint32_t i = 0;
+
+
+
+		int skeletonCount = 0;
+
+
 		for ( vector<Skeleton>::const_iterator skeletonIt = mSkeletons.cbegin(); skeletonIt != mSkeletons.cend(); ++skeletonIt, i++ ) {
 
+
+			if (skeletonIt->size() > 0){
+				skeletonCount +=1;
+			}
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
 			int boneIndex = 0;
@@ -732,6 +743,33 @@ void TextTestApp::drawSkeleton(){
 			}
 
 		}
+
+		if (skeletonCount == 0){
+			
+
+
+			//first clip is reserved for random background
+			for(int k=1;k<repelClips.size();k++){
+				repelClips[k].x = -200;
+				repelClips[k].y = -200;
+			}
+
+			if (bgAnimationTimer.isStopped()){
+				bgAnimationTimer.start();
+			}
+
+			if (bgAnimationTimer.getSeconds() > 2.0){
+				repelClips[0].x = randFloat(0,1280);
+				repelClips[0].y = randFloat(0,800);
+
+				//bgAnimationTimer = Timer();
+			}
+			if (bgAnimationTimer.getSeconds() > 3.0){
+				bgAnimationTimer = Timer();
+				repelClips[0].x = -200;
+				repelClips[0].y = -200;
+			}
+		}
 		
 	}
 
@@ -740,11 +778,14 @@ void TextTestApp::drawSkeleton(){
 	//show the repel clip forces
 	if (OutlineParams::getInstance()->showForces == true){
 		for (int i = 0;i < repelClips.size(); i++){
+			
 			repelClips[i].k = OutlineParams::getInstance()->getForceForIndex(i);
 			repelClips[i].minDist = OutlineParams::getInstance()->getMinDistForIndex(i);
-			gl::color(ColorA(1.0,0.0,0.0,0.2));
-			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
-			gl::color(ColorA(0.0,1.0,0.0,0.2));
+			
+			float alpha = 0.8 / repelClips.size() * i;
+			//gl::color(ColorA(1.0,0.0,0.0,0.2));
+			//gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
+			gl::color(ColorA(0.0,1.0,0.0,0.2 + alpha));
 			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getMinDistForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
 		}
 		gl::color(ColorA(1.0,1.0,1.0,1.0));
@@ -762,7 +803,6 @@ void TextTestApp::drawSkeleton(){
 			userParticles[i].draw();
 		}
 	}
-
 
 };
 
