@@ -48,6 +48,7 @@ public:
 	//YOU MUST CANCEL THIS AT THE END OF THE SCENE
 	bool overrideDrawMethodInScene;
 
+	float particlesAlpha; // so we can hide them
 
 
 

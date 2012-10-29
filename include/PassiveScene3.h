@@ -26,6 +26,7 @@ public:
 
 	float imageAlpha;
 
+	float particleAlpha;
 
 	float gridSpeed;
 	float particleSpeed;

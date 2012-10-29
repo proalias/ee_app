@@ -9,6 +9,8 @@ PassiveScene3::PassiveScene3()
 {
 	_id = 3; // for boost signal
 
+	particleAlpha = 0.4;
+
 	isFrame1=true;
 	isFrame2=false;
 	isFrame3=false;
@@ -39,7 +41,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-	fgParticles->hide();
+//gParticles->hide();
 
 
 	// TODO - fit image to screen?... at moment we rely on screen res matching our image yet we draw grid dynamically
@@ -48,13 +50,14 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 
 	particleTexture = TextureGlobals::getInstance()->getParticleTexture(6);
-	otherParticleTexture = TextureGlobals::getInstance()->getParticleTexture(5);
+	otherParticleTexture = TextureGlobals::getInstance()->getParticleTexture(4);
 	
 	gridLayer = &thegridLayer;
 
 	gridSpeed=0.1;
 	particleSpeed=50;
 
+	/*
 	// create a particle
 	ParticleA particle = ParticleA();
 	particle.init();
@@ -67,7 +70,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	particle.setWander(0);
 	particle.setGrav(0);
 	localParticles.push_back( particle );
-
+	*/
 	fgParticles->overrideDrawMethodInScene = true;
 
 	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
@@ -155,12 +158,12 @@ void PassiveScene3::draw()
 			incrementer++;
 		}else
 		{
-			gridSpeed+=incrementer;
+			gridSpeed+=incrementer/2;
 		}
 
 		leftShift++;
 
-		for( int i=3; i<9; i++ ){
+		for( int i=3; i<20; i++ ){
 			gl::color( 1, 1, 1, alphaValue );
 			gl::pushMatrices();
 			gl::translate( leftShift/2, 0, gridSpeed*i );
@@ -187,50 +190,76 @@ void PassiveScene3::draw()
 	}
 
 	
-	if(!isFrame1){
+	if(!isFrame1 && (particleAlpha>0) ){
 	
 //		imageAlpha-=0.1;
 
-		if(particleSpeed>1000){
-			particleSpeed=50;
-			localParticles.clear();
-		}
+		//if(particleSpeed>1000){
+		//	particleSpeed=50;
+		//	localParticles.clear();
+		//}
 
-		particleSpeed +=50;
+		//particleSpeed +=50;
 
-		gl::color( 1, 1, 1, 0.6 );
-		gl::pushMatrices();
-		gl::translate(0,0,particleSpeed);
+		gl::color( 1, 1, 1, particleAlpha );
+	//	gl::pushMatrices();
+	//	gl::translate(0,0,particleSpeed);
 	
 			//if(i==0){
-		for( int i=0; i<10; i++ ){
+		//for( int i=0; i<10; i++ ){
 			ParticleA particle = ParticleA();
 			particle.init();
 			particle.setBounds( 0,getWindowWidth(),0,getWindowHeight() );
-			particle.width = randFloat(3,10);
-			particle.x=randFloat(getWindowWidth());
-			particle.y=randFloat(getWindowHeight());
-			particle.setMaxSpeed(0);
-			particle.setEdgeBehavior("wrap");
+			particle.width = randFloat(3);
+			particle.x = (getWindowWidth()/2) + randFloat(-1,1);
+			particle.y = (getWindowHeight()/2) + randFloat(-1,1);
+			particle.setMaxSpeed(40);
+			particle.setEdgeBehavior("remove");
 			particle.setWander(0);
-			particle.setGrav(0);
+			particle.setDamp(2);
+			//particle.setGrav(10);
+
+			if(particle.x>getWindowWidth()/2){
+				particle.setVx( randFloat(20,50) );
+			}else{
+				particle.setVx( -randFloat(20,50) );
+			}
+
+			if(particle.y>getWindowHeight()/2){
+				particle.setVy( randFloat(20,50) );
+			}else{
+				particle.setVy( -randFloat(20,50) );
+			}
+
 
 			localParticles.push_back( particle );
-		}
+	//	}
 		//gl::translate(0,0,testVar*i);
 
-		for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p ){		
+		for( list<ParticleA>::iterator p = localParticles.begin(); p != localParticles.end(); ++p )
+		{
+
+			p->update();
+
+			p->width+=7;
+			p->height+=7;
+
+			if (p->width>300){
+				p = localParticles.erase(p); // remove any big ones
+			}
+
 			Rectf rect = Rectf(p->x - p->width, p->y - p->width, p->x + p->width, p->y + p->width);
-			gl::draw( *otherParticleTexture, rect ); // TODO - change for the foreground texture
+			gl::draw( *otherParticleTexture, rect );
 			//gl::drawSolidCircle( Vec2f( p->x, p->y ), p->width );
 		}
 
-		gl::popMatrices();
+	//	gl::popMatrices();
 	}
 
 
 	if(isFrame4){
 		imageAlpha-=0.06;
+		particleAlpha-=0.1;
 	}
 
 	gl::color( ColorA(1.0f, 1.0f, 1.0f, 1.0f ) );
