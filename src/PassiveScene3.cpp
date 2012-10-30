@@ -103,14 +103,16 @@ void PassiveScene3::showFrame3(){
 
 	font->addLine( "WITH SUPERFAST", 2.4 );
 	font->addLine( "      <Y>#4GEE</Y> AND", 2.4 );
-	font->addLine( "      FIBRE", 2.4);
-	font->addLine( "      BROADBAND", 2.4 );
+	font->addLine( "      <Y>FIBRE</Y>", 2.4);
+	font->addLine( "      <Y>BROADBAND</Y>", 2.4 );
 	//font->animateIn();
 
 	showTerms = true;
-
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 6 );
+	font->animateIn();
+	
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
+
 
 void PassiveScene3::showFrame4(){
 	showTerms = false;	

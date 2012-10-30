@@ -39,6 +39,7 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/Easing.h"
+#include "GestureTracker.h"
 
 #include <list>
 
@@ -118,6 +119,8 @@ class TextTestApp : public AppNative {
 	
 	std::vector<TweenParticle> userParticles;
 	void drawTitleSafeArea();
+
+	GestureTracker gestureTracker;
 
 private:
 	// Kinect
@@ -241,6 +244,8 @@ void TextTestApp::setup()
 
 	mTransform.setToIdentity();
 
+	gestureTracker = GestureTracker();
+
 	gl::Texture::Format format;
 	format.enableMipmapping(true);
 
@@ -342,7 +347,7 @@ void TextTestApp::setupSkeletonTracker(){
 	
 	// Start Kinect
 	mKinect = Kinect::create();
-	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_80x60 ) );
+	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_320x240 ) );
 	
 	mKinect->removeBackground();
 	// Add callbacks
@@ -575,6 +580,9 @@ void TextTestApp::drawSkeleton(){
 
 				Vec3f end = skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
+				gestureTracker.addPoint(boneIndex,end);
+
+
 				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
 				
 				Vec2f positionScreen = Vec2f( mKinect->getSkeletonVideoPos( position ) );
@@ -591,7 +599,7 @@ void TextTestApp::drawSkeleton(){
 				repelClips[boneIndex].x = endScreen.x * 2;
 				repelClips[boneIndex].y = endScreen.y * 2;
 				repelClips[boneIndex].zDist = position.z;
-							
+				
 
 				float midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
 				Vec2f midPoint = getPointOnLine(destinationScreen,endScreen,midPointDist );

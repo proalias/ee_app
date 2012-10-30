@@ -44,6 +44,7 @@ public:
 	void animateOut();
 	void setPosition(float x, float y);
 	void tick(int lineIndex);
+	
 
 	// TODO - this one should actually be private
 	// TODO - also for now its a massive switch, I read can do some kind of hash map to function pointers instead
@@ -56,6 +57,8 @@ public:
 	float getLineHeight( float ); // gets the height of a line by index
 	
 	ci::Vec2f FontRenderer::getLineVerticalBounds( float index );
+
+	void animateWhiteToYellow();
 
 	FontRenderer(void);
 	//~FontRenderer(void);

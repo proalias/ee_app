@@ -27,6 +27,8 @@ public:
 	static const Color TERTIARY_ACCENT_BLACK;
 	static const Color TERTIARY_ACCENT_GREY;
 
+	static const Color WHITE;
+
 	ColorConstants(void);
 	~ColorConstants(void);
 };
