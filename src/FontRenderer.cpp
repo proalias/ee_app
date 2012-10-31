@@ -199,7 +199,9 @@ void FontRenderer::tick(int lineIndex){
 		return;
 	}
 
-
+	if (lines[lineIndex][particleIndexA].__isYellow || lines[lineIndex][particleIndexB].__isYellow ){
+		return;
+	}
 
 	//ensure A is lower than B
 	if (particleIndexA > particleIndexB){
@@ -223,6 +225,7 @@ void FontRenderer::tick(int lineIndex){
 			float rad = lines[lineIndex][particleIndexA].rad;
 
 			//lines[lineIndex][particleIndexB].animateTo(ci::Vec2f(aPosX,aPosY),0.5,getElapsedSeconds(),rad);
+			
 			lines[lineIndex][particleIndexA].animateTo(ci::Vec2f(bPosX,bPosY),1,getElapsedSeconds(),rad);
 
 			bPosX = lines[lineIndex][i+1].xpos;
@@ -418,7 +421,6 @@ void FontRenderer::addLine( const std::string &copy, int size )
 				p.isYellow(false);
 			}
 			newline.push_back(p);
-
 		}
 
 		char theNextChar = *"";
@@ -464,8 +466,9 @@ void FontRenderer::animateIn(){
 				p->rad = 0;
 				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getNextPointOnGrid(),1.5,getElapsedSeconds()+t,destRad);
 				p->update(ci::app::getElapsedSeconds());
-				
-				
+				if (p->__isYellow){
+					p->tweenWhiteToYellow( t + 1.5, 1.0 );
+				}
 			}
 		}
 }
@@ -478,12 +481,14 @@ void FontRenderer::animateOut(){
 		for (int j=0;j<lines.size();j++){
 
 			for( vector<TweenParticle>::iterator p = lines[j].begin(); p != lines[j].end(); ++p, t+=0.001 ){
-				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),2.0,getElapsedSeconds(),0);
+				p->animateTo(getNextPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),2.0,getElapsedSeconds(),0, 0.5);
 				p->update(ci::app::getElapsedSeconds());
+				if (p->__isYellow){
+					p->tweenYellowToWhite(0,0.01);
+				}
 			}
 		}
 }
-
 
 
 void FontRenderer::draw()

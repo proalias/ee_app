@@ -39,6 +39,7 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/Easing.h"
+#include "GestureTracker.h"
 
 #include <list>
 
@@ -112,11 +113,14 @@ class TextTestApp : public AppNative {
 	void render();
 	void drawStrokedRect( const Rectf &rect );
 	
-	Timer textAnimationTimer;
+	Timer bgAnimationTimer;
 	//ParticleImageContainer pTextures;
 
 	
 	std::vector<TweenParticle> userParticles;
+	void drawTitleSafeArea();
+
+	GestureTracker gestureTracker;
 
 private:
 	// Kinect
@@ -159,7 +163,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -240,6 +244,8 @@ void TextTestApp::setup()
 
 	mTransform.setToIdentity();
 
+	gestureTracker = GestureTracker();
+
 	gl::Texture::Format format;
 	format.enableMipmapping(true);
 
@@ -298,6 +304,10 @@ void TextTestApp::setup()
 	gl::Texture terms1Texture = loadImage(loadAsset( "terms1.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(terms1Texture,8);
 
+	
+	gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
+	TextureGlobals::getInstance()->setParticleTexture(terms2Texture,9);
+
 	//gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
 	//TextureGlobals::getInstance()->setParticleTexture(particleTexture6,9);
 
@@ -325,8 +335,7 @@ void TextTestApp::setup()
 
 	iconFactory.init();
 	
-	//Timer textAnimationTimer = Timer();
-	//textAnimationTimer.start();
+	Timer bgAnimationTimer = Timer();
 	
 	setupSkeletonTracker();
 }
@@ -338,7 +347,7 @@ void TextTestApp::setupSkeletonTracker(){
 	
 	// Start Kinect
 	mKinect = Kinect::create();
-	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_80x60 ) );
+	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_320x240 ) );
 	
 	mKinect->removeBackground();
 	// Add callbacks
@@ -518,7 +527,9 @@ void TextTestApp::draw()
 	
 	gl::color( Color(1.0,1.0,1.0) );
 	
-
+	
+	//These are for debug only
+	//drawTitleSafeArea();
 	//OutlineParams::getInstance()->draw();
 }
 
@@ -531,15 +542,22 @@ void TextTestApp::drawSkeleton(){
 		// Set up 3D view
 		//gl::pushMatrices();
 		//gl::setMatrices( mCamera );
-		for(int k=0;k<repelClips.size();k++){
-			repelClips[k].x = -200;
-			repelClips[k].y = -200;
-		}
+		
 
 		// Iterate through skeletons
 		uint32_t i = 0;
+
+
+
+		int skeletonCount = 0;
+
+
 		for ( vector<Skeleton>::const_iterator skeletonIt = mSkeletons.cbegin(); skeletonIt != mSkeletons.cend(); ++skeletonIt, i++ ) {
 
+
+			if (skeletonIt->size() > 0){
+				skeletonCount +=1;
+			}
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
 			int boneIndex = 0;
@@ -562,6 +580,9 @@ void TextTestApp::drawSkeleton(){
 
 				Vec3f end = skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
+				gestureTracker.addPoint(boneIndex,end);
+
+
 				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
 				
 				Vec2f positionScreen = Vec2f( mKinect->getSkeletonVideoPos( position ) );
@@ -578,7 +599,7 @@ void TextTestApp::drawSkeleton(){
 				repelClips[boneIndex].x = endScreen.x * 2;
 				repelClips[boneIndex].y = endScreen.y * 2;
 				repelClips[boneIndex].zDist = position.z;
-							
+				
 
 				float midPointDist = OutlineParams::getInstance()->getMidpointForIndex(boneIndex);
 				Vec2f midPoint = getPointOnLine(destinationScreen,endScreen,midPointDist );
@@ -730,6 +751,33 @@ void TextTestApp::drawSkeleton(){
 			}
 
 		}
+
+		if (skeletonCount == 0){
+			
+
+
+			//first clip is reserved for random background
+			for(int k=1;k<repelClips.size();k++){
+				repelClips[k].x = -200;
+				repelClips[k].y = -200;
+			}
+
+			if (bgAnimationTimer.isStopped()){
+				bgAnimationTimer.start();
+			}
+
+			if (bgAnimationTimer.getSeconds() > 2.0){
+				repelClips[0].x = randFloat(0,1280);
+				repelClips[0].y = randFloat(0,800);
+
+				//bgAnimationTimer = Timer();
+			}
+			if (bgAnimationTimer.getSeconds() > 3.0){
+				bgAnimationTimer = Timer();
+				repelClips[0].x = -200;
+				repelClips[0].y = -200;
+			}
+		}
 		
 	}
 
@@ -738,11 +786,14 @@ void TextTestApp::drawSkeleton(){
 	//show the repel clip forces
 	if (OutlineParams::getInstance()->showForces == true){
 		for (int i = 0;i < repelClips.size(); i++){
+			
 			repelClips[i].k = OutlineParams::getInstance()->getForceForIndex(i);
 			repelClips[i].minDist = OutlineParams::getInstance()->getMinDistForIndex(i);
-			gl::color(ColorA(1.0,0.0,0.0,0.2));
-			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
-			gl::color(ColorA(0.0,1.0,0.0,0.2));
+			
+			float alpha = 0.8 / repelClips.size() * i;
+			//gl::color(ColorA(1.0,0.0,0.0,0.2));
+			//gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getForceForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
+			gl::color(ColorA(0.0,1.0,0.0,0.2 + alpha));
 			gl::drawSolidCircle(ci::Vec2f(repelClips[i].x, repelClips[i].y),OutlineParams::getInstance()->getMinDistForIndex(i) + (repelClips[i].zDist*repelClips[i].zDist));
 		}
 		gl::color(ColorA(1.0,1.0,1.0,1.0));
@@ -760,6 +811,7 @@ void TextTestApp::drawSkeleton(){
 			userParticles[i].draw();
 		}
 	}
+
 };
 
 Vec2f TextTestApp::getPointOnLine( Vec2f p0, Vec2f p1, float t){
@@ -799,6 +851,32 @@ Vec2f TextTestApp::getMidPoint(Vec2f p0, Vec2f p1){
 void TextTestApp::onSkeletonData( vector<Skeleton> skeletons, const DeviceOptions &deviceOptions )
 {
 	mSkeletons = skeletons;
+}
+
+void TextTestApp::drawTitleSafeArea(){
+
+
+	float w = 1280 - 600;
+	float halfW = w / 2;
+
+	Rectf leftRect = Rectf(0, 0, 108, 800);
+	Rectf rightRect = Rectf(1172, 0, 1280, 800);
+	
+	float aspectRatio = 0.75;
+
+
+
+	Rectf titleSafeRect = Rectf(halfW,0,1280 - halfW,800);
+
+	gl::color(Color(0.0,0.0,0.0));
+	glLineWidth(4);
+	gl::drawStrokedRect(titleSafeRect);
+	
+	/*
+	gl::color(Color(0.0,0.0,0.0));
+	gl::drawSolidRect(leftRect);
+	gl::drawSolidRect(rightRect);*/
+	gl::color(Color(1.0,1.0,1.0));
 }
 
 

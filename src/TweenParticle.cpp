@@ -10,6 +10,10 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	snapback = ci::randFloat(1.3 + 0.8);
 	color = Color(1.0,1.0,1.0);
 
+	colorR = color.r;
+	colorG = color.g;
+	colorB = color.b;
+
 	mDestRad = pRad;
 	mStartRad = pRad;
 	
@@ -49,6 +53,21 @@ void TweenParticle::tweenTo(float px, float py){
 	//mTimeline.apply(&xpos,px,3.0,ci::EaseOutBack());
 }
 
+
+void TweenParticle::animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, float startTime, float newrad, float delay){
+	mDest = dest;
+	mBegin = begin;
+	mDuration = duration;
+	mStartTime = startTime;
+	mStartRad = rad;
+	mDestRad = newrad;
+	moving = true;
+	delay = delay;
+	noise = 0;
+	xJitter = 0;
+	yJitter = 0;
+}
+
 void TweenParticle::animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, float startTime, float newrad){
 	mDest = dest;
 	mBegin = begin;
@@ -57,7 +76,7 @@ void TweenParticle::animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, f
 	mStartRad = rad;
 	mDestRad = newrad;
 	moving = true;
-
+	delay = 0;
 	noise = 0;
 	xJitter = 0;
 	yJitter = 0;
@@ -71,20 +90,19 @@ void TweenParticle::animateTo(ci::Vec2f dest, float duration, float startTime, f
 	mStartRad = rad;
 	mDestRad = newrad;
 	moving = true;
+	delay = 0;
 
 }
 
 void TweenParticle::draw(){
 
 	if (__isYellow == true){
-
-		gl::color(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g,ColorConstants::PRIMARY_YELLOW.b));
+		gl::color(colorR, colorG, colorB);
 		gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 		gl::color(1.0,1.0,1.0,1.0);
 		return;
 	}
 	
-	//gl::drawSolidCircle(ci::Vec2f(xpos + xJitter, ypos + yJitter) ,rad);
 
 		
 	Rectf rect = Rectf(xpos - rad*2 + xJitter, ypos - rad*2 + yJitter,xpos+rad*2 + xJitter, ypos+rad*2+ yJitter);
@@ -99,10 +117,24 @@ void TweenParticle::draw(){
 	*/
 }
 
+
+
+void TweenParticle::tweenWhiteToYellow(float delay, float duration){
+	ci::app::timeline().apply(&colorR,ColorConstants::WHITE.r,ColorConstants::PRIMARY_YELLOW.r,duration,ci::EaseInQuad() ).delay(delay);
+	ci::app::timeline().apply(&colorG,ColorConstants::WHITE.g,ColorConstants::PRIMARY_YELLOW.g,duration,ci::EaseInQuad() ).delay(delay);
+	ci::app::timeline().apply(&colorB,ColorConstants::WHITE.b,ColorConstants::PRIMARY_YELLOW.b,duration,ci::EaseInQuad() ).delay(delay);
+}
+
+void TweenParticle::tweenYellowToWhite(float delay, float duration){
+	ci::app::timeline().apply(&colorR,ColorConstants::PRIMARY_YELLOW.r,ColorConstants::WHITE.r,duration,ci::EaseInQuad() ).delay(delay);
+	ci::app::timeline().apply(&colorG,ColorConstants::PRIMARY_YELLOW.g,ColorConstants::WHITE.g,duration,ci::EaseInQuad() ).delay(delay);
+	ci::app::timeline().apply(&colorB,ColorConstants::PRIMARY_YELLOW.b,ColorConstants::WHITE.b,duration,ci::EaseInQuad() ).delay(delay);
+}
+
 void TweenParticle::update(double t){
 	if (moving){
-		if (t < mDuration+mStartTime){
-			float time = t - mStartTime;
+		if (t < mDuration+mStartTime+delay ){
+			float time = t - mStartTime - delay;
 			xpos = ease(time,mBegin.x,mDest.x - mBegin.x, mDuration, snapback);
 			ypos = ease(time,mBegin.y,mDest.y - mBegin.y, mDuration, snapback);
 			rad =  ease(time,mStartRad,mDestRad - mStartRad, mDuration, snapback);

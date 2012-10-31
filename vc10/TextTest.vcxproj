@@ -46,6 +46,8 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(KINECTSDK10_DIR)\inc;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(KINECTSDK10_DIR)\inc;$(IncludePath)</IncludePath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ExecutablePath)</ExecutablePath>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -78,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\boost;..\..\..\include;..\include;..\..\..\blocks\Cinder-KinectSdk\src;..\..\..\blocks\Cinder-KinectSdk\include;..\..\..\blocks\Cinder-OpenCV\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\boost;..\..\..\include;..\include;..\..\..\blocks\Cinder-KinectSdk\src;..\..\..\blocks\Cinder-KinectSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -90,17 +92,21 @@
       <AdditionalIncludeDirectories>..\include;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;KinectSdk.lib;opencv_core230.lib;opencv_imgproc230.lib;opencv_video230.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\blocks\Cinder-KinectSdk\lib;../../../lib/msw;../../../lib;../../../blocks/Cinder-OpenCV/lib/vc10;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>cinder.lib;KinectSdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\blocks\Cinder-KinectSdk\lib;../../../lib/msw;../../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>false</OptimizeReferences>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
@@ -112,6 +118,7 @@
     <ClCompile Include="..\src\FireFlyParticle.cpp" />
     <ClCompile Include="..\src\FireFlyParticleController.cpp" />
     <ClCompile Include="..\src\ForegroundParticles.cpp" />
+    <ClCompile Include="..\src\GestureTracker.cpp" />
     <ClCompile Include="..\src\IconFactory.cpp" />
     <ClCompile Include="..\src\IconRenderer.cpp" />
     <ClCompile Include="..\src\NobleeBold.cpp" />
@@ -143,6 +150,7 @@
     <ClInclude Include="..\include\FireFlyParticleController.h" />
     <ClInclude Include="..\include\FireFlyWaveScheme.h" />
     <ClInclude Include="..\include\ForegroundParticles.h" />
+    <ClInclude Include="..\include\GestureTracker.h" />
     <ClInclude Include="..\include\Icon.h" />
     <ClInclude Include="..\include\IconFactory.h" />
     <ClInclude Include="..\include\IconRenderer.h" />

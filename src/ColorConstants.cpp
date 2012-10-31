@@ -12,6 +12,8 @@ const Color ColorConstants::PRIMARY_ACCENT_GREY_DARK( 1.0f/255*109, 1.0f/255*110
 const Color ColorConstants::PRIMARY_ACCENT_WHITE( 1.0f/255*255, 1.0f/255*255, 1.0f/255*255 );
 const Color ColorConstants::PRIMARY_ACCENT_GREY_LIGHT( 1.0f/255*231, 1.0f/255*230, 1.0f/255*224 );
 
+const Color ColorConstants::WHITE( 1.0f, 1.0f, 1.0f );
+
 const Color ColorConstants::TERTIARY_ACTION_PINK( 1.0f/255*243, 1.0f/255*102, 1.0f/255*107 );
 const Color ColorConstants::TERTIARY_ACTION_PURPLE( 1.0f/255*101, 1.0f/255*75, 1.0f/255*143 );
 

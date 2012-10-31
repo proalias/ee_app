@@ -1,6 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextTest", "TextTest.vcxproj", "{EE5E9E4C-086D-4798-8FF0-005B3A1E18FB}"
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EE_APPLICATION", "TextTest.vcxproj", "{EE5E9E4C-086D-4798-8FF0-005B3A1E18FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C727180F-629C-489F-A172-C4E38F4ED187}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

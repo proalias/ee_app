@@ -10,6 +10,8 @@
 #include "cinder\CinderMath.h"
 #include "TextureGlobals.h"
 #include "ColorConstants.h"
+#include "cinder\app\App.h"
+#include "cinder\Easing.h"
 //#include "ParticleImageContainer.h"
 
 using namespace cinder;
@@ -23,6 +25,7 @@ public:
 
 	float ease(float time,float begin,float change,float duration,float snapback);
 	void tweenTo(float px, float py);
+	void animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, float startTime, float newrad, float delay);
 	void animateTo(ci::Vec2f dest, ci::Vec2f begin, float duration, float startTime, float rad);
 	void animateTo(ci::Vec2f dest, float duration, float startTime, float rad);
 	float xpos;
@@ -31,9 +34,18 @@ public:
 	Color color;
 	bool moving;
 	int textureType;
+	float delay;
+
+	Anim <float> colorR;
+	Anim <float> colorG;
+	Anim <float> colorB;
 	
 	bool __isYellow;
 	void isYellow( bool isYellow);
+
+	
+	void TweenParticle::tweenYellowToWhite(float delay, float duration);
+	void TweenParticle::tweenWhiteToYellow(float delay, float duration);
 
 	bool jitters;
 	gl::Texture* particleTexture;

@@ -32,10 +32,10 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 {
 	font = &thefont;
 	font->clear();
-	font->setPosition(200,100);
+	font->setPosition(350,100);
 	font->setColor(Color(1.0,1.0,1.0));
-	font->addLine( "PREPARE TO GO", 3 );
-	font->addLine( "         SUPERFAST", 3 );
+	font->addLine( "PREPARE TO GO", 2.5 );
+	font->addLine( "      SUPERFAST", 2.5 );
 	font->animateIn();
 
 	iconFactory =  &theIconFactory;
@@ -98,19 +98,21 @@ void PassiveScene3::showFrame3(){
 	particleSpeed=0;
 
 	font->clear();
-	font->setPosition(300,100);
+	font->setPosition(350,100);
 	font->setColor(Color(1.0,1.0,1.0));
 
-	font->addLine( "WITH SUPERFAST", 2.7 );
-	font->addLine( "      <Y>#4GEE</Y> AND", 2.7 );
-	font->addLine( "      FIBRE", 2.7);
-	font->addLine( "      BROADBAND", 2.7 );
+	font->addLine( "WITH SUPERFAST", 2.4 );
+	font->addLine( "      <Y>#4GEE</Y> AND", 2.4 );
+	font->addLine( "      <Y>FIBRE</Y>", 2.4);
+	font->addLine( "      <Y>BROADBAND</Y>", 2.4 );
 	//font->animateIn();
 
 	showTerms = true;
-
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 6 );
+	font->animateIn();
+	
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
+
 
 void PassiveScene3::showFrame4(){
 	showTerms = false;	
@@ -274,7 +276,7 @@ void PassiveScene3::draw()
 		ci::gl::pushMatrices();
 		ci::gl::translate(0,800-142,0);
 		ci::gl::enableAlphaBlending();
-		ci::gl::draw(*TextureGlobals::getInstance()->getParticleTexture(8));
+		ci::gl::draw(*TextureGlobals::getInstance()->getParticleTexture(9));
 		ci::gl::disableAlphaBlending();
 		ci::gl::popMatrices();
 	}

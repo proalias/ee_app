@@ -11,11 +11,11 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	font = &thefont;
 
 	font->clear();
-	font->setPosition(300,100);
+	font->setPosition(335,100);
 	font->setColor(Color(1.0,1.0,1.0));
 
-	font->addLine( "COME IN", 4 );
-	font->addLine( "    AND SEE US", 4 );
+	font->addLine( "COME IN", 3.3 );
+	font->addLine( "   AND SEE US", 3.3 );
 	font->animateIn();
 	
 	iconFactory =  &theIconFactory;
