@@ -60,13 +60,13 @@ void Background::setup()
 	Background::drawGrid( gridLayer2, -2, 1.3 );
 	Background::drawGrid( gridLayer3, 2, 1.6 );
 
-	ff.createGrid();
+	//ff.createGrid();
 }
 
 
 void Background::update()
 {
-	ff.update();
+	//ff.update();
 
 	for( vector<ParticleA>::iterator gp = gridLayer1.begin(); gp != gridLayer1.end(); ++gp ){
 		gp->update();
@@ -141,7 +141,7 @@ void Background::draw()
 
 
 	// draw the firefly
-	ff.draw();
+//	ff.draw();
 	gl::enableAlphaBlending();
 
 	gl::pushMatrices();

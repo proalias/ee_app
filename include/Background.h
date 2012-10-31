@@ -48,5 +48,5 @@ public:
 
 	Background(void);
 
-	FireFlyEffect ff;
+	//FireFlyEffect ff;
 };
