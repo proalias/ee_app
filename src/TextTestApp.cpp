@@ -191,7 +191,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
 	case 3:
-		currentScene = new PassiveScene3();
+		currentScene = new PassiveScene4();
 		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 		break;
@@ -319,7 +319,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene3();
+	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 

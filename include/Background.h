@@ -12,7 +12,7 @@
 
 #include "OutlineParams.h"
 
-//#include "FireFlyEffect.h"
+#include "FireFlyEffect.h"
 
 
 #include <list>
@@ -48,5 +48,5 @@ public:
 
 	Background(void);
 
-	//FireFlyEffect ff;
+	FireFlyEffect ff;
 };

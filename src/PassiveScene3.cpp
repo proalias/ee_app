@@ -41,7 +41,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
-//gParticles->hide();
+	//fgParticles->hide();
 
 
 	// TODO - fit image to screen?... at moment we rely on screen res matching our image yet we draw grid dynamically

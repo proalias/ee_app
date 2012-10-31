@@ -77,5 +77,5 @@ void FireFlyParticle::update()
 
 void FireFlyParticle::draw()
 {
-	gl::drawSolidCircle( Vec2f(pos.x,pos.y), _fadeSizes[fade] );//2 );//_fadeSizes[fade] );
+	gl::drawSolidCircle( Vec2f(pos.x,pos.y), _fadeSizes[fade]*2 );//2 );//_fadeSizes[fade] );
 }

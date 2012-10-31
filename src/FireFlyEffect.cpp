@@ -171,7 +171,8 @@ void FireFlyEffect::update()
 			FireFlyParticleController randomParticle = particles[floor(Rand::randFloat(len))];
 
 			if (!randomParticle.isActive && !randomParticle.particle.isWave && randomParticle.isOccupied && !randomParticle.particle.isActive) {
-				randomParticle.startShuffle();							
+				randomParticle.startShuffle();
+				increment();
 			}	
 		}
 	}
