@@ -7,16 +7,13 @@
 
 #include <string>
 
-using namespace cinder;
-using namespace gl;
-
 class ShopConfig
 {
 private:
     static bool instanceFlag;
     static ShopConfig *single;
 	
-	std::vector<gl::Texture> particleTextures;
+	std::vector<ci::gl::Texture> particleTextures;
 
 
     ShopConfig()
@@ -29,7 +26,7 @@ private:
 	
 public:
     static ShopConfig* getInstance();
-	void ShopConfig::parseConfig(XmlTree configXml);
+	void ShopConfig::parseConfig(ci::XmlTree configXml);
 
 	
 	bool doorOnRight;

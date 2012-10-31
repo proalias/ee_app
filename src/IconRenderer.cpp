@@ -1,6 +1,8 @@
 #include "IconRenderer.h"
 
 
+using namespace ci;
+
 IconRenderer::IconRenderer(){
 	std::vector<TweenParticle> points;
 	mPoints = points;

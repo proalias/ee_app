@@ -26,7 +26,7 @@ public:
 
 		gridLayer = &thegridLayer;
 	}
-	virtual void update(Timeline &timeline){}
+	virtual void update(ci::Timeline &timeline){}
 	virtual void draw(){}
 	
 	// this typedef creates a simple shorthand, so that ButtonSignal refers to boost::signals2::signal<void( Button* )>

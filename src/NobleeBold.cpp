@@ -1,5 +1,8 @@
 #include "NobleeBold.h"
 
+using namespace ci;
+using namespace std;
+
 NobleeBold::NobleeBold(void)
 {
 	// BUILD ALL THE POINTS FOR EACH CHAR IN THE FONT

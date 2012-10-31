@@ -11,7 +11,6 @@
 #include "cinder\Rand.h"
 #include "CinderClip.h"
 
-using namespace ci;
 
 class RepelPoint{
 public:

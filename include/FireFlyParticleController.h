@@ -7,9 +7,6 @@
 #include "FireFlyParticle.h"
 #include "Vect.h"
 
-using namespace ci;
-using namespace ci::app;
-using namespace std;
 
 #include <list>
 using std::list;

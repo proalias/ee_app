@@ -1,5 +1,9 @@
 #include "FontRenderer.h"
 
+using namespace ci;
+using namespace std;
+using namespace app;
+
 FontRenderer::FontRenderer(void)
 {
 	font = NobleeBold();

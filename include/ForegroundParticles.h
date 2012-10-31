@@ -13,11 +13,6 @@
 
 #include <list>
 
-using namespace ci;
-using namespace ci::app;
-using namespace std;
-
-using std::list;
 
 class ForegroundParticles {
 public:

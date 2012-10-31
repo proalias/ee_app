@@ -1,11 +1,16 @@
 #include "PassiveScene2.h"
-#include "boost/lambda/bind.hpp"
+#include "boost/bind.hpp"
 #include "cinder/Timeline.h"
 #include "cinder/Tween.h"
 #include "cinder/Easing.h"
 #include "ColorConstants.h"
 #include "ShopConfig.h"
 #include "cinder\gl\gl.h"
+
+
+using namespace cinder;
+using namespace app;
+using namespace std;
 
 PassiveScene2::PassiveScene2()
 {
@@ -69,7 +74,7 @@ void PassiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	
 	placeMarks.push_back(&placeMark6);
 	
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame2, this), timeline().getCurrentTime() + 1 );
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame2, this), timeline().getCurrentTime() + 1 );
 }
 
 void PassiveScene2::showFrame2()
@@ -87,13 +92,13 @@ void PassiveScene2::showFrame2()
 	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.4));
 
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene2::showFrame3()
 {
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 0.2 );
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 0.2 );
 	
 }
 
@@ -111,7 +116,7 @@ void PassiveScene2::showFrame4()
 void PassiveScene2::showFrame5()
 {
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame6, this), timeline().getCurrentTime() + 1 );
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame6, this), timeline().getCurrentTime() + 1 );
 }
 
 void PassiveScene2::showFrame6()
@@ -123,7 +128,7 @@ void PassiveScene2::showFrame6()
 	font->addLine( "      MOBILE #4GEE", 2.5 );
 	font->addLine( "       ONLY ON EE", 2.0 );
 	font->animateIn();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
 	showTerms = true;
 }
 
@@ -136,7 +141,7 @@ void PassiveScene2::showFrame7()
 		placeMarks[i]->disperseParticles();
 	}
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene2::showFrame8, this), timeline().getCurrentTime() + 3 );
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame8, this), timeline().getCurrentTime() + 3 );
 }
 
 void PassiveScene2::showFrame8()

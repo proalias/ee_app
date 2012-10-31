@@ -16,7 +16,7 @@ public :
 	void update();
 	
 	void disperseParticles();
-	ci::Anim<Vec2f> pos;
+	ci::Anim<ci::Vec2f> pos;
 	ci::Anim<float> scale;
 
 	std::vector<TweenParticle> mPoints;

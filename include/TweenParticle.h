@@ -14,7 +14,6 @@
 #include "cinder\Easing.h"
 //#include "ParticleImageContainer.h"
 
-using namespace cinder;
 
 class TweenParticle {
 public:
@@ -31,14 +30,14 @@ public:
 	float xpos;
 	float ypos;
 	float rad;
-	Color color;
+	ci::Color color;
 	bool moving;
 	int textureType;
 	float delay;
 
-	Anim <float> colorR;
-	Anim <float> colorG;
-	Anim <float> colorB;
+	ci::Anim <float> colorR;
+	ci::Anim <float> colorG;
+	ci::Anim <float> colorB;
 	
 	bool __isYellow;
 	void isYellow( bool isYellow);
@@ -48,7 +47,7 @@ public:
 	void TweenParticle::tweenWhiteToYellow(float delay, float duration);
 
 	bool jitters;
-	gl::Texture* particleTexture;
+	ci::gl::Texture* particleTexture;
 	
 	//ci::Timeline	&mTimeline;
 	float mDuration;
@@ -63,7 +62,7 @@ public:
 	float snapback;
 
 	//jitter values
-	Perlin mPerlin;
+	ci::Perlin mPerlin;
 	float noise;
 	float xJitter;
 	float yJitter;

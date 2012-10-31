@@ -3,13 +3,16 @@
 
 #include "FontRenderer.h"
 #include "SceneBase.h"
-#include "cinder/Timeline.h"
 
-using namespace std;
-using namespace ci;
+#include "cinder/Timeline.h"
+#include "boost/bind.hpp"
+
+#include "TextureGlobals.h"
+#include "GestureTracker.h"
 
 class ActiveScene1: public SceneBase {
- 
+
+
 public:
 
 	// inherited and overridden
@@ -21,13 +24,16 @@ public:
 	//~ActiveScene1(void);
 
  private:
-	CueRef mCue;
+	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();
+	void showFrame4();
 
 	bool showHand;
 
+	
+	
 	IconRenderer hand;
 };
 

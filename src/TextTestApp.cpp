@@ -13,7 +13,7 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 
-#include "boost/lambda/bind.hpp"
+#include "boost/bind.hpp"
 
 #include "Kinect.h"
 #include "Background.h"
@@ -31,8 +31,10 @@
 #include "PassiveScene2.h"
 #include "PassiveScene3.h"
 #include "PassiveScene4.h"
+
+#include "ActiveScene1.h"
+
 #include "ShopConfig.h"
-//#include "ActiveScene1.h"
 #include "OutlineParams.h"
 
 #include "cinder/gl/Fbo.h"
@@ -49,8 +51,7 @@ using namespace std;
 using namespace KinectSdk;
 using std::list;
 
-using boost::lambda::_1;
-using boost::lambda::bind; 
+using boost::bind; 
 
 
 static const bool PREMULT = false;
@@ -115,12 +116,13 @@ class TextTestApp : public AppNative {
 	
 	Timer bgAnimationTimer;
 	//ParticleImageContainer pTextures;
-
+	Timer significantInteractionTimer;
+	bool activeUserPresent;
 	
 	std::vector<TweenParticle> userParticles;
 	void drawTitleSafeArea();
 
-	GestureTracker gestureTracker;
+	GestureTracker* gestureTracker;
 
 private:
 	// Kinect
@@ -163,7 +165,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -183,27 +185,42 @@ void TextTestApp::prepareSettings( Settings *settings )
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
 	int sceneId = sceneInstance->getId();
-	switch(sceneId){
-	case 1:
-		currentScene = new PassiveScene2();
-		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
-		break;
-	case 2:
-		currentScene = new PassiveScene3();
-		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
-		break;
-	case 3:
-		currentScene = new PassiveScene4();
-		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
-		break;
-	case 4:
-		currentScene = new PassiveScene1();
-		currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
-		break;
+	if (activeUserPresent != true){
+		switch(sceneId){
+		case 1:
+			currentScene = new PassiveScene2();
+			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+			break;
+		case 2:
+			currentScene = new PassiveScene3();
+			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+			break;
+		case 3:
+			currentScene = new PassiveScene4();
+			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+			break;
+		case 4:
+			currentScene = new PassiveScene1();
+			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+			break;
+		default: 
+			currentScene = new PassiveScene1();
+			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+			break;
+		}
+	}else{
+		switch(sceneId){
+			default: 
+				currentScene = new ActiveScene1();
+				currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+				currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+				break;
+		}
 	}
 
 }
@@ -212,6 +229,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 void TextTestApp::setup()
 {
 	hideBackground = false;
+	activeUserPresent = false;
 	// SET UP BLUR STUFF
 	// setup our scene Fbo
 	mFboScene = gl::Fbo( getWindowWidth(), getWindowHeight() );
@@ -244,7 +262,7 @@ void TextTestApp::setup()
 
 	mTransform.setToIdentity();
 
-	gestureTracker = GestureTracker();
+	gestureTracker = GestureTracker::getInstance();
 
 	gl::Texture::Format format;
 	format.enableMipmapping(true);
@@ -324,19 +342,19 @@ void TextTestApp::setup()
 
 	// TO VIEW ACTIVE SCENE
 	//currentScene = new ActiveScene1();
-	//currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	//currentScene->setup( myFont, iconFactory, fgParticles );
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 	iconFactory.init();
 	
-	Timer bgAnimationTimer = Timer();
-	
+	bgAnimationTimer = Timer();
+	significantInteractionTimer = Timer();	
 	setupSkeletonTracker();
 }
 
@@ -558,6 +576,16 @@ void TextTestApp::drawSkeleton(){
 			if (skeletonIt->size() > 0){
 				skeletonCount +=1;
 			}
+
+			if (significantInteractionTimer.isStopped()){
+				significantInteractionTimer.start();
+			}
+
+			if (activeUserPresent != true && significantInteractionTimer.getSeconds() > 5.0){
+				activeUserPresent = true;
+			}
+
+
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
 			int boneIndex = 0;
@@ -580,8 +608,10 @@ void TextTestApp::drawSkeleton(){
 
 				Vec3f end = skeletonIt->at( bone.getEndJoint() ).getPosition();
 				
-				gestureTracker.addPoint(boneIndex,end);
 
+				//add the current bone position to the gesture tracker history
+				gestureTracker->addPoint(boneIndex,end);
+				
 
 				Vec2f endScreen	= Vec2f( mKinect->getSkeletonVideoPos( end ) );
 				
@@ -752,9 +782,12 @@ void TextTestApp::drawSkeleton(){
 
 		}
 
+
+		//if there are no skeletons, there's nobody in the frame, so clean up the skeleton stuff.
 		if (skeletonCount == 0){
 			
-
+			activeUserPresent = false;// reset the active user timer
+			significantInteractionTimer = Timer();
 
 			//first clip is reserved for random background
 			for(int k=1;k<repelClips.size();k++){

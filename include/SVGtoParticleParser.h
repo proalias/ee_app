@@ -12,8 +12,6 @@
 #include <string.h>
 #include <vector>
 
-using namespace cinder;
-using namespace std;
 
 class SVGtoParticleParser{
 	public:

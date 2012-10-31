@@ -11,12 +11,9 @@
 
 #include "TweenParticle.h"
 
-using namespace ci;
-using namespace ci::app;
-using namespace std;
 
 #include <list>
-using std::list;
+
 
 class FontRenderer {
  
@@ -49,7 +46,7 @@ public:
 	// TODO - this one should actually be private
 	// TODO - also for now its a massive switch, I read can do some kind of hash map to function pointers instead
 	// essentially you pass in a string and it will give you the points for that character
-	std::vector<Vec2f> getCharacter(char);
+	std::vector<ci::Vec2f> getCharacter(char);
 
 	float getCharWidth( char, char );
 
@@ -71,9 +68,9 @@ private:
 	int particleCount;
 	void populateGridPoints();
 	int mGridPointInc;
-	std::vector<Vec2f> gridPoints;
+	std::vector<ci::Vec2f> gridPoints;
 
-	CueRef tickingCue;
+	ci::CueRef tickingCue;
 	bool tickCued;
 	ci::Color currentColor;
 	int tickCounter;

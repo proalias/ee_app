@@ -6,9 +6,6 @@
 #include "ShopConfig.h"
 
 
-using namespace std;
-using namespace ci;
-
 class PassiveScene4: public SceneBase {
  
 public:
@@ -27,7 +24,7 @@ public:
 
 	std::vector<IconRenderer*> arrows;
 
-	CueRef mCue;
+	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();
