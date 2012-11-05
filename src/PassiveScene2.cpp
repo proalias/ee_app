@@ -138,7 +138,7 @@ void PassiveScene2::showFrame7()
 	font->animateOut();
 
 	for (int i = 0; i < placeMarks.size(); i++){
-		placeMarks[i]->disperseParticles();
+		placeMarks[i]->animateOut();
 	}
 
 	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame8, this), timeline().getCurrentTime() + 3 );
@@ -146,8 +146,23 @@ void PassiveScene2::showFrame7()
 
 void PassiveScene2::showFrame8()
 {
+	mCue->removeSelf();
 	_signal( this );
 }
+
+void PassiveScene2::exitNow()
+{
+	showTerms = false;
+	font->animateOut();
+
+	for (int i = 0; i < placeMarks.size(); i++){
+		placeMarks[i]->animateOut();
+	}
+
+	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 2 );
+	
+}
+
 
 void PassiveScene2::update()
 {

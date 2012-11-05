@@ -51,7 +51,7 @@ using namespace std;
 using namespace KinectSdk;
 using std::list;
 
-using boost::bind; 
+using boost::bind;
 
 
 static const bool PREMULT = false;
@@ -116,14 +116,15 @@ class TextTestApp : public AppNative {
 	
 	Timer bgAnimationTimer;
 	//ParticleImageContainer pTextures;
+	void beginActiveScene();
 	Timer significantInteractionTimer;
 	bool activeUserPresent;
-	
+	bool currentSceneExitingEarly;
 	std::vector<TweenParticle> userParticles;
 	void drawTitleSafeArea();
 
 	GestureTracker* gestureTracker;
-
+	ci::CueRef mCue;
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -185,46 +186,35 @@ void TextTestApp::prepareSettings( Settings *settings )
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
 	int sceneId = sceneInstance->getId();
-	if (activeUserPresent != true){
-		switch(sceneId){
+	
+	switch(sceneId){
 		case 1:
 			currentScene = new PassiveScene2();
-			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 			break;
 		case 2:
 			currentScene = new PassiveScene3();
-			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 			break;
 		case 3:
 			currentScene = new PassiveScene4();
-			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 			break;
 		case 4:
 			currentScene = new PassiveScene1();
-			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 			break;
-		default: 
-			currentScene = new PassiveScene1();
-			currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-			currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+		case 101 :
+			currentScene = new PassiveScene4();
 			break;
 		}
-	}else{
-		switch(sceneId){
-			default: 
-				currentScene = new ActiveScene1();
-				currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-				currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
-				break;
-		}
-	}
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 }
 
+
+void TextTestApp::beginActiveScene(){
+		currentScene = new ActiveScene1();
+		currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+}
 
 void TextTestApp::setup()
 {
@@ -385,7 +375,7 @@ void TextTestApp::setupSkeletonTracker(){
 
 void TextTestApp::update()
 {
-	currentScene->update(timeline());
+	//currentScene->update(timeline());
 
 	mbackground.update();
 
@@ -581,8 +571,12 @@ void TextTestApp::drawSkeleton(){
 				significantInteractionTimer.start();
 			}
 
-			if (activeUserPresent != true && significantInteractionTimer.getSeconds() > 5.0){
+			if (activeUserPresent != true && significantInteractionTimer.getSeconds() > 3.0){
 				activeUserPresent = true;
+				//if we are in passive mode, tell the existing scene to exit.
+				currentScene->exitNow();
+				mCue = timeline().add( boost::bind(&TextTestApp::beginActiveScene, this), timeline().getCurrentTime() + 2 );
+	
 			}
 
 

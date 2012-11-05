@@ -26,7 +26,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles = &thefgParticles;
 	//fgParticles->destroy(); // TODO - call hide not destroy
-	fgParticles->show();
+	//fgParticles->show();
 
 	arrow1 = IconRenderer();
 	arrow1.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
@@ -81,12 +81,13 @@ void PassiveScene4::showFrame2(){
 	mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 7 );
 	
 	for (int i = 0; i < arrows.size(); i++){
-		arrows[i]->disperseParticles();
+		arrows[i]->animateOut();
 	}
 
 }
 
 void PassiveScene4::showFrame3(){
+	mCue->removeSelf();
 	_signal( this );
 }
 
@@ -94,6 +95,16 @@ void PassiveScene4::showFrame4(){
 	//_signal( this );
 }
 
+
+void PassiveScene4::exitNow()
+{
+	for (int i = 0; i < arrows.size(); i++){
+		arrows[i]->animateOut();
+	}
+	font->animateOut();
+	mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 2 );
+
+}
 
 
 void PassiveScene4::draw(){

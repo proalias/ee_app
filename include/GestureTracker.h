@@ -13,6 +13,9 @@ private:
     static bool instanceFlag;
     static GestureTracker *single;
 	
+	
+	
+
     GestureTracker()
     {
 
@@ -20,10 +23,17 @@ private:
 
 public:
     
+	
+	static const int NO_GESTURE = 0;
+	static const int GESTURE_WAVE = 1;
+	static const int AIR_GUITAR_STRUM = 2;
+
+
 	void addPoint(int boneIndex, ci::Vec3f position);
 	bool lookForGesture(int gesture);
 
-	static const int GESTURE_WAVE = 0;
+	bool lookForWaveLeft();
+	bool lookForWaveRight();
 
 	static GestureTracker* getInstance();
 

@@ -15,13 +15,18 @@ public :
 	void draw();
 	void update();
 	
-	void disperseParticles();
+	void animateIn();
+	void animateOut();
 	ci::Anim<ci::Vec2f> pos;
 	ci::Anim<float> scale;
 
 	std::vector<TweenParticle> mPoints;
 
 private:
+	std::vector<ci::Vec2f> gridPoints;
+
+	void populateGridPoints();
+	ci::Vec2f IconRenderer::getNextPointOnGrid();
 	ci::Vec2f IconRenderer::getRandomPointOnGrid();
 };
 #endif

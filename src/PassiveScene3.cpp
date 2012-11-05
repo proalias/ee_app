@@ -136,8 +136,19 @@ void PassiveScene3::showFrame4(){
 void PassiveScene3::showFrame5(){
 	fgParticles->overrideDrawMethodInScene = false;
 	//font->animateOut();
+	mCue->removeSelf();
 	_signal(this);
 }
+
+
+void PassiveScene3::exitNow()
+{
+
+	font->animateOut();
+	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
+
+}
+
 
 void PassiveScene3::update()
 {

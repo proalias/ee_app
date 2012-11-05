@@ -13,6 +13,7 @@ PassiveScene1::PassiveScene1()
 
 void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles,std::vector<ParticleA> &thegridLayer )
 {
+
 	font = &thefont;
 	
 	iconFactory =  &theIconFactory;
@@ -26,6 +27,14 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	mCue = timeline().add( boost::bind(&PassiveScene1::showFrame2, this), timeline().getCurrentTime() + 25 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 }
+
+
+void PassiveScene1::exitNow()
+{
+	font->animateOut();
+	mCue = timeline().add( boost::bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 2 );
+}
+
 
 void PassiveScene1::showFrame2()
 {
@@ -53,6 +62,7 @@ void PassiveScene1::showFrame3()
 
 void PassiveScene1::showFrame4()
 {
+	mCue->removeSelf();
 	_signal( this );
 }
 

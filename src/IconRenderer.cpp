@@ -11,7 +11,23 @@ IconRenderer::IconRenderer(){
 	scale = 1.0;
 }
 
-void IconRenderer::disperseParticles(){
+//creates a lookup table of gr
+
+void IconRenderer::animateIn(){
+
+		float t = 0;////offset each time value slightly
+
+		for( std::vector<TweenParticle>::iterator p = mPoints.begin(); p != mPoints.end(); ++p ){
+				float destRad = p->rad;
+				p->rad = 0;
+				p->animateTo(ci::Vec2f(p->xpos,p->ypos),getRandomPointOnGrid(),1.5,ci::app::getElapsedSeconds()+t,destRad);
+				p->update(ci::app::getElapsedSeconds());
+		}
+
+}
+
+
+void IconRenderer::animateOut(){
 
 		for( std::vector<TweenParticle>::iterator p = mPoints.begin(); p != mPoints.end(); ++p ){
 			p->animateTo(getRandomPointOnGrid(), ci::Vec2f(p->xpos,p->ypos),1.0,ci::app::getElapsedSeconds(),0);

@@ -11,6 +11,8 @@ public:
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer );
 	void update();
 	void draw();
+	
+	void exitNow();
 
 	PassiveScene2(void);
 	//~PassiveScene2(void);

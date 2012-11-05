@@ -19,16 +19,17 @@ public:
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer1 );
 	void update();
 	void draw();
-
+	void exitNow();
+		
 	ActiveScene1(void);
 	//~ActiveScene1(void);
-
  private:
 	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();
 	void showFrame4();
+	void showFrame5();
 
 	bool showHand;
 

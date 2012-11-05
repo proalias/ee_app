@@ -40,13 +40,14 @@ public:
 	void update();
 	void draw();
 
+	void exitNow();
+
 	PassiveScene3(void);
 	//~PassiveScene2(void);
 
 	float gridZ;
 	
  private:
-	private:
 	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
