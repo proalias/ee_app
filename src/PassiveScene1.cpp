@@ -32,7 +32,9 @@ void PassiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 void PassiveScene1::exitNow()
 {
 	font->animateOut();
-	mCue = timeline().add( boost::bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 2 );
+	
+	timeline().removeTarget (this);
+
 }
 
 

@@ -145,7 +145,11 @@ void PassiveScene3::exitNow()
 {
 
 	font->animateOut();
-	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
+	
+	//timeline().removeTarget (this);
+	
+	mCue->removeSelf();
+	//mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
 
 }
 

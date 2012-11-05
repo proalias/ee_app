@@ -101,8 +101,12 @@ void PassiveScene4::exitNow()
 	for (int i = 0; i < arrows.size(); i++){
 		arrows[i]->animateOut();
 	}
-	font->animateOut();
-	mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 2 );
+
+	
+	//timeline().removeTarget (this);
+	
+	mCue->removeSelf();
+	//mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 2 );
 
 }
 

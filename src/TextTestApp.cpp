@@ -185,8 +185,10 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
-	int sceneId = sceneInstance->getId();
-	
+
+
+	int sceneId = sceneInstance->getId();	
+	currentScene->getSignal()->disconnect_all_slots();
 	switch(sceneId){
 		case 1:
 			currentScene = new PassiveScene2();
@@ -211,9 +213,13 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 
 
 void TextTestApp::beginActiveScene(){
-		currentScene = new ActiveScene1();
-		currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-		currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
+
+	currentScene->getSignal()->disconnect_all_slots();
+	//timeline().clear();
+		
+	currentScene = new ActiveScene1();
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 }
 
 void TextTestApp::setup()
@@ -575,6 +581,7 @@ void TextTestApp::drawSkeleton(){
 				activeUserPresent = true;
 				//if we are in passive mode, tell the existing scene to exit.
 				currentScene->exitNow();
+				
 				mCue = timeline().add( boost::bind(&TextTestApp::beginActiveScene, this), timeline().getCurrentTime() + 2 );
 	
 			}

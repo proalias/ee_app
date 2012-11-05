@@ -100,7 +100,7 @@ void ActiveScene1::update()
 
 void ActiveScene1::draw()
 {
-	if (showHand != true && GestureTracker::getInstance()->lookForGesture(1)){
+	if (showHand != true && GestureTracker::getInstance()->lookForGesture(GestureTracker::GESTURE_WAVE)){
 		showFrame3();
 	}
 

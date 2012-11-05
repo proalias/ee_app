@@ -154,12 +154,16 @@ void PassiveScene2::exitNow()
 {
 	showTerms = false;
 	font->animateOut();
+	
+	//timeline().removeTarget (this);
 
 	for (int i = 0; i < placeMarks.size(); i++){
 		placeMarks[i]->animateOut();
 	}
 
-	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 2 );
+	mCue->removeSelf();
+	
+	//mCue = timeline().add( boost::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 2 );
 	
 }
 
