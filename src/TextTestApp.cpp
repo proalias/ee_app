@@ -108,7 +108,7 @@ class TextTestApp : public AppNative {
 	static const int GESTUREMODE_SUPERFAST = 2;
 	static const int GESTUREMODE_GUITAR = 3;
 	int mNextGesture;
-
+	void keyDown( KeyEvent event );
 
 	// TODO - for blur effect. if dont work remove these later.
 	void render();
@@ -180,6 +180,12 @@ void TextTestApp::prepareSettings( Settings *settings )
 	settings->setFrameRate( 30.0f );
 
 	
+}
+
+void TextTestApp::keyDown( KeyEvent event ) {
+    if( event.getChar() == 'x' || event.getChar() == 'X' ){
+		quit();
+	}
 }
 
 
@@ -582,6 +588,8 @@ void TextTestApp::drawSkeleton(){
 				//if we are in passive mode, tell the existing scene to exit.
 				currentScene->exitNow();
 				
+				
+
 				mCue = timeline().add( boost::bind(&TextTestApp::beginActiveScene, this), timeline().getCurrentTime() + 2 );
 	
 			}

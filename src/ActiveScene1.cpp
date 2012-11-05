@@ -46,6 +46,7 @@ void ActiveScene1::showFrame2(){
 	font->addLine( "GIVE US", 3 );
 	font->addLine( "     A WAVE", 3 );
 	font->animateIn();
+
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 205 );
 
 }
@@ -62,13 +63,14 @@ void ActiveScene1::showFrame3()
 	hand.animateIn();
 
 	// TODO - cull this cue if interaction happens. OR return in each keyframe
-	mCue.reset();
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 8 );
 }
 
 void ActiveScene1::showFrame4()
 {
 	hand.animateOut();
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 
 }
@@ -88,6 +90,7 @@ void ActiveScene1::exitNow()
 		hand.animateOut();
 	}
 	
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 
 }

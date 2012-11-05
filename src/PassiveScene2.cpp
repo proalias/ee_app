@@ -92,12 +92,14 @@ void PassiveScene2::showFrame2()
 	cinder::app::timeline().apply(&placeMark6.pos,ci::Vec2f(placeMark6.pos.value().x,150.0), 5.0f ,cinder::EaseOutBounce(0.4));
 
 
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame3, this), timeline().getCurrentTime() + 6 );
 }
 
 void PassiveScene2::showFrame3()
 {
 	font->animateOut();
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame4, this), timeline().getCurrentTime() + 0.2 );
 	
 }
@@ -109,6 +111,7 @@ void PassiveScene2::showFrame4()
 	font->setColor(Color(ColorConstants::PRIMARY_YELLOW.r,ColorConstants::PRIMARY_YELLOW.g, ColorConstants::PRIMARY_YELLOW.b));
 	font->addLine( ShopConfig::getInstance()->location, 2 );
 	font->animateIn();
+	mCue->removeSelf();
 	mCue = timeline().add( bind(&PassiveScene2::showFrame5, this), timeline().getCurrentTime() + 10 );
 	cinder::app::timeline().apply(&placeMark1.pos,ci::Vec2f(placeMark1.pos.value().x,630.0), 3.0f ,cinder::EaseOutBounce(0.4));
 }
@@ -116,6 +119,7 @@ void PassiveScene2::showFrame4()
 void PassiveScene2::showFrame5()
 {
 	font->animateOut();
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame6, this), timeline().getCurrentTime() + 1 );
 }
 
@@ -128,6 +132,8 @@ void PassiveScene2::showFrame6()
 	font->addLine( "      MOBILE #4GEE", 2.5 );
 	font->addLine( "       ONLY ON EE", 2.0 );
 	font->animateIn();
+
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame7, this), timeline().getCurrentTime() + 8 );
 	showTerms = true;
 }
@@ -141,6 +147,7 @@ void PassiveScene2::showFrame7()
 		placeMarks[i]->animateOut();
 	}
 
+	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&PassiveScene2::showFrame8, this), timeline().getCurrentTime() + 3 );
 }
 
