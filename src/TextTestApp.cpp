@@ -211,6 +211,9 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 		case 101 :
 			currentScene = new PassiveScene4();
 			break;
+		case 102 :
+			currentScene = new PassiveScene4();
+			break;
 		}
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
@@ -222,6 +225,8 @@ void TextTestApp::beginActiveScene(){
 
 	currentScene->getSignal()->disconnect_all_slots();
 	//timeline().clear();
+
+	
 		
 	currentScene = new ActiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
@@ -799,7 +804,7 @@ void TextTestApp::drawSkeleton(){
 			significantInteractionTimer = Timer();
 
 			//first clip is reserved for random background
-			for(int k=1;k<repelClips.size();k++){
+			for(unsigned int k=1;k<repelClips.size();k++){
 				repelClips[k].x = -200;
 				repelClips[k].y = -200;
 			}

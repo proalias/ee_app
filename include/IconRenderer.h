@@ -19,6 +19,7 @@ public :
 	void animateOut();
 	ci::Anim<ci::Vec2f> pos;
 	ci::Anim<float> scale;
+	ci::Anim<float> rotation;
 
 	std::vector<TweenParticle> mPoints;
 

@@ -10,6 +10,12 @@
 #include "TextureGlobals.h"
 #include "GestureTracker.h"
 
+#include "cinder/Surface.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/qtime/QuickTime.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Easing.h"
+
 class ActiveScene1: public SceneBase {
 
 
@@ -23,8 +29,16 @@ public:
 		
 	ActiveScene1(void);
 	//~ActiveScene1(void);
+	
+
  private:
-	ci::CueRef mCue;
+
+	
+	cinder::gl::Texture					mFrameTexture, mInfoTexture;
+	cinder::qtime::MovieGl*		bubbleMan;
+
+	cinder::CueRef mCue;
+	
 	// keyframes
 	void showFrame2();
 	void showFrame3();
