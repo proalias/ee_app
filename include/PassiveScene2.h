@@ -3,9 +3,6 @@
 
 #include "SceneBase.h"
 
-using namespace std;
-using namespace ci;
-
 class PassiveScene2: public SceneBase {
  
 public:
@@ -14,6 +11,8 @@ public:
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer );
 	void update();
 	void draw();
+	
+	void exitNow();
 
 	PassiveScene2(void);
 	//~PassiveScene2(void);
@@ -23,7 +22,7 @@ public:
 	std::vector<IconRenderer*> placeMarks;
 	IconRenderer placeMark1, placeMark2, placeMark3, placeMark4, placeMark5, placeMark6;
 
-	CueRef mCue;
+	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();

@@ -7,10 +7,6 @@
 #include "FireFlyWaveScheme.h"
 #include "FireFlyParticleController.h"
 
-using namespace ci;
-using namespace ci::app;
-using namespace std;
-
 class FireFlyEffect {
  
 public:

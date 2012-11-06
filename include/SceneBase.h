@@ -26,9 +26,9 @@ public:
 
 		gridLayer = &thegridLayer;
 	}
-	virtual void update(Timeline &timeline){}
+	virtual void update(ci::Timeline &timeline){}
 	virtual void draw(){}
-	
+	virtual void exitNow(){};
 	// this typedef creates a simple shorthand, so that ButtonSignal refers to boost::signals2::signal<void( Button* )>
 	// If you wanted you could use the long name instead, but its easier to typo
 	typedef boost::signals2::signal<void( SceneBase* )> SceneSignal;
@@ -36,9 +36,9 @@ public:
 	// ACCESSORS
 	int getId() { return _id; };
 	SceneSignal* getSignal() { return &_signal; }; // Notice we return a pointer to the signal
-
+	
 protected:
-
+	
 	// these are just pointers to the instances on main
 	FontRenderer * font;
 	IconFactory * iconFactory;

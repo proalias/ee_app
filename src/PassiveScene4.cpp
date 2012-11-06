@@ -1,5 +1,9 @@
 #include "PassiveScene4.h"
-#include "boost/lambda/bind.hpp"
+#include "boost/bind.hpp"
+
+using namespace cinder;
+using namespace app;
+using namespace std;
 
 PassiveScene4::PassiveScene4()
 {
@@ -22,7 +26,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 
 	fgParticles = &thefgParticles;
 	//fgParticles->destroy(); // TODO - call hide not destroy
-	fgParticles->show();
+	//fgParticles->show();
 
 	arrow1 = IconRenderer();
 	arrow1.setPoints(iconFactory->getPointsForIcon(IconFactory::ARROW) );
@@ -69,20 +73,23 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	cinder::app::timeline().apply(&arrow4.pos,Vec2f(1600,600),ci::Vec2f(-300.0,arrow4.pos.value().y), 16.0f ,cinder::EaseInExpo()).loop(true);
 	cinder::app::timeline().apply(&arrow5.pos,Vec2f(1600,50),ci::Vec2f(-300.0,arrow5.pos.value().y), 10.0f ,cinder::EaseInExpo()).loop(true);
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
+	mCue = timeline().add( boost::bind(&PassiveScene4::showFrame2, this), timeline().getCurrentTime() + 15 );
 }
 
 void PassiveScene4::showFrame2(){
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 7 );
+
+	mCue->removeSelf();
+	mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 7 );
 	
 	for (int i = 0; i < arrows.size(); i++){
-		arrows[i]->disperseParticles();
+		arrows[i]->animateOut();
 	}
 
 }
 
 void PassiveScene4::showFrame3(){
+	mCue->removeSelf();
 	_signal( this );
 }
 
@@ -90,6 +97,20 @@ void PassiveScene4::showFrame4(){
 	//_signal( this );
 }
 
+
+void PassiveScene4::exitNow()
+{
+	for (int i = 0; i < arrows.size(); i++){
+		arrows[i]->animateOut();
+	}
+
+	
+	//timeline().removeTarget (this);
+	
+	mCue->removeSelf();
+	//mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 2 );
+
+}
 
 
 void PassiveScene4::draw(){

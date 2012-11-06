@@ -16,7 +16,6 @@
 #include "RepelPoint.h"
 #include "TextureGlobals.h"
 
-using namespace ci;
 
 class ParticleA{
 public:
@@ -40,7 +39,7 @@ public:
     void setBounds( float left, float right, float top, float bot);
 	void setDraggable( bool bDrag );
 
-	gl::Texture* particleTexture;
+	ci::gl::Texture* particleTexture;
 
 	void gravToMouse( bool bGrav, float force );
     void springToMouse( bool bSpring, float force );

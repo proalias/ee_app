@@ -172,6 +172,7 @@
     <ClInclude Include="..\include\SVGtoParticleParser.h" />
     <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
+    <ClInclude Include="..\include\WaveGesture.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

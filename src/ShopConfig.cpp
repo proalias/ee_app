@@ -3,6 +3,7 @@
 bool ShopConfig::instanceFlag = false;
 ShopConfig* ShopConfig::single = NULL;
 
+using namespace ci;
 
 ShopConfig* ShopConfig::getInstance()
 {

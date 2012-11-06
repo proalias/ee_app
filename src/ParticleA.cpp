@@ -1,5 +1,8 @@
 #include "ParticleA.h"
 
+using namespace ci;
+using namespace app;
+
 void ParticleA::init()
 {
 	__vx				= 0.0;

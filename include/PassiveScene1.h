@@ -5,8 +5,6 @@
 #include "SceneBase.h"
 #include "cinder/Timeline.h"
 
-using namespace std;
-using namespace ci;
 
 class PassiveScene1: public SceneBase {
  
@@ -16,12 +14,13 @@ public:
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles, std::vector<ParticleA> &thegridLayer );
 	void update();
 	void draw();
+	void exitNow();
 
 	PassiveScene1(void);
 	//~PassiveScene1(void);
 
  private:
-	CueRef mCue;
+	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();

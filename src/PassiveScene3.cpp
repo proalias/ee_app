@@ -1,9 +1,14 @@
 #include "PassiveScene3.h"
-#include "boost/lambda/bind.hpp"
+#include "boost/bind.hpp"
 
 #include "cinder/ImageIo.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/Utilities.h"
+
+
+using namespace ci;
+using namespace app;
+using namespace std;
 
 PassiveScene3::PassiveScene3()
 {
@@ -73,7 +78,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	*/
 	fgParticles->overrideDrawMethodInScene = true;
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 4 );
+	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 4 );
 }
 
 void PassiveScene3::showFrame2(){
@@ -84,7 +89,8 @@ void PassiveScene3::showFrame2(){
 
 	//fgParticles->overrideDrawMethodInScene = true;
 	font->animateOut();
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 3 );
+	mCue->removeSelf();
+	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 3 );
 	//showFrame3();
 }
 
@@ -110,7 +116,8 @@ void PassiveScene3::showFrame3(){
 	showTerms = true;
 	font->animateIn();
 	
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
+	mCue->removeSelf();
+	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
 
 
@@ -126,14 +133,30 @@ void PassiveScene3::showFrame4()
 
 	font->animateOut();
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
+	mCue->removeSelf();
+	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
 }
 
 void PassiveScene3::showFrame5(){
 	fgParticles->overrideDrawMethodInScene = false;
 	//font->animateOut();
+	mCue->removeSelf();
 	_signal(this);
 }
+
+
+void PassiveScene3::exitNow()
+{
+
+	font->animateOut();
+	
+	//timeline().removeTarget (this);
+	
+	mCue->removeSelf();
+	//mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
+
+}
+
 
 void PassiveScene3::update()
 {
@@ -179,7 +202,7 @@ void PassiveScene3::draw()
 		{
 			gl::color( 1, 1, 1, alphaValue );
 			gl::pushMatrices();
-			gl::translate( leftShift, 0, gridSpeed*(i*2) );
+			gl::translate( 20, 20, gridSpeed*(i*2) );
 	
 			int count=0;
 

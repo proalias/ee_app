@@ -1,5 +1,8 @@
 #include "ColorConstants.h"
 
+using namespace ci;
+using namespace std;
+
 const Color ColorConstants::PRIMARY_TEAL( 1.0f/255*0, 1.0f/255*156, 1.0f/255*156 );
 const Color ColorConstants::PRIMARY_YELLOW( 1.0f/255*255, 1.0f/255*230, 1.0f/255*0 );
 

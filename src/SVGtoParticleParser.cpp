@@ -1,6 +1,8 @@
 #include "SVGtoParticleParser.h"
 
 
+using namespace ci;
+using namespace std;
 
 void SVGtoParticleParser::recursiveParse(cinder::XmlTree node, std::vector<TweenParticle> &pointsContainer){
 	for( XmlTree::ConstIter item = node.begin(); item != node.end(); ++item ) {

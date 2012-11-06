@@ -4,14 +4,11 @@
 #include "FontRenderer.h"
 #include "SceneBase.h"
 
-using namespace std;
-using namespace ci;
-
 class PassiveScene3: public SceneBase {
  
 public:
 
-	gl::Texture bgImage;
+	ci::gl::Texture bgImage;
 
 	float leftShift;
 
@@ -33,8 +30,8 @@ public:
 	float gridSpeed;
 	float particleSpeed;
 
-	gl::Texture* particleTexture;
-	gl::Texture* otherParticleTexture;
+	ci::gl::Texture* particleTexture;
+	ci::gl::Texture* otherParticleTexture;
 
 	std::list<ParticleA> localParticles;
 
@@ -43,14 +40,15 @@ public:
 	void update();
 	void draw();
 
+	void exitNow();
+
 	PassiveScene3(void);
 	//~PassiveScene2(void);
 
 	float gridZ;
 	
  private:
-	private:
-	CueRef mCue;
+	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();

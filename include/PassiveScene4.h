@@ -6,9 +6,6 @@
 #include "ShopConfig.h"
 
 
-using namespace std;
-using namespace ci;
-
 class PassiveScene4: public SceneBase {
  
 public:
@@ -17,17 +14,18 @@ public:
 	void setup( FontRenderer &thefont, IconFactory &theIconFactory, ForegroundParticles &thefgParticles,std::vector<ParticleA> &thegridLayer );
 	void update();
 	void draw();
+	
+	void exitNow();
 
 	PassiveScene4(void);
 	//~PassiveScene4(void);
 
  private:
-
 	IconRenderer arrow1, arrow2, arrow3, arrow4, arrow5;
 
 	std::vector<IconRenderer*> arrows;
 
-	CueRef mCue;
+	ci::CueRef mCue;
 	// keyframes
 	void showFrame2();
 	void showFrame3();

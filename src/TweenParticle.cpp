@@ -1,5 +1,7 @@
 #include "TweenParticle.h"
 
+using namespace ci;
+using namespace app;
 
 TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 {
@@ -8,7 +10,7 @@ TweenParticle::TweenParticle( float pX,float pY,float pRad, bool isRandomised)
 	ypos = pY;
 	rad = pRad;
 	snapback = ci::randFloat(1.3 + 0.8);
-	color = Color(1.0,1.0,1.0);
+	color = ci::Color(1.0,1.0,1.0);
 
 	colorR = color.r;
 	colorG = color.g;

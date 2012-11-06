@@ -16,63 +16,39 @@
     <Filter Include="blocks">
       <UniqueIdentifier>{36ef9ede-ae3d-4376-9e5e-2a65041b9daa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\firefly">
+      <UniqueIdentifier>{95398faa-5a80-46c0-8ee0-63f9e9303a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\passivescenes">
+      <UniqueIdentifier>{57ce8461-afe7-46b9-a2e3-f4eaa45c5250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gestures">
+      <UniqueIdentifier>{dfd0c18e-28d4-4b11-9402-ec48037eb219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particles">
+      <UniqueIdentifier>{d7bb3f29-7131-4605-a332-ff4e6c1ac617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\icons">
+      <UniqueIdentifier>{ff3988e6-2da0-49d2-a3e2-afb25ae1708d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kinect">
+      <UniqueIdentifier>{fba55125-25c2-4c8d-afa3-17bd0f81451f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\activescenes">
+      <UniqueIdentifier>{af9bc2e3-7eba-472d-8928-c7a07595f673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particlefonts">
+      <UniqueIdentifier>{5d9bce3f-5e63-4620-8528-80bf8c6f3da5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\TextTestApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ColorConstants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NobleeRegular.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NobleeBold.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FontRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\CinderClip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ParticleA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RepelPoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TweenParticle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SVGtoParticleParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IconFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PassiveScene1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PassiveScene2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PassiveScene3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PassiveScene4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Background.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IconRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ForegroundParticles.cpp">
@@ -81,19 +57,7 @@
     <ClCompile Include="..\src\TextureGlobals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ActiveScene1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ShopConfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FireFlyParticleController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FireFlyEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FireFlyParticle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Vect.cpp">
@@ -102,11 +66,71 @@
     <ClCompile Include="..\src\ShopConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\OutlineParams.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\FireFlyEffect.cpp">
+      <Filter>Source Files\firefly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FireFlyParticleController.cpp">
+      <Filter>Source Files\firefly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FireFlyParticle.cpp">
+      <Filter>Source Files\firefly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PassiveScene1.cpp">
+      <Filter>Source Files\passivescenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PassiveScene4.cpp">
+      <Filter>Source Files\passivescenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PassiveScene2.cpp">
+      <Filter>Source Files\passivescenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PassiveScene3.cpp">
+      <Filter>Source Files\passivescenes</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GestureTracker.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\gestures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Particle.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ParticleA.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RepelPoint.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CinderClip.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SVGtoParticleParser.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TweenParticle.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IconFactory.cpp">
+      <Filter>Source Files\icons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IconRenderer.cpp">
+      <Filter>Source Files\icons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp">
+      <Filter>Source Files\kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\OutlineParams.cpp">
+      <Filter>Source Files\kinect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NobleeBold.cpp">
+      <Filter>Source Files\particlefonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NobleeRegular.cpp">
+      <Filter>Source Files\particlefonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FontRenderer.cpp">
+      <Filter>Source Files\particlefonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ActiveScene1.cpp">
+      <Filter>Source Files\activescenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,9 +203,6 @@
     <ClInclude Include="..\include\ForegroundParticles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ActiveScene1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\TextureGlobals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -205,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="..\include\GestureTracker.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ActiveScene1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\WaveGesture.h">
+      <Filter>Source Files\gestures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

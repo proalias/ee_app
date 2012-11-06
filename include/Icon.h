@@ -1,8 +1,6 @@
 #include "cinder/Vector.h"
 #include <vector>
 
-using namespace std;
-using namespace ci;
 
 class Icon {
  public:
