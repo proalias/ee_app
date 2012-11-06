@@ -163,7 +163,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -175,7 +175,6 @@ void TextTestApp::prepareSettings( Settings *settings )
 
 	settings->setWindowSize( 1280, 800 );
 	settings->setFrameRate( 30.0f );
-
 	
 }
 
@@ -329,7 +328,7 @@ void TextTestApp::setup()
 
 
 	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-	currentScene = new PassiveScene1();
+	currentScene = new PassiveScene2();
 	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 

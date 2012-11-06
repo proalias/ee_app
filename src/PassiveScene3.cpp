@@ -73,7 +73,7 @@ void PassiveScene3::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 	*/
 	fgParticles->overrideDrawMethodInScene = true;
 
-	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 5 );
+	mCue = timeline().add( boost::lambda::bind(&PassiveScene3::showFrame2, this), timeline().getCurrentTime() + 4 );
 }
 
 void PassiveScene3::showFrame2(){
@@ -114,7 +114,8 @@ void PassiveScene3::showFrame3(){
 }
 
 
-void PassiveScene3::showFrame4(){
+void PassiveScene3::showFrame4()
+{
 	showTerms = false;	
 	isFrame1=false;
 	isFrame2=false;
@@ -150,28 +151,52 @@ void PassiveScene3::draw()
 	gl::enableAdditiveBlending();
 	
 
-	if(isFrame2)
+	if( isFrame2 || isFrame3 )
 	{
 		imageAlpha+=0.06;
 
-		alphaValue-=0.04;
+		alphaValue-=0.02;
 
-		if(gridSpeed<30){
-			// ZOOM THE GRID
-			gridSpeed+=incrementer;
-			incrementer++;
-		}else
-		{
-			gridSpeed+=incrementer/2;
+		if(incrementer<10){ // ZOOM THE GRID
+			//gridSpeed+=incrementer;
+			incrementer+=0.05;//5;
 		}
+		//else{
+			//gridSpeed+=incrementer;///2;
+		//}
 
-		leftShift++;
+		gridSpeed+=incrementer;
 
-		for( int i=3; i<20; i++ ){
+		leftShift+=0.25;
+
+		int width=2;
+
+		int SPACING = 38;
+		int COLUMNS = (cinder::app::getWindowWidth() / SPACING);
+		int ROWS = (cinder::app::getWindowHeight() / SPACING);
+
+		for( int i=3; i<18; i++ )
+		{
 			gl::color( 1, 1, 1, alphaValue );
 			gl::pushMatrices();
-			gl::translate( leftShift/2, 0, gridSpeed*i );
+			gl::translate( leftShift, 0, gridSpeed*(i*2) );
 	
+			int count=0;
+
+			for( int j=0; j<ROWS; j++ ){
+				for( int k=0; k<COLUMNS; k++ ){
+
+			//		if( (count<333)||(count>338) )
+			//		{
+					//	float rad = width;// + (p->getVx()+p->getVy())/5;
+						Rectf rect = Rectf( (k*SPACING)-(width*2), (j*SPACING)-(width*2), (k*SPACING)+(width*2), (j*SPACING)+(width*2) );
+						gl::draw( *particleTexture, rect );
+				//	}
+
+				}
+			}
+
+/*
 			int count=0;
 
 			for( vector<ParticleA>::iterator p = gridLayer->begin(); p != gridLayer->end(); ++p ){
@@ -189,6 +214,9 @@ void PassiveScene3::draw()
 				}
 				count++;
 			}
+
+			*/
+
 			gl::popMatrices();
 		}
 	}
