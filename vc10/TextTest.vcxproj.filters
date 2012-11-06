@@ -132,6 +132,9 @@
     <ClCompile Include="..\src\ActiveScene1.cpp">
       <Filter>Source Files\activescenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ActiveScene2.cpp">
+      <Filter>Source Files\activescenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="..\include\WaveGesture.h">
       <Filter>Source Files\gestures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ActiveScene2.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

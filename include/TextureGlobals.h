@@ -12,22 +12,24 @@ private:
     static bool instanceFlag;
     static TextureGlobals *single;
 	std::vector<ci::gl::Texture> particleTextures;
+	std::vector<ci::gl::Texture> bubbleManWaveFrames;
 	ci::qtime::MovieGl bubbleManWave;
 
     TextureGlobals()
     {
 
 		ci::gl::Texture particleTexture =  ci::gl::Texture();
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
-		particleTextures.push_back(particleTexture);
+		
+		int totalParticleTextures = 11;
+		for(int i=0;i<totalParticleTextures;i++){
+			particleTextures.push_back(particleTexture);
+		}
+
+		int bubbleManWaveTextures = 10;
+		for(int i=0;i<totalParticleTextures;i++){
+			particleTextures.push_back(particleTexture);
+		}
+
 
 		bubbleManWave = ci::qtime::MovieGl( cinder::app::loadAsset("bubbleMan_Wave.mov" ));
 		

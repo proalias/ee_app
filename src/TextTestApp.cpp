@@ -33,6 +33,8 @@
 #include "PassiveScene4.h"
 
 #include "ActiveScene1.h"
+#include "ActiveScene2.h"
+
 
 #include "ShopConfig.h"
 #include "OutlineParams.h"
@@ -125,6 +127,7 @@ class TextTestApp : public AppNative {
 
 	GestureTracker* gestureTracker;
 	ci::CueRef mCue;
+
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -209,7 +212,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 			currentScene = new PassiveScene1();
 			break;
 		case 101 :
-			currentScene = new PassiveScene4();
+			currentScene = new ActiveScene2();
 			break;
 		case 102 :
 			currentScene = new PassiveScene4();
@@ -393,6 +396,8 @@ void TextTestApp::setupSkeletonTracker(){
 void TextTestApp::update()
 {
 	//currentScene->update(timeline());
+
+	::ShowCursor(false);
 
 	mbackground.update();
 
