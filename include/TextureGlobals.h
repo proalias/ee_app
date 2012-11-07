@@ -3,7 +3,6 @@
 #define TextureGlobals_h
 
 #include "cinder/gl/Texture.h"
-#include "cinder/qtime/QuickTime.h"
 #include "cinder/app/App.h"
 
 class TextureGlobals
@@ -13,7 +12,7 @@ private:
     static TextureGlobals *single;
 	std::vector<ci::gl::Texture> particleTextures;
 	std::vector<ci::gl::Texture> bubbleManWaveFrames;
-	ci::qtime::MovieGl bubbleManWave;
+	//ci::qtime::MovieGl bubbleManWave;
 
     TextureGlobals()
     {
@@ -31,7 +30,7 @@ private:
 		}
 
 
-		bubbleManWave = ci::qtime::MovieGl( cinder::app::loadAsset("bubbleMan_Wave.mov" ));
+		//bubbleManWave = ci::qtime::MovieGl( cinder::app::loadAsset("bubbleMan_Wave.mov" ));
 		
     }
 public:
@@ -40,7 +39,7 @@ public:
 
 	ci::gl::Texture* getParticleTexture(int type);
 	
-	ci::qtime::MovieGl* getBubbleManWave();
+	//ci::qtime::MovieGl* getBubbleManWave();
 
 	
     ~TextureGlobals()

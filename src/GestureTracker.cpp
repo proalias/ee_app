@@ -136,3 +136,43 @@ bool GestureTracker::lookForWaveRight(){
 	}
 	return gestureDetected;
 }
+
+
+
+float GestureTracker::lookForRunningOnTheSpot(){
+	float runningSpeed = 0;
+
+	float lastX = bonePositions[NUI_SKELETON_POSITION_HEAD].front().x;
+	float lastY = bonePositions[NUI_SKELETON_POSITION_HEAD].front().y;
+
+	float lastVX = 0;
+	float lastVY = 0;
+
+	int directionChanges = 0;
+	//analyse left hand velocity
+	int frameIndex = 0;
+	for (std::list<ci::Vec3f>::iterator p = bonePositions[NUI_SKELETON_POSITION_HEAD].begin(); p != bonePositions[NUI_SKELETON_POSITION_HEAD].end(); p++, frameIndex++){
+		
+		
+			//check for changes in velocity
+			float vX, vY;
+			vX = lastX - p->x;
+			vY = lastY - p->y;
+		
+			
+			if (vY < 0 && lastVY > 0){
+				directionChanges += 1;
+			}
+
+			if (vY > 0 && lastVY < 0){
+				directionChanges += 1;
+			}
+
+			lastVX = vX;
+			lastVY = vY;
+
+			runningSpeed = directionChanges*0.1;
+		
+	}
+	return runningSpeed;
+}

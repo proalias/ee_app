@@ -67,7 +67,7 @@ void ActiveScene1::showFrame3()
 
 	// TODO - cull this cue if interaction happens. OR return in each keyframe
 	mCue->removeSelf();
-	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 8 );
+	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
 }
 
 void ActiveScene1::showFrame4()

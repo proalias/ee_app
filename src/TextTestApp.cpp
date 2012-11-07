@@ -15,6 +15,9 @@
 
 #include "boost/bind.hpp"
 
+//my first cinderblock!
+#include "SpriteSheet.h"
+
 #include "Kinect.h"
 #include "Background.h"
 #include "FontRenderer.h"
@@ -128,6 +131,8 @@ class TextTestApp : public AppNative {
 	GestureTracker* gestureTracker;
 	ci::CueRef mCue;
 
+	SpriteSheet bubbleManWave;
+
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -196,7 +201,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
 
 
-	int sceneId = sceneInstance->getId();	
+	int sceneId = sceneInstance->getId();
 	currentScene->getSignal()->disconnect_all_slots();
 	switch(sceneId){
 		case 1:
@@ -215,7 +220,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 			currentScene = new ActiveScene2();
 			break;
 		case 102 :
-			currentScene = new PassiveScene4();
+			currentScene = new PassiveScene3();
 			break;
 		}
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
@@ -247,6 +252,10 @@ void TextTestApp::setup()
 	// setup our blur Fbo's, smaller ones will generate a bigger blur
 	mFboBlur1 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
 	mFboBlur2 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
+
+	ci::gl::Texture bubbleManWaveTexture = loadImage(loadAsset("./bubbleman_wave_texture/bubbleman_wave.png"));
+	bubbleManWave = SpriteSheet();
+	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave_texture/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 
 	OutlineParams::getInstance()->init();
 
@@ -299,7 +308,7 @@ void TextTestApp::setup()
 
 
 	//load store config
-	cinder::XmlTree configXml( ci::app::loadAsset( "shopconfig.xml" ) );
+	cinder::XmlTree configXml(ci::app::loadAsset( "shopconfig.xml" ) );
 	ShopConfig::getInstance()->parseConfig(configXml);
 
 
@@ -415,6 +424,7 @@ void TextTestApp::update()
 	}
 
 	double time = getElapsedSeconds();
+	bubbleManWave.update();
 	gl::color(1.0,1.0,1.0);
 }
 
@@ -597,8 +607,6 @@ void TextTestApp::drawSkeleton(){
 				activeUserPresent = true;
 				//if we are in passive mode, tell the existing scene to exit.
 				currentScene->exitNow();
-				
-				
 
 				mCue = timeline().add( boost::bind(&TextTestApp::beginActiveScene, this), timeline().getCurrentTime() + 2 );
 	
@@ -864,6 +872,9 @@ void TextTestApp::drawSkeleton(){
 		}
 	}
 
+	gl::enableAlphaBlending();
+	bubbleManWave.draw();
+	gl::disableAlphaBlending();
 };
 
 Vec2f TextTestApp::getPointOnLine( Vec2f p0, Vec2f p1, float t){
