@@ -444,6 +444,7 @@ void TextTestApp::draw()
 
 	mbackground.draw();
 
+	drawSkeleton();
 
 	// FONT NOW GETS RENDERED AFTER SCENE SO WE CAN OVERRIDE DRAW OPERATION IF REQUIRED
 	currentScene->draw();
@@ -548,10 +549,10 @@ void TextTestApp::draw()
 
 void TextTestApp::drawSkeleton(){
 	
-	if(mSkeletons.size()<1)
-	{
-		return;
-	}
+	//if(mSkeletons.size()<1)
+//	{
+//		return;
+//	}
 
 	// We're capturing
 	if ( mKinect->isCapturing() ) {
