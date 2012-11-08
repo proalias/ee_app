@@ -19,9 +19,6 @@
     <Filter Include="Source Files\firefly">
       <UniqueIdentifier>{95398faa-5a80-46c0-8ee0-63f9e9303a84}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\passivescenes">
-      <UniqueIdentifier>{57ce8461-afe7-46b9-a2e3-f4eaa45c5250}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\gestures">
       <UniqueIdentifier>{dfd0c18e-28d4-4b11-9402-ec48037eb219}</UniqueIdentifier>
     </Filter>
@@ -34,14 +31,14 @@
     <Filter Include="Source Files\kinect">
       <UniqueIdentifier>{fba55125-25c2-4c8d-afa3-17bd0f81451f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\activescenes">
-      <UniqueIdentifier>{af9bc2e3-7eba-472d-8928-c7a07595f673}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\particlefonts">
       <UniqueIdentifier>{5d9bce3f-5e63-4620-8528-80bf8c6f3da5}</UniqueIdentifier>
     </Filter>
     <Filter Include="blocks\spritesheet">
       <UniqueIdentifier>{3edc6f4b-71c5-4949-bf8f-87903b578bae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes">
+      <UniqueIdentifier>{57ce8461-afe7-46b9-a2e3-f4eaa45c5250}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,16 +76,16 @@
       <Filter>Source Files\firefly</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PassiveScene1.cpp">
-      <Filter>Source Files\passivescenes</Filter>
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PassiveScene4.cpp">
-      <Filter>Source Files\passivescenes</Filter>
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PassiveScene2.cpp">
-      <Filter>Source Files\passivescenes</Filter>
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PassiveScene3.cpp">
-      <Filter>Source Files\passivescenes</Filter>
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GestureTracker.cpp">
       <Filter>Source Files\gestures</Filter>
@@ -132,17 +129,17 @@
     <ClCompile Include="..\src\FontRenderer.cpp">
       <Filter>Source Files\particlefonts</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ActiveScene1.cpp">
-      <Filter>Source Files\activescenes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ActiveScene2.cpp">
-      <Filter>Source Files\activescenes</Filter>
-    </ClCompile>
     <ClCompile Include="..\spritesheet\SpriteDataParser.cpp">
       <Filter>blocks\spritesheet</Filter>
     </ClCompile>
     <ClCompile Include="..\spritesheet\SpriteSheet.cpp">
       <Filter>blocks\spritesheet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ActiveScene1.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ActiveScene2.cpp">
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

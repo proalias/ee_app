@@ -172,7 +172,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -306,6 +306,16 @@ void TextTestApp::setup()
 	cinder::XmlTree configXml(ci::app::loadAsset( "shopconfig.xml" ) );
 	ShopConfig::getInstance()->parseConfig(configXml);
 
+	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(ci::app::loadAsset("./bubbleman_wave_texture/bubbleman_wave.png"));
+	SpriteSheet bubbleManWave = SpriteSheet();
+	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave_texture/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+
+	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(ci::app::loadAsset("./bubbleman_run_texture/bubbleman_run.png"));
+	SpriteSheet bubbleManRun = SpriteSheet();
+	bubbleManRun.init(bubbleManRunTexture, "./bubbleman_run_texture/bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+	
+	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManRun,TextureGlobals::SPRITE_BUBBLEMAN_RUN);
+	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManWave,TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
 
 	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
@@ -379,8 +389,8 @@ void TextTestApp::setupSkeletonTracker(){
 	
 	// Start Kinect
 	mKinect = Kinect::create();
-	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_320x240 ) );
-	
+	mKinect->start( DeviceOptions().enableVideo( false ).setDepthResolution( ImageResolution::NUI_IMAGE_RESOLUTION_320x240 ).enableUserTracking(true) );
+	mKinect->enableUserColor(true);
 	mKinect->removeBackground();
 	// Add callbacks
 
@@ -451,7 +461,6 @@ void TextTestApp::draw()
 	drawSkeleton();
 	mbackground.draw();
 
-	drawSkeleton();
 
 	// FONT NOW GETS RENDERED AFTER SCENE SO WE CAN OVERRIDE DRAW OPERATION IF REQUIRED
 	currentScene->draw();

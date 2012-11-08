@@ -14,10 +14,18 @@ void SpriteSheet::init(ci::gl::Texture spriteImage, std::string xmlPath, int Dat
 
 		x = 0;
 		y = 0;
-		scale = 1.0;
-		rotation = 0;
-		alpha = 1.0;
+		scale = 1.0f;
+		rotation = 0.0f;
+		alpha = 1.0f;
 
+}
+
+void SpriteSheet::alphaFadeIn(float duration,float delay){
+	ci::app::timeline().apply(&alpha,1.0f, duration,cinder::EaseInCubic()).delay(delay);
+}
+
+void SpriteSheet::alphaFadeOut(float duration,float delay){
+	ci::app::timeline().apply(&alpha,0.0f, duration,cinder::EaseOutCubic()).delay(delay);
 }
 
 void SpriteSheet::draw(){

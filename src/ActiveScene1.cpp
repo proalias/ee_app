@@ -39,6 +39,7 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 
 	bubbleManWave->x = 500;
 	bubbleManWave->y = 530;
+	bubbleManWave->alpha = 0;
 
 }
 
@@ -56,7 +57,8 @@ void ActiveScene1::showFrame2(){
 	timeline().apply(&hand.rotation,-20.0f, 15.0f, 1.0f,cinder::EaseInOutCubic()).loop(true).pingPong(true);
 	timeline().apply(&hand.pos,ci::Vec2f(575.0,500.0), ci::Vec2f(625.0,500.0), 1.0f,cinder::EaseInOutCubic()).loop(true).pingPong(true);
 
-
+	//fade in bubbleman
+	
 }
 
 void ActiveScene1::showFrame3()
@@ -72,11 +74,13 @@ void ActiveScene1::showFrame3()
 	// TODO - cull this cue if interaction happens. OR return in each keyframe
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
+	bubbleManWave->alphaFadeIn(2.0,0.0);
 }
 
 void ActiveScene1::showFrame4()
 {
 	hand.animateOut();
+	bubbleManWave->alphaFadeOut(1.0,0.0);
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 
@@ -97,6 +101,8 @@ void ActiveScene1::exitNow()
 		hand.animateOut();
 	}
 	
+	bubbleManWave->alphaFadeOut(1.0,0.0);
+	font->animateOut();
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 

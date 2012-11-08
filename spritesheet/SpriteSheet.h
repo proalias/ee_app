@@ -2,10 +2,11 @@
 #define SpriteSheet_h
 
 
-#include "cinder\Cinder.h"
-#include "cinder\gl\Texture.h"
-#include "cinder\Xml.h"
+#include "cinder/Cinder.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/Xml.h"
 #include "cinder/Timeline.h"
+#include "cinder/app/AppBasic.h"
 #include <stdio.h>
 
 #include "SpriteData.h"
@@ -21,7 +22,8 @@ public:
 	void setFrame(int frameNum);
 	int getCurrentFrame();
 	void getTotalFrames();
-
+	void alphaFadeIn(float duration,float delay);
+	void alphaFadeOut(float duration,float delay);
 	ci::Anim<float> x;
 	ci::Anim<float> y;
 	ci::Anim<float> scale;

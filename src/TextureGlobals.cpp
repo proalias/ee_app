@@ -33,6 +33,12 @@ SpriteSheet* TextureGlobals::getSpriteSheet(int type){
 
 
 
+void TextureGlobals::setSpriteSheet(SpriteSheet* spriteSheet,int type){
+	//particleTextures[type] = texture;
+
+	
+	spriteSheets[type] = spriteSheet;
+}
 
 void TextureGlobals::setParticleTexture(ci::gl::Texture texture,int type){
 	particleTextures[type] = texture;

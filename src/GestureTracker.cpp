@@ -63,7 +63,7 @@ bool GestureTracker::lookForWaveLeft(){
 	for (std::list<ci::Vec3f>::iterator p = bonePositions[NUI_SKELETON_POSITION_HAND_LEFT].begin(); p != bonePositions[NUI_SKELETON_POSITION_HAND_LEFT].end(); p++, frameIndex++){
 		
 		//check hand is above lower back
-		if (p->y > bonePositions[NUI_SKELETON_POSITION_ELBOW_LEFT].back().y){
+		if (p->y > bonePositions[NUI_SKELETON_POSITION_SHOULDER_LEFT].back().y){
 
 			//check for changes in velocity
 			float vX, vY;
@@ -106,7 +106,7 @@ bool GestureTracker::lookForWaveRight(){
 	for (std::list<ci::Vec3f>::iterator p = bonePositions[NUI_SKELETON_POSITION_HAND_RIGHT].begin(); p != bonePositions[NUI_SKELETON_POSITION_HAND_RIGHT].end(); p++, frameIndex++){
 		
 		//check hand is above lower back
-		if (p->y > bonePositions[NUI_SKELETON_POSITION_ELBOW_RIGHT].back().y){
+		if (p->y > bonePositions[NUI_SKELETON_POSITION_SHOULDER_RIGHT].back().y){
 
 			//ci::gl::color(ci::Color(1.0,0.0,0.0));
 			//ci::gl::drawSolidCircle(ci::Vec2f(100,100),100);

@@ -59,6 +59,8 @@ void ActiveScene2::showFrame2(){
 
 	speedDialNeedle.animateIn();
 
+	
+	bubbleManRun->alphaFadeIn(1.0,3.0);
 }
 
 void ActiveScene2::showFrame3()
@@ -68,6 +70,7 @@ void ActiveScene2::showFrame3()
 	//hand = IconRenderer();
 	
 	
+	timeline().apply(&bubbleManRun->alpha,0.0f, 1.0f,cinder::EaseOutCubic()).loop(true);
 
 	// TODO - cull this cue if interaction happens. OR return in each keyframe
 	mCue->removeSelf();
@@ -78,6 +81,8 @@ void ActiveScene2::showFrame4()
 {
 	speedDialSwoosh.animateOut();
 	speedDialNeedle.animateOut();
+	
+	bubbleManRun->alphaFadeOut(1.0,0.0);
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
 
@@ -96,7 +101,7 @@ void ActiveScene2::exitNow()
 	speedDialNeedle.animateOut();
 	speedDialSwoosh.animateOut();
 	
-	
+	font->animateOut();
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
 

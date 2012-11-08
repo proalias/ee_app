@@ -14,6 +14,7 @@ private:
     static TextureGlobals *single;
 	std::vector<ci::gl::Texture> particleTextures;
 	std::vector<ci::gl::Texture> bubbleManWaveFrames;
+
 	//ci::qtime::MovieGl bubbleManWave;
 	SpriteSheet bubbleManWave;
 	SpriteSheet bubbleManRun;
@@ -33,23 +34,20 @@ private:
 			particleTextures.push_back(particleTexture);
 		}
 
-		ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(ci::app::loadAsset("./bubbleman_wave_texture/bubbleman_wave.png"));
-		bubbleManWave = SpriteSheet();
-		bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave_texture/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
-
-		ci::gl::Texture bubbleManRunTexture = cinder::loadImage(ci::app::loadAsset("./bubbleman_run_texture/bubbleman_run.png"));
-		bubbleManRun = SpriteSheet();
-		bubbleManRun.init(bubbleManRunTexture, "./bubbleman_run_texture/bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
-
     }
 public:
+
+	std::map<int,SpriteSheet*> spriteSheets;
     static TextureGlobals* getInstance();
 	void TextureGlobals::setParticleTexture(ci::gl::Texture texture,int type);
-	 
-	static const int SPRITE_BUBBLEMAN_WAVE = 1;
-	static const int SPRITE_BUBBLEMAN_RUN = 2;
+	
+	static const int SPRITE_BUBBLEMAN_WAVE = 0;
+	static const int SPRITE_BUBBLEMAN_RUN = 1;
 
+	
+	void setSpriteSheet(SpriteSheet* spriteSheet, int spriteId);
 	SpriteSheet* getSpriteSheet(int spriteId);
+	
 	ci::gl::Texture* getParticleTexture(int type);
 	
 	//ci::qtime::MovieGl* getBubbleManWave();
