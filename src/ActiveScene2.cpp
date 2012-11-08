@@ -68,9 +68,7 @@ void ActiveScene2::showFrame3()
 	//hand = IconRenderer();
 	
 	
-
-	// TODO - cull this cue if interaction happens. OR return in each keyframe
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame4, this), timeline().getCurrentTime() + 8 );
 }
 
@@ -78,15 +76,15 @@ void ActiveScene2::showFrame4()
 {
 	speedDialSwoosh.animateOut();
 	speedDialNeedle.animateOut();
-	mCue->removeSelf();
-	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
 
+	timeline().remove( mCue );
+	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
 }
 
 
 void ActiveScene2::showFrame5()
 {
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	_signal( this );
 }
 
@@ -96,10 +94,8 @@ void ActiveScene2::exitNow()
 	speedDialNeedle.animateOut();
 	speedDialSwoosh.animateOut();
 	
-	
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
-
 }
 
 

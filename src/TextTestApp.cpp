@@ -136,8 +136,7 @@ private:
 	uint32_t							mCallbackId;
 	KinectSdk::KinectRef				mKinect;
 	std::vector<KinectSdk::Skeleton>	mSkeletons;
-	void								onSkeletonData( std::vector<KinectSdk::Skeleton> skeletons, 
-		const KinectSdk::DeviceOptions &deviceOptions );
+	void onSkeletonData( std::vector<KinectSdk::Skeleton> skeletons, const KinectSdk::DeviceOptions &deviceOptions );
 
 	// Camera
 	ci::CameraPersp						mCamera;
@@ -172,7 +171,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = true;
+	bool isDeployed = flipScreen = false;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -196,7 +195,6 @@ void TextTestApp::keyDown( KeyEvent event ) {
 
 void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
-
 
 	int sceneId = sceneInstance->getId();
 	currentScene->getSignal()->disconnect_all_slots();
@@ -230,9 +228,7 @@ void TextTestApp::beginActiveScene(){
 
 	currentScene->getSignal()->disconnect_all_slots();
 	//timeline().clear();
-
 	
-		
 	currentScene = new ActiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
@@ -292,14 +288,12 @@ void TextTestApp::setup()
 		repelClips.push_back(cinderClip);
 
 		////
-		TweenParticle userParticle = TweenParticle(cinderClip.x, cinderClip.y,10,true);
-		userParticles.push_back(userParticle);
-
+	//	TweenParticle userParticle = TweenParticle(cinderClip.x, cinderClip.y,10,true);
+		//userParticles.push_back(userParticle);
 	}
 
 	mbackground.setup();
 	mbackground.setRepelClips( repelClips ); // I KNOW THEY ON SCREEN
-
 
 	//load store config
 	cinder::XmlTree configXml(ci::app::loadAsset( "shopconfig.xml" ) );
@@ -342,31 +336,18 @@ void TextTestApp::setup()
 	//gl::Texture terms2Texture = loadImage(loadAsset( "terms2.png" ) ); 
 	//TextureGlobals::getInstance()->setParticleTexture(particleTexture6,9);
 
-
-
 	myFont = FontRenderer();
-	//myFont.addLine( "FONTRENDERER CREATED", 2 );
 
 	fgParticles.setup( 100 );
-	//fgParticles.init();
 	fgParticles.setRepelClips(repelClips);
-
-	fgParticles.setRepelClips( repelClips );
 
 	// TO VIEW ACTIVE SCENE
 	//currentScene = new ActiveScene1();
 	//currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
 	//currentScene->setup( myFont, iconFactory, fgParticles );
 
-
-	// SCENE INITIALISER. FOR TESTING PUT ANY SCENE NUMBER HERE
-
-//	currentScene = new PassiveScene2();
-//	currentScene->getSignal()->connect( boost::lambda::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-
 	currentScene = new PassiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
-
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 	iconFactory.init();
@@ -414,7 +395,7 @@ void TextTestApp::update()
 
 	if ( mKinect->isCapturing() ) {
 		mKinect->update();
-		updateSkeleton();
+		//updateSkeleton();
 	}else {
 		// If Kinect initialization failed, try again every 90 frames
 		if ( getElapsedFrames() % 90 == 0 ) {
@@ -422,7 +403,7 @@ void TextTestApp::update()
 		}
 	}
 
-	double time = getElapsedSeconds();
+	//double time = getElapsedSeconds();
 	gl::color(1.0,1.0,1.0);
 }
 
@@ -451,8 +432,6 @@ void TextTestApp::draw()
 	gl::enableAlphaBlending();
 	gl::enableAdditiveBlending();
 
-	
-	drawSkeleton();
 	mbackground.draw();
 
 	drawSkeleton();
@@ -460,24 +439,11 @@ void TextTestApp::draw()
 	// FONT NOW GETS RENDERED AFTER SCENE SO WE CAN OVERRIDE DRAW OPERATION IF REQUIRED
 	currentScene->draw();
 
-	myFont.draw();
+	myFont.draw();	
 	
-	
-	
-	
-
-	//fgParticles.draw();
-
 	// kill this all and refresh
 	gl::disableAlphaBlending();
-	//gl::disableAlphaBlending();
-	//gl::enableAlphaBlending();
 	gl::enableAdditiveBlending();
-	//
-	
-	//gl::enableAdditiveBlending();
-
-	//gl::color( ColorA( 1, 1, 1, 1 ) );
 
 	// store our viewport, so we can restore it later
 	Area viewport = gl::getViewport();
@@ -572,7 +538,11 @@ void TextTestApp::draw()
 }
 
 void TextTestApp::drawSkeleton(){
-	// Clear window
+	
+	if(mSkeletons.size()<1)
+	{
+		return;
+	}
 
 	// We're capturing
 	if ( mKinect->isCapturing() ) {
@@ -587,9 +557,8 @@ void TextTestApp::drawSkeleton(){
 
 		int skeletonCount = 0;
 
-
-		for ( vector<Skeleton>::const_iterator skeletonIt = mSkeletons.cbegin(); skeletonIt != mSkeletons.cend(); ++skeletonIt, i++ ) {
-
+		for ( vector<Skeleton>::const_iterator skeletonIt = mSkeletons.cbegin(); skeletonIt != mSkeletons.cend(); ++skeletonIt, i++ )
+		{
 
 			if (skeletonIt->size() > 0){
 				skeletonCount +=1;
@@ -599,15 +568,21 @@ void TextTestApp::drawSkeleton(){
 				significantInteractionTimer.start();
 			}
 
+
+			
 			if (activeUserPresent != true && significantInteractionTimer.getSeconds() > 3.0){
 				activeUserPresent = true;
 				//if we are in passive mode, tell the existing scene to exit.
 				currentScene->exitNow();
 
+				// clear any old references to this timer incase it doubles up
+				timeline().remove( mCue );
+
+				// TODO - should be an event given back from exit now. not a timer. for now this will do ill sort later.
 				mCue = timeline().add( boost::bind(&TextTestApp::beginActiveScene, this), timeline().getCurrentTime() + 2 );
 	
 			}
-
+			
 
 			// Set color
 			Colorf color = mKinect->getUserColor( i );
@@ -908,7 +883,19 @@ Vec2f TextTestApp::getMidPoint(Vec2f p0, Vec2f p1){
 // Receives skeleton data
 void TextTestApp::onSkeletonData( vector<Skeleton> skeletons, const DeviceOptions &deviceOptions )
 {
-	mSkeletons = skeletons;
+	//if(skeletons.size()>0){
+	//	mSkeletons = skeletons;
+	//}
+
+	//try
+	//{
+		mSkeletons = skeletons; // error suppression on the kinect as the stack trace comes from here
+	//}
+	//catch(int e)
+	//{
+	//}
+
+
 }
 
 void TextTestApp::drawTitleSafeArea(){

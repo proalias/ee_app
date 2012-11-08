@@ -51,21 +51,21 @@ void PassiveScene1::showFrame2()
 
 	font->animateIn();
 
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&PassiveScene1::showFrame3, this), timeline().getCurrentTime() + 8);
 }
 
 void PassiveScene1::showFrame3()
 {
 	font->animateOut();
-	mCue->removeSelf();
+
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&PassiveScene1::showFrame4, this), timeline().getCurrentTime() + 3 );
-	//fgParticles->hide();
 }
 
 void PassiveScene1::showFrame4()
 {
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	_signal( this );
 }
 

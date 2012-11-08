@@ -89,9 +89,9 @@ void PassiveScene3::showFrame2(){
 
 	//fgParticles->overrideDrawMethodInScene = true;
 	font->animateOut();
-	mCue->removeSelf();
+
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame3, this), timeline().getCurrentTime() + 3 );
-	//showFrame3();
 }
 
 void PassiveScene3::showFrame3(){
@@ -116,7 +116,7 @@ void PassiveScene3::showFrame3(){
 	showTerms = true;
 	font->animateIn();
 	
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame4, this), timeline().getCurrentTime() + 10 );
 }
 
@@ -133,28 +133,22 @@ void PassiveScene3::showFrame4()
 
 	font->animateOut();
 
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
 }
 
 void PassiveScene3::showFrame5(){
 	fgParticles->overrideDrawMethodInScene = false;
-	//font->animateOut();
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	_signal(this);
 }
 
 
 void PassiveScene3::exitNow()
 {
-
 	font->animateOut();
 	
-	//timeline().removeTarget (this);
-	
-	mCue->removeSelf();
-	//mCue = timeline().add( boost::bind(&PassiveScene3::showFrame5, this), timeline().getCurrentTime() + 2 );
-
+	timeline().remove( mCue );
 }
 
 

@@ -38,7 +38,6 @@ public:
 	std::vector<CinderClip>* repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
 
-
 	OutlineParams* outlineParams;
 
 	Background(void);

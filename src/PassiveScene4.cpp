@@ -79,7 +79,7 @@ void PassiveScene4::setup( FontRenderer &thefont, IconFactory &theIconFactory, F
 void PassiveScene4::showFrame2(){
 	font->animateOut();
 
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 7 );
 	
 	for (int i = 0; i < arrows.size(); i++){
@@ -89,7 +89,7 @@ void PassiveScene4::showFrame2(){
 }
 
 void PassiveScene4::showFrame3(){
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	_signal( this );
 }
 
@@ -104,12 +104,7 @@ void PassiveScene4::exitNow()
 		arrows[i]->animateOut();
 	}
 
-	
-	//timeline().removeTarget (this);
-	
-	mCue->removeSelf();
-	//mCue = timeline().add( boost::bind(&PassiveScene4::showFrame3, this), timeline().getCurrentTime() + 2 );
-
+	timeline().remove( mCue );
 }
 
 
