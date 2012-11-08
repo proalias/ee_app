@@ -30,11 +30,15 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 
 	showFrame2();
 
-
+	hand.scale = 0.65;
 	//bubbleMan = 	mMovie = qtime::MovieGl( moviePath );
 	//	mMovie.setLoop();
 
 	//	mMovie.play();
+	bubbleManWave = TextureGlobals::getInstance()->getSpriteSheet(TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
+
+	bubbleManWave->x = 500;
+	bubbleManWave->y = 530;
 
 }
 
@@ -49,6 +53,10 @@ void ActiveScene1::showFrame2(){
 
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 205 );
 
+	timeline().apply(&hand.rotation,-20.0f, 15.0f, 1.0f,cinder::EaseInOutCubic()).loop(true).pingPong(true);
+	timeline().apply(&hand.pos,ci::Vec2f(575.0,500.0), ci::Vec2f(625.0,500.0), 1.0f,cinder::EaseInOutCubic()).loop(true).pingPong(true);
+
+
 }
 
 void ActiveScene1::showFrame3()
@@ -59,12 +67,11 @@ void ActiveScene1::showFrame3()
 	//hand = IconRenderer();
 	hand.setPoints( iconFactory->getPointsForIcon(IconFactory::HAND) ); // TODO - animate in from grid
 	hand.pos = Vec2f(600,500);
-	hand.scale = 0.7;
 	hand.animateIn();
 
 	// TODO - cull this cue if interaction happens. OR return in each keyframe
 	mCue->removeSelf();
-	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 8 );
+	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
 }
 
 void ActiveScene1::showFrame4()
@@ -103,6 +110,14 @@ void ActiveScene1::update()
 
 void ActiveScene1::draw()
 {
+	
+	bubbleManWave->update();//HACK! - double the framerate by calling update twice
+	bubbleManWave->update();
+
+	gl::enableAlphaBlending();
+	bubbleManWave->draw();
+	gl::disableAlphaBlending();
+
 	if (showHand != true && GestureTracker::getInstance()->lookForGesture(GestureTracker::GESTURE_WAVE)){
 		showFrame3();
 	}

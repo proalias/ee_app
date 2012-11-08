@@ -15,6 +15,9 @@
 
 #include "boost/bind.hpp"
 
+//my first cinderblock!
+#include "SpriteSheet.h"
+
 #include "Kinect.h"
 #include "Background.h"
 #include "FontRenderer.h"
@@ -33,6 +36,8 @@
 #include "PassiveScene4.h"
 
 #include "ActiveScene1.h"
+#include "ActiveScene2.h"
+
 
 #include "ShopConfig.h"
 #include "OutlineParams.h"
@@ -125,6 +130,7 @@ class TextTestApp : public AppNative {
 
 	GestureTracker* gestureTracker;
 	ci::CueRef mCue;
+
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -166,7 +172,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -192,7 +198,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 {
 
 
-	int sceneId = sceneInstance->getId();	
+	int sceneId = sceneInstance->getId();
 	currentScene->getSignal()->disconnect_all_slots();
 	switch(sceneId){
 		case 1:
@@ -208,7 +214,10 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 			currentScene = new PassiveScene1();
 			break;
 		case 101 :
-			currentScene = new PassiveScene4();
+			currentScene = new ActiveScene2();
+			break;
+		case 102 :
+			currentScene = new PassiveScene3();
 			break;
 		}
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
@@ -221,6 +230,8 @@ void TextTestApp::beginActiveScene(){
 
 	currentScene->getSignal()->disconnect_all_slots();
 	//timeline().clear();
+
+	
 		
 	currentScene = new ActiveScene1();
 	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
@@ -239,6 +250,7 @@ void TextTestApp::setup()
 	mFboBlur1 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
 	mFboBlur2 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
 
+	
 	OutlineParams::getInstance()->init();
 
 	// load and compile the shaders
@@ -290,7 +302,7 @@ void TextTestApp::setup()
 
 
 	//load store config
-	cinder::XmlTree configXml( ci::app::loadAsset( "shopconfig.xml" ) );
+	cinder::XmlTree configXml(ci::app::loadAsset( "shopconfig.xml" ) );
 	ShopConfig::getInstance()->parseConfig(configXml);
 
 
@@ -392,6 +404,8 @@ void TextTestApp::setupSkeletonTracker(){
 void TextTestApp::update()
 {
 	//currentScene->update(timeline());
+
+	::ShowCursor(false);
 
 	mbackground.update();
 
@@ -589,8 +603,6 @@ void TextTestApp::drawSkeleton(){
 				activeUserPresent = true;
 				//if we are in passive mode, tell the existing scene to exit.
 				currentScene->exitNow();
-				
-				
 
 				mCue = timeline().add( boost::bind(&TextTestApp::beginActiveScene, this), timeline().getCurrentTime() + 2 );
 	
@@ -801,7 +813,7 @@ void TextTestApp::drawSkeleton(){
 			significantInteractionTimer = Timer();
 
 			//first clip is reserved for random background
-			for(int k=1;k<repelClips.size();k++){
+			for(unsigned int k=1;k<repelClips.size();k++){
 				repelClips[k].x = -200;
 				repelClips[k].y = -200;
 			}
@@ -856,6 +868,8 @@ void TextTestApp::drawSkeleton(){
 		}
 	}
 
+	gl::enableAlphaBlending();
+	gl::disableAlphaBlending();
 };
 
 Vec2f TextTestApp::getPointOnLine( Vec2f p0, Vec2f p1, float t){

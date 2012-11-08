@@ -52,7 +52,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\include;..\..\..\blocks\Cinder-KinectSdk\src;..\..\..\blocks\Cinder-OpenCV\include;..\..\..\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\spritesheet;..\include;..\..\..\include;..\..\..\blocks\Cinder-KinectSdk\src;..\..\..\blocks\Cinder-OpenCV\include;..\..\..\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -80,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\boost;..\..\..\include;..\include;..\..\..\blocks\Cinder-KinectSdk\src;..\..\..\blocks\Cinder-KinectSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../spritesheet;..\..\..\boost;..\..\..\include;..\include;..\..\..\blocks\Cinder-KinectSdk\src;..\..\..\blocks\Cinder-KinectSdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -110,7 +110,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
+    <ClCompile Include="..\spritesheet\SpriteDataParser.cpp" />
+    <ClCompile Include="..\spritesheet\SpriteSheet.cpp" />
     <ClCompile Include="..\src\ActiveScene1.cpp" />
+    <ClCompile Include="..\src\ActiveScene2.cpp" />
     <ClCompile Include="..\src\Background.cpp" />
     <ClCompile Include="..\src\CinderClip.cpp" />
     <ClCompile Include="..\src\ColorConstants.cpp" />
@@ -142,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.h" />
     <ClInclude Include="..\include\ActiveScene1.h" />
+    <ClInclude Include="..\include\ActiveScene2.h" />
     <ClInclude Include="..\include\Background.h" />
     <ClInclude Include="..\include\CinderClip.h" />
     <ClInclude Include="..\include\ColorConstants.h" />
@@ -173,9 +177,15 @@
     <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
     <ClInclude Include="..\include\WaveGesture.h" />
+    <ClInclude Include="..\spritesheet\SpriteData.h" />
+    <ClInclude Include="..\spritesheet\SpriteDataParser.h" />
+    <ClInclude Include="..\spritesheet\SpriteSheet.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\bubbleman_wave_texture\bubbleman_wave.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

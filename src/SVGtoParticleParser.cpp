@@ -77,7 +77,7 @@ void SVGtoParticleParser::recursiveParse(cinder::XmlTree node, std::vector<Tween
 							boost::split( pointsVec, pathSeg, boost::is_any_of(",") ); // SplitVec == { "hello abc","ABC","aBc goodbye" }
 
 							
-							float prevVal;
+							
 							std::vector<float> curveSeg;
 							for (int i=0;i<pointsVec.size();i++){
 								if (pointsVec[i] != "" ){

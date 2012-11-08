@@ -10,6 +10,10 @@
 #include "TextureGlobals.h"
 #include "GestureTracker.h"
 
+#include "cinder/gl/Texture.h"
+#include "cinder/Easing.h"
+#include "SpriteSheet.h"
+
 class ActiveScene1: public SceneBase {
 
 
@@ -23,8 +27,17 @@ public:
 		
 	ActiveScene1(void);
 	//~ActiveScene1(void);
+	
+
  private:
-	ci::CueRef mCue;
+
+	
+	cinder::gl::Texture					mFrameTexture, mInfoTexture;
+
+	SpriteSheet* bubbleManWave;
+
+	cinder::CueRef mCue;
+	
 	// keyframes
 	void showFrame2();
 	void showFrame3();

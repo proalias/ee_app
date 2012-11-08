@@ -26,7 +26,8 @@ public:
 	
 	static const int NO_GESTURE = 0;
 	static const int GESTURE_WAVE = 1;
-	static const int AIR_GUITAR_STRUM = 2;
+	static const int GESTURE_RUN = 2;
+	static const int GESTURE_AIR_GUITAR_STRUM = 3;
 
 
 	void addPoint(int boneIndex, ci::Vec3f position);
@@ -34,6 +35,7 @@ public:
 
 	bool lookForWaveLeft();
 	bool lookForWaveRight();
+	float lookForRunningOnTheSpot();
 
 	static GestureTracker* getInstance();
 

@@ -63,7 +63,7 @@ bool GestureTracker::lookForWaveLeft(){
 	for (std::list<ci::Vec3f>::iterator p = bonePositions[NUI_SKELETON_POSITION_HAND_LEFT].begin(); p != bonePositions[NUI_SKELETON_POSITION_HAND_LEFT].end(); p++, frameIndex++){
 		
 		//check hand is above lower back
-		if (p->y > bonePositions[NUI_SKELETON_POSITION_SPINE].back().y){
+		if (p->y > bonePositions[NUI_SKELETON_POSITION_ELBOW_LEFT].back().y){
 
 			//check for changes in velocity
 			float vX, vY;
@@ -106,7 +106,7 @@ bool GestureTracker::lookForWaveRight(){
 	for (std::list<ci::Vec3f>::iterator p = bonePositions[NUI_SKELETON_POSITION_HAND_RIGHT].begin(); p != bonePositions[NUI_SKELETON_POSITION_HAND_RIGHT].end(); p++, frameIndex++){
 		
 		//check hand is above lower back
-		if (p->y > bonePositions[NUI_SKELETON_POSITION_SPINE].back().y){
+		if (p->y > bonePositions[NUI_SKELETON_POSITION_ELBOW_RIGHT].back().y){
 
 			//ci::gl::color(ci::Color(1.0,0.0,0.0));
 			//ci::gl::drawSolidCircle(ci::Vec2f(100,100),100);
@@ -135,4 +135,44 @@ bool GestureTracker::lookForWaveRight(){
 		}
 	}
 	return gestureDetected;
+}
+
+
+
+float GestureTracker::lookForRunningOnTheSpot(){
+	float runningSpeed = 0;
+
+	float lastX = bonePositions[NUI_SKELETON_POSITION_HEAD].front().x;
+	float lastY = bonePositions[NUI_SKELETON_POSITION_HEAD].front().y;
+
+	float lastVX = 0;
+	float lastVY = 0;
+
+	int directionChanges = 0;
+	//analyse left hand velocity
+	int frameIndex = 0;
+	for (std::list<ci::Vec3f>::iterator p = bonePositions[NUI_SKELETON_POSITION_HEAD].begin(); p != bonePositions[NUI_SKELETON_POSITION_HEAD].end(); p++, frameIndex++){
+		
+		
+			//check for changes in velocity
+			float vX, vY;
+			vX = lastX - p->x;
+			vY = lastY - p->y;
+		
+			
+			if (vY < 0 && lastVY > 0){
+				directionChanges += 1;
+			}
+
+			if (vY > 0 && lastVY < 0){
+				directionChanges += 1;
+			}
+
+			lastVX = vX;
+			lastVY = vY;
+
+			runningSpeed = directionChanges*0.1;
+		
+	}
+	return runningSpeed;
 }
