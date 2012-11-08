@@ -131,8 +131,6 @@ class TextTestApp : public AppNative {
 	GestureTracker* gestureTracker;
 	ci::CueRef mCue;
 
-	SpriteSheet bubbleManWave;
-
 private:
 	// Kinect
 	uint32_t							mCallbackId;
@@ -174,7 +172,7 @@ protected:
 void TextTestApp::prepareSettings( Settings *settings )
 {
 
-	bool isDeployed = flipScreen = false;
+	bool isDeployed = flipScreen = true;
 
 	if (isDeployed == true){
 		::ShowCursor(false);
@@ -253,10 +251,7 @@ void TextTestApp::setup()
 	mFboBlur1 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
 	mFboBlur2 = gl::Fbo(getWindowWidth()/8, getWindowHeight()/8);
 
-	ci::gl::Texture bubbleManWaveTexture = loadImage(loadAsset("./bubbleman_wave_texture/bubbleman_wave.png"));
-	bubbleManWave = SpriteSheet();
-	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave_texture/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
-
+	
 	OutlineParams::getInstance()->init();
 
 	// load and compile the shaders
@@ -424,7 +419,6 @@ void TextTestApp::update()
 	}
 
 	double time = getElapsedSeconds();
-	bubbleManWave.update();
 	gl::color(1.0,1.0,1.0);
 }
 
@@ -873,7 +867,6 @@ void TextTestApp::drawSkeleton(){
 	}
 
 	gl::enableAlphaBlending();
-	bubbleManWave.draw();
 	gl::disableAlphaBlending();
 };
 

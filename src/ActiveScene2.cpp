@@ -28,10 +28,10 @@ void ActiveScene2::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 
 	showFrame2();
 
-	//bubbleMan = 	mMovie = qtime::MovieGl( moviePath );
-	//	mMovie.setLoop();
-
-	//	mMovie.play();
+	bubbleManRun = TextureGlobals::getInstance()->getSpriteSheet(TextureGlobals::SPRITE_BUBBLEMAN_RUN);
+	
+	bubbleManRun->x = 500;
+	bubbleManRun->y = 530;
 
 }
 
@@ -40,18 +40,23 @@ void ActiveScene2::showFrame2(){
 	font->clear();
 	font->setPosition(300.0,100.0);
 	font->setColor(Color(1.0,1.0,1.0));
-	font->addLine( "<Y>RUN ON THE SPOT</Y>", 3 );
+	font->addLine( "<Y>RUN ON THE SPOT</Y>", 2.5 );
 	font->addLine( "  TO GO GO GO", 2 );
 	font->animateIn();
 
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame4, this), timeline().getCurrentTime() + 205 );
 
+	
 	speedDialSwoosh.setPoints( iconFactory->getPointsForIcon(IconFactory::SWOOSH) ); // TODO - animate in from grid
-	speedDialSwoosh.pos = Vec2f(600,600);
+	speedDialSwoosh.pos = Vec2f(620,550);
+	speedDialSwoosh.scale = 0.8;
+
 	speedDialSwoosh.animateIn();
 
 	speedDialNeedle.setPoints( iconFactory->getPointsForIcon(IconFactory::DIAL) ); // TODO - animate in from grid
-	speedDialNeedle.pos = Vec2f(600,600);
+	speedDialNeedle.pos = Vec2f(620,550);
+	speedDialSwoosh.scale = 0.8;
+
 	speedDialNeedle.animateIn();
 
 }
@@ -105,6 +110,14 @@ void ActiveScene2::update()
 
 void ActiveScene2::draw()
 {
+
+	bubbleManRun->update();//HACK! - double the framerate by calling update twice
+	bubbleManRun->update();
+
+	gl::enableAlphaBlending();
+	bubbleManRun->draw();
+	gl::disableAlphaBlending();
+
 	runningSpeed += GestureTracker::getInstance()->lookForRunningOnTheSpot();
 
 	runningSpeed = runningSpeed * 0.9;
@@ -122,7 +135,7 @@ void ActiveScene2::draw()
 		dialAngle = 180;
 	}
 
-	if (runningSpeed > 5){
+	if (runningSpeed > 4.5){
 		showFrame5();
 	}
 

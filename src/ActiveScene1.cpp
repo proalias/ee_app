@@ -30,11 +30,15 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 
 	showFrame2();
 
-	hand.scale = 0.7;
+	hand.scale = 0.65;
 	//bubbleMan = 	mMovie = qtime::MovieGl( moviePath );
 	//	mMovie.setLoop();
 
 	//	mMovie.play();
+	bubbleManWave = TextureGlobals::getInstance()->getSpriteSheet(TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
+
+	bubbleManWave->x = 500;
+	bubbleManWave->y = 530;
 
 }
 
@@ -106,6 +110,14 @@ void ActiveScene1::update()
 
 void ActiveScene1::draw()
 {
+	
+	bubbleManWave->update();//HACK! - double the framerate by calling update twice
+	bubbleManWave->update();
+
+	gl::enableAlphaBlending();
+	bubbleManWave->draw();
+	gl::disableAlphaBlending();
+
 	if (showHand != true && GestureTracker::getInstance()->lookForGesture(GestureTracker::GESTURE_WAVE)){
 		showFrame3();
 	}

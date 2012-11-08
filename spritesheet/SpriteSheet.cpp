@@ -12,11 +12,22 @@ void SpriteSheet::init(ci::gl::Texture spriteImage, std::string xmlPath, int Dat
 		__textureWidth = spriteImage.getWidth();
 		__textureHeight = spriteImage.getHeight();
 
+		x = 0;
+		y = 0;
+		scale = 1.0;
+		rotation = 0;
+		alpha = 1.0;
+
 }
 
 void SpriteSheet::draw(){
 	SpriteData frame = __spriteData[__currentFrame];
 	
+	gl::pushMatrices();
+	gl::translate(x,y,0);
+	gl::rotate(rotation);
+	gl::scale(scale,scale,1.0);
+
 	float u = frame.x;
 	float v = frame.y;
    // v += frame.h;
@@ -64,7 +75,7 @@ void SpriteSheet::draw(){
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );	
 
 
-
+	gl::popMatrices();
 
 }
 

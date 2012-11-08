@@ -110,7 +110,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\blocks\cinder-KinectSdk\src\Kinect.cpp" />
-    <ClCompile Include="..\spritesheet\SpriteData.cpp" />
     <ClCompile Include="..\spritesheet\SpriteDataParser.cpp" />
     <ClCompile Include="..\spritesheet\SpriteSheet.cpp" />
     <ClCompile Include="..\src\ActiveScene1.cpp" />

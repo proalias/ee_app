@@ -33,6 +33,7 @@ public:
 
 	
 	cinder::gl::Texture					mFrameTexture, mInfoTexture;
+	SpriteSheet* bubbleManRun;
 
 	cinder::CueRef mCue;
 	

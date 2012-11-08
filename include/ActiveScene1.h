@@ -12,6 +12,7 @@
 
 #include "cinder/gl/Texture.h"
 #include "cinder/Easing.h"
+#include "SpriteSheet.h"
 
 class ActiveScene1: public SceneBase {
 
@@ -32,6 +33,8 @@ public:
 
 	
 	cinder::gl::Texture					mFrameTexture, mInfoTexture;
+
+	SpriteSheet* bubbleManWave;
 
 	cinder::CueRef mCue;
 	

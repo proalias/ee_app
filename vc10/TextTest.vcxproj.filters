@@ -138,13 +138,10 @@
     <ClCompile Include="..\src\ActiveScene2.cpp">
       <Filter>Source Files\activescenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\spritesheet\SpriteSheet.cpp">
-      <Filter>blocks\spritesheet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\spritesheet\SpriteData.cpp">
-      <Filter>blocks\spritesheet</Filter>
-    </ClCompile>
     <ClCompile Include="..\spritesheet\SpriteDataParser.cpp">
+      <Filter>blocks\spritesheet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\spritesheet\SpriteSheet.cpp">
       <Filter>blocks\spritesheet</Filter>
     </ClCompile>
   </ItemGroup>
@@ -251,13 +248,13 @@
     <ClInclude Include="..\include\ActiveScene2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\spritesheet\SpriteSheet.h">
-      <Filter>blocks\spritesheet</Filter>
-    </ClInclude>
     <ClInclude Include="..\spritesheet\SpriteData.h">
       <Filter>blocks\spritesheet</Filter>
     </ClInclude>
     <ClInclude Include="..\spritesheet\SpriteDataParser.h">
+      <Filter>blocks\spritesheet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\spritesheet\SpriteSheet.h">
       <Filter>blocks\spritesheet</Filter>
     </ClInclude>
   </ItemGroup>
