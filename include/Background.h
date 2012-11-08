@@ -12,7 +12,7 @@
 
 #include "OutlineParams.h"
 
-//#include "FireFlyEffect.h"
+#include "FireFlyEffect.h"
 
 
 #include <list>
@@ -37,7 +37,6 @@ public:
 	// TODO - maybe force these in the constuctor?
 	std::vector<CinderClip>* repelClips;
 	void setRepelClips( std::vector<CinderClip> &rclips );
-
 
 	OutlineParams* outlineParams;
 

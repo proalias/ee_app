@@ -479,6 +479,8 @@ void FontRenderer::animateIn(){
 
 void FontRenderer::animateOut(){
 	
+	
+
 		//tickingCue->removeSelf();
 		mGridPointInc = 0;
 		float t = 0;//offset each time value slightly

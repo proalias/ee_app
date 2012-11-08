@@ -71,8 +71,7 @@ void ActiveScene1::showFrame3()
 	hand.pos = Vec2f(600,500);
 	hand.animateIn();
 
-	// TODO - cull this cue if interaction happens. OR return in each keyframe
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
 	bubbleManWave->alphaFadeIn(2.0,0.0);
 }
@@ -90,7 +89,7 @@ void ActiveScene1::showFrame4()
 void ActiveScene1::showFrame5()
 {
 	//showHand=false;
-	mCue->removeSelf();
+	timeline().remove( mCue );
 	_signal( this );
 }
 
@@ -101,11 +100,12 @@ void ActiveScene1::exitNow()
 		hand.animateOut();
 	}
 	
+	timeline().remove( mCue );
 	bubbleManWave->alphaFadeOut(1.0,0.0);
 	font->animateOut();
 	mCue->removeSelf();
-	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 
+	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 }
 
 

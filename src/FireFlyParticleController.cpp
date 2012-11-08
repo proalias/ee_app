@@ -4,6 +4,8 @@
 #include "Vect.h"
 #include "FireFlyParticle.h"
 
+#include "FireFlyWaveScheme.h"
+
 #include <list>
 
 using namespace ci;
@@ -39,10 +41,6 @@ FireFlyParticleController::FireFlyParticleController( float initX,
 	int initIndex,
 	int prows,
 	int pcolumns ){
-
-	// init vars
-	//x=0;
-	//y=0;
 
 	isOccupied = true;
 	isActive = false;
@@ -230,32 +228,44 @@ void FireFlyParticleController::setParticleFollow()
 	
 void FireFlyParticleController::checkWave()
 {	
-	/*
-	var waveNextIndexes : Array = _grid.waveStartScheme["" + _takeFrom + "" + giveTo + ""];
+	
+	//var waveNextIndexes : Array = _grid.waveStartScheme["" + _takeFrom + "" + giveTo + ""];
+
+	std::vector<int> waveNextIndexes;
+	//int o[] = { 0, 1, 3, 6, 7 };
+	//waveNextIndexes.push_back( std::vector<int>( o, o+(sizeof(o)/sizeof(o[0])) ) );
+
+	waveNextIndexes.push_back( 0 );
+	waveNextIndexes.push_back( 1 );
+	waveNextIndexes.push_back( 3 );
+	waveNextIndexes.push_back( 6 );
+	waveNextIndexes.push_back( 7 );
+
+	int len = waveNextIndexes.size();
+	int waveIndex;
+	//var controller : FireFlyParticleController;
 			
-	var len : int = waveNextIndexes.length;
-	var waveIndex : int
-	var controller : FireFlyParticleController;
-			
-	for (var i : int = 0; i < len; i++) {
-		if (_grid.particles[_neighborParticles[waveNextIndexes[i]]]) {
+	for( int i = 0; i < len; i++ )
+	{
+		//if( ffparticles[_neighborParticles[waveNextIndexes[i]]] )
+		if( true )
+		{
 			waveIndex = waveNextIndexes[i];
-					
-			if (_grid.particles[_neighborParticles[waveIndex]].isOccupied && !_grid.particles[_neighborParticles[waveIndex]].isActive && !_grid.particles[_neighborParticles[waveIndex]].particle.isActive)  {
+
+			if( ffparticles->at(_neighborParticles[waveIndex]).isOccupied && ! ffparticles->at(_neighborParticles[waveIndex]).isActive && ! ffparticles->at(_neighborParticles[waveIndex]).particle.isActive )
+			{
+				FireFlyParticleController controller = ffparticles->at(_neighborParticles[waveIndex]);
 						
-				controller = _grid.particles[_neighborParticles[waveIndex]];
-						
-				controller.exciter = _grid.neighborOrder[waveIndex];
+				controller.exciter = neighborOrder[waveIndex];
 				controller.waveIteration = 0;
-				controller.waveState = 0;	
-				_grid.waveParticles.push(controller);
+				controller.waveState = 0;
+				waveparticles->push_back(controller);
 			}
 			
 		} else {
-			trace("waveNextIndex not found for: ", _neighborParticles[waveNextIndexes[i]]);	
+			//trace("waveNextIndex not found for: ", _neighborParticles[waveNextIndexes[i]]);	
 		}
 	}
-	*/
 	
 }
 
@@ -378,10 +388,10 @@ bool FireFlyParticleController::repel()
 	if (particle.isActive || particle.isWave) {				
 		return false;	
 	}
-	/*
-	Vect thisParticlePos = this->particle.pos.clone();
+	
+	Vect thisParticlePos = particle.pos.clone();
 	Vect repelForce = thisParticlePos.clone();
-	float distanceToRepel = (particles[1].particlePos.x - particles[0].particlePos.x);
+	float distanceToRepel = (ffparticles->at(1).particlePos.x - ffparticles->at(0).particlePos.x);
 	int magnitude = 0;
 	float repelStrength = 0;
 	float speed = 0.01;
@@ -396,15 +406,15 @@ bool FireFlyParticleController::repel()
 			continue;	
 		}
 				
-		FireFlyParticle borderParticle = particles[_neighborParticles[i]].particle;
+		FireFlyParticle borderParticle = ffparticles->at(_neighborParticles[i]).particle;
 				
-		repelForce.copyFrom(thisParticlePos);				
+		repelForce.copyFrom(thisParticlePos);
 		repelForce.minusEq(borderParticle.pos);
-				
-		magnitude = repelForce.magnitude(); 
-		repelStrength = distanceToRepel-magnitude; 
-					
-		if (repelStrength > 1 && magnitude > 1)	{						
+
+		magnitude = repelForce.magnitude();
+		repelStrength = distanceToRepel-magnitude;
+		
+		if(repelStrength > 1 && magnitude > 1)	{						
 			repelForce.multiplyEq(speed);
 			particle.vel.plusEq(repelForce);
 			totalRepelForce += magnitude;
@@ -417,7 +427,7 @@ bool FireFlyParticleController::repel()
 	} else {
 		isRepelling = false;
 	}
-	*/
+	
 	return true;
 }
 
