@@ -571,8 +571,6 @@ void TextTestApp::drawSkeleton(){
 		// Iterate through skeletons
 		uint32_t i = 0;
 
-
-
 		int skeletonCount = 0;
 
 
