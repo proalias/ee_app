@@ -48,6 +48,7 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(KINECTSDK10_DIR)\inc;$(IncludePath)</IncludePath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ExecutablePath)</ExecutablePath>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\cinder\cinder_0.8.4_vc2010\projects\ee_app_build\resources;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -177,6 +178,7 @@
     <ClInclude Include="..\include\TextureGlobals.h" />
     <ClInclude Include="..\include\TweenParticle.h" />
     <ClInclude Include="..\include\WaveGesture.h" />
+    <ClInclude Include="..\resources\Resources.h" />
     <ClInclude Include="..\spritesheet\SpriteData.h" />
     <ClInclude Include="..\spritesheet\SpriteDataParser.h" />
     <ClInclude Include="..\spritesheet\SpriteSheet.h" />
@@ -185,7 +187,40 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\assets\airguitar.svg" />
+    <None Include="..\assets\arrow.svg" />
+    <None Include="..\assets\background-particle.png" />
+    <None Include="..\assets\background.png" />
+    <None Include="..\assets\bubbleMan_Button.mov" />
+    <None Include="..\assets\bubbleMan_Guitar.mov" />
+    <None Include="..\assets\bubbleMan_Running.mov" />
+    <None Include="..\assets\bubbleMan_Wave.mov" />
     <None Include="..\assets\bubbleman_wave_texture\bubbleman_wave.xml" />
+    <None Include="..\assets\hand.svg" />
+    <None Include="..\assets\location.svg" />
+    <None Include="..\assets\particle.png" />
+    <None Include="..\assets\ParticleFullON.png" />
+    <None Include="..\assets\ParticleFullONYellow.png" />
+    <None Include="..\assets\ParticlePatial01.png" />
+    <None Include="..\assets\ParticlePatial02.png" />
+    <None Include="..\assets\ParticlePatial03.png" />
+    <None Include="..\assets\ParticlePatial04.png" />
+    <None Include="..\assets\ParticlePatial05.png" />
+    <None Include="..\assets\scoopfullhd.png" />
+    <None Include="..\assets\shopconfig.xml" />
+    <None Include="..\assets\superfast-dial.svg" />
+    <None Include="..\assets\superfast-swoosh.svg" />
+    <None Include="..\assets\svgtest.svg" />
+    <None Include="..\assets\terms1.png" />
+    <None Include="..\assets\terms2.png" />
+    <None Include="..\resources\bubbleman_run.png" />
+    <None Include="..\resources\bubbleman_wave.png" />
+    <None Include="..\resources\ee_nobblee_boldwebfont.ttf" />
+    <None Include="..\resources\ee_nobblee_lightwebfont.ttf" />
+    <None Include="..\resources\ee_nobblee_regularwebfont.ttf" />
+    <None Include="..\resources\FontReadMe.txt" />
+    <None Include="..\resources\Icon.png" />
+    <None Include="..\resources\scoopfullhd.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

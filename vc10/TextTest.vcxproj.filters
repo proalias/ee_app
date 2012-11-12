@@ -40,6 +40,9 @@
     <Filter Include="Source Files\scenes">
       <UniqueIdentifier>{57ce8461-afe7-46b9-a2e3-f4eaa45c5250}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{dce5a663-11a4-488a-95a6-127c6a01fb63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\TextTestApp.cpp">
@@ -254,6 +257,9 @@
     <ClInclude Include="..\spritesheet\SpriteSheet.h">
       <Filter>blocks\spritesheet</Filter>
     </ClInclude>
+    <ClInclude Include="..\resources\Resources.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -263,6 +269,105 @@
   <ItemGroup>
     <None Include="..\assets\bubbleman_wave_texture\bubbleman_wave.xml">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\bubbleman_run.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\ee_nobblee_boldwebfont.ttf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\ee_nobblee_lightwebfont.ttf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\ee_nobblee_regularwebfont.ttf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\FontReadMe.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\Icon.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\scoopfullhd.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\bubbleman_wave.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\assets\airguitar.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\arrow.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\background.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\background-particle.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\bubbleMan_Button.mov">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\bubbleMan_Guitar.mov">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\bubbleMan_Running.mov">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\bubbleMan_Wave.mov">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\hand.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\location.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\particle.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticleFullON.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticleFullONYellow.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticlePatial01.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticlePatial02.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticlePatial03.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticlePatial04.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\ParticlePatial05.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\scoopfullhd.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\shopconfig.xml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\superfast-dial.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\superfast-swoosh.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\svgtest.svg">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\terms1.png">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\assets\terms2.png">
+      <Filter>Assets</Filter>
     </None>
   </ItemGroup>
 </Project>

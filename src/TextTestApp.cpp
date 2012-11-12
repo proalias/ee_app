@@ -299,13 +299,13 @@ void TextTestApp::setup()
 	cinder::XmlTree configXml(ci::app::loadAsset( "shopconfig.xml" ) );
 	ShopConfig::getInstance()->parseConfig(configXml);
 
-	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(ci::app::loadAsset("./bubbleman_wave_texture/bubbleman_wave.png"));
+	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(loadResource(BUBBLEMAN_WAVE));
 	SpriteSheet bubbleManWave = SpriteSheet();
-	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave_texture/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 
-	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(ci::app::loadAsset("./bubbleman_run_texture/bubbleman_run.png"));
+	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(loadResource(BUBBLEMAN_WALK));
 	SpriteSheet bubbleManRun = SpriteSheet();
-	bubbleManRun.init(bubbleManRunTexture, "./bubbleman_run_texture/bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+	bubbleManRun.init(bubbleManRunTexture, "./bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 	
 	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManRun,TextureGlobals::SPRITE_BUBBLEMAN_RUN);
 	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManWave,TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
