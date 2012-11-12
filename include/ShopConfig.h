@@ -19,8 +19,8 @@ private:
     ShopConfig()
     {
 		//defaults
-		bool doorOnRight = false;
-		std::string location = "LONDON";
+		doorOnRight = false;
+		location = "LONDON";
     }
 
 	
