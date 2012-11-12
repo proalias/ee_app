@@ -17,6 +17,8 @@
 
 //my first cinderblock!
 #include "SpriteSheet.h"
+#include "../resources/Resources.h"
+
 
 #include "Kinect.h"
 #include "Background.h"
@@ -299,11 +301,11 @@ void TextTestApp::setup()
 	cinder::XmlTree configXml(ci::app::loadAsset( "shopconfig.xml" ) );
 	ShopConfig::getInstance()->parseConfig(configXml);
 
-	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(loadResource(BUBBLEMAN_WAVE));
+	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(ci::app::loadResource(BUBBLEMAN_WAVE));
 	SpriteSheet bubbleManWave = SpriteSheet();
 	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 
-	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(loadResource(BUBBLEMAN_WALK));
+	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(ci::app::loadResource(BUBBLEMAN_RUN));
 	SpriteSheet bubbleManRun = SpriteSheet();
 	bubbleManRun.init(bubbleManRunTexture, "./bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 	
