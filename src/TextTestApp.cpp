@@ -254,8 +254,8 @@ void TextTestApp::setup()
 	// load and compile the shaders
 	try { 
 		mShaderBlur = gl::GlslProg( 
-			loadFile("../data/blur_vert.glsl"),
-			loadFile("../data/blur_frag.glsl")); 
+			loadFile("../shaders/blur_vert.glsl"),
+			loadFile("../shaders/blur_frag.glsl")); 
 	} catch(...) {
 		console() << "Can't load/compile blur shader" << endl;
 		quit();
@@ -263,8 +263,8 @@ void TextTestApp::setup()
 
 	try { 
 		mShaderPhong = gl::GlslProg( 
-			loadFile("../data/phong_vert.glsl"),
-			loadFile("../data/phong_frag.glsl")); 
+			loadFile("../shaders/phong_vert.glsl"),
+			loadFile("../shaders/phong_frag.glsl")); 
 	} catch(...) {
 		console() << "Can't load/compile phong shader" << endl;
 		quit();

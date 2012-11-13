@@ -60,7 +60,7 @@ void ActiveScene2::showFrame2(){
 	speedDialNeedle.animateIn();
 
 	
-	bubbleManRun->alphaFadeIn(1.0,3.0);
+	bubbleManRun->alpha = 1.0f;
 }
 
 void ActiveScene2::showFrame3()
@@ -80,7 +80,7 @@ void ActiveScene2::showFrame4()
 	speedDialNeedle.animateOut();
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
 
-	bubbleManRun->alphaFadeOut(1.0,0.0);
+	//bubbleManRun->alphaFadeOut(1.0,0.0);
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene2::showFrame5, this), timeline().getCurrentTime() + 2 );
 

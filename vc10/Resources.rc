@@ -1,4 +1,4 @@
-#include "../include/Resources.h"
+#include "../resources/Resources.h"
 
 RES_CUSTOM_FONT
 BUBBLEMAN_WAVE

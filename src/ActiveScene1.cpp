@@ -73,13 +73,14 @@ void ActiveScene1::showFrame3()
 
 	timeline().remove( mCue );
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame4, this), timeline().getCurrentTime() + 6 );
-	bubbleManWave->alphaFadeIn(2.0,0.0);
+	
+	//bubbleManWave->alphaFadeIn(2.0,0.0);
 }
 
 void ActiveScene1::showFrame4()
 {
 	hand.animateOut();
-	bubbleManWave->alphaFadeOut(1.0,0.0);
+	//bubbleManWave->alphaFadeOut(1.0,0.0);
 	mCue->removeSelf();
 	mCue = timeline().add( boost::bind(&ActiveScene1::showFrame5, this), timeline().getCurrentTime() + 2 );
 
@@ -101,7 +102,8 @@ void ActiveScene1::exitNow()
 	}
 	
 	timeline().remove( mCue );
-	bubbleManWave->alphaFadeOut(1.0,0.0);
+	bubbleManWave->alpha = 0.0f;
+	//bubbleManWave->alphaFadeOut(1.0,0.0);
 	font->animateOut();
 	mCue->removeSelf();
 
