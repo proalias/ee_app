@@ -303,11 +303,11 @@ void TextTestApp::setup()
 
 	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(ci::app::loadResource(BUBBLEMAN_WAVE));
 	SpriteSheet bubbleManWave = SpriteSheet();
-	bubbleManWave.init(bubbleManWaveTexture, "./bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+	bubbleManWave.init(bubbleManWaveTexture, "./spritesheetdata/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 
 	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(ci::app::loadResource(BUBBLEMAN_RUN));
 	SpriteSheet bubbleManRun = SpriteSheet();
-	bubbleManRun.init(bubbleManRunTexture, "./bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+	bubbleManRun.init(bubbleManRunTexture, "./spritesheetdata/bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 	
 	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManRun,TextureGlobals::SPRITE_BUBBLEMAN_RUN);
 	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManWave,TextureGlobals::SPRITE_BUBBLEMAN_WAVE);

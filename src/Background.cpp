@@ -168,9 +168,9 @@ void Background::draw()
 		gl::popMatrices();
 
 	
-		gl::color( 1, 1, 1, 0.6 );
+		gl::color( 1.0f, 1.0f, 1.0f, 0.6f );
 		gl::pushMatrices();
-		gl::translate(0,0,-30);
+		gl::translate(0.0f,0.0f,-30.0f);
 	
 		for( vector<ParticleA>::iterator p = gridLayer1.begin(); p != gridLayer1.end(); ++p ){
 			float rad = p->width + p->width * (p->getVx()+p->getVy())/5;

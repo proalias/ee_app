@@ -26,7 +26,7 @@ public:
 	void exitNow();
 		
 	ActiveScene1(void);
-	//~ActiveScene1(void);
+	~ActiveScene1(void);
 	
 
  private:

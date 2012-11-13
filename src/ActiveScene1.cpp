@@ -16,30 +16,26 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 	//font->animateOut();
 	
 	
-	//font->animateIn(); // TODO - animateIn not working on this revision?
+	font->animateIn(); // TODO - animateIn not working on this revision?
 	
-	//gestureTracker = GestureTracker::getInstance();
-
+	
 	iconFactory =  &theIconFactory;
 
 	fgParticles = &thefgParticles;
 
 	// TODO - TIMEOUT BACK TO NORMAL????
-	//mCue = timeline().add( boost::bind(&ActiveScene1::showFrame2, this), timeline().getCurrentTime() + 2 );
+	mCue = timeline().add( boost::bind(&ActiveScene1::exitNow, this), timeline().getCurrentTime() + 12 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 
 	showFrame2();
 
-	hand.scale = 0.65;
-	//bubbleMan = 	mMovie = qtime::MovieGl( moviePath );
-	//	mMovie.setLoop();
-
-	//	mMovie.play();
+	hand.scale = 0.65f;
+	
 	bubbleManWave = TextureGlobals::getInstance()->getSpriteSheet(TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
 
 	bubbleManWave->x = 500;
 	bubbleManWave->y = 530;
-	bubbleManWave->alpha = 0;
+	bubbleManWave->alpha = 0.0f;
 
 }
 
@@ -47,7 +43,7 @@ void ActiveScene1::showFrame2(){
 
 	font->clear();
 	font->setPosition(300.0,100.0);
-	font->setColor(Color(1.0,1.0,1.0));
+	font->setColor(Color(1.0f,1.0f,1.0f));
 	font->addLine( "GIVE US", 3 );
 	font->addLine( "     A WAVE", 3 );
 	font->animateIn();
