@@ -27,7 +27,6 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 	mCue = timeline().add( boost::bind(&ActiveScene1::exitNow, this), timeline().getCurrentTime() + 12 );
 	// http://www.thegrego.com/2012/09/02/flash-to-cinder-timed-event-loops/
 
-	showFrame2();
 
 	hand.scale = 0.65f;
 	
@@ -37,11 +36,12 @@ void ActiveScene1::setup( FontRenderer &thefont, IconFactory &theIconFactory, Fo
 	bubbleManWave->y = 530;
 	bubbleManWave->alpha = 0.0f;
 
+	showFrame2();
 }
 
 void ActiveScene1::showFrame2(){
 
-	font->clear();
+	//font->clear();
 	font->setPosition(300.0,100.0);
 	font->setColor(Color(1.0f,1.0f,1.0f));
 	font->addLine( "GIVE US", 3 );

@@ -149,12 +149,13 @@ private:
 
 	bool trackingRightHand;
 	bool tweeningPointsIn;
-
+	SpriteSheet* mBubbleManWave;
+	SpriteSheet* mBubbleManRun;
 
 protected:
 	Background mbackground;
 
-	void onPassiveSceneComplete( SceneBase* sceneInstance  );
+	void onPassiveSceneComplete( /*SceneBase* sceneInstance*/  );
 	SceneBase* currentScene;
 
 	//
@@ -195,10 +196,10 @@ void TextTestApp::keyDown( KeyEvent event ) {
 }
 
 
-void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
+void TextTestApp::onPassiveSceneComplete( /* SceneBase* sceneInstance */)
 {
 
-	int sceneId = sceneInstance->getId();
+	int sceneId = currentScene->getId();
 	currentScene->getSignal()->disconnect_all_slots();
 	switch(sceneId){
 		case 1:
@@ -220,7 +221,7 @@ void TextTestApp::onPassiveSceneComplete( SceneBase* sceneInstance )
 			currentScene = new PassiveScene3();
 			break;
 		}
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 }
@@ -232,7 +233,7 @@ void TextTestApp::beginActiveScene(){
 	//timeline().clear();
 	
 	currentScene = new ActiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 }
 
@@ -302,15 +303,16 @@ void TextTestApp::setup()
 	ShopConfig::getInstance()->parseConfig(configXml);
 
 	ci::gl::Texture bubbleManWaveTexture = cinder::loadImage(ci::app::loadResource(BUBBLEMAN_WAVE));
-	SpriteSheet bubbleManWave = SpriteSheet();
-	bubbleManWave.init(bubbleManWaveTexture, "./spritesheetdata/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+
+	mBubbleManWave = new SpriteSheet();
+	mBubbleManWave->init(bubbleManWaveTexture, "./spritesheetdata/bubbleman_wave.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 
 	ci::gl::Texture bubbleManRunTexture = cinder::loadImage(ci::app::loadResource(BUBBLEMAN_RUN));
-	SpriteSheet bubbleManRun = SpriteSheet();
-	bubbleManRun.init(bubbleManRunTexture, "./spritesheetdata/bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
+	mBubbleManRun = new SpriteSheet();
+	mBubbleManRun->init(bubbleManRunTexture, "./spritesheetdata/bubbleman_run.xml", SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 	
-	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManRun,TextureGlobals::SPRITE_BUBBLEMAN_RUN);
-	TextureGlobals::getInstance()->setSpriteSheet(&bubbleManWave,TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
+	TextureGlobals::getInstance()->setSpriteSheet(mBubbleManRun,TextureGlobals::SPRITE_BUBBLEMAN_RUN);
+	TextureGlobals::getInstance()->setSpriteSheet(mBubbleManWave,TextureGlobals::SPRITE_BUBBLEMAN_WAVE);
 
 	gl::Texture particleTexture0 = loadImage(loadAsset( "ParticleFullON.png" ) ); 
 	TextureGlobals::getInstance()->setParticleTexture(particleTexture0,0);
@@ -359,7 +361,7 @@ void TextTestApp::setup()
 	//currentScene->setup( myFont, iconFactory, fgParticles );
 
 	currentScene = new PassiveScene1();
-	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this, ::_1 ));
+	currentScene->getSignal()->connect( boost::bind(&TextTestApp::onPassiveSceneComplete, this ));
 	currentScene->setup( myFont, iconFactory, fgParticles, mbackground.gridLayer1 );
 
 	iconFactory.init();
