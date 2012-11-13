@@ -7,5 +7,5 @@
 #define BUBBLEMAN_WAVE CINDER_RESOURCE( ../resources/, bubbleman_wave.png, 129, IMAGE )
 #define BUBBLEMAN_RUN CINDER_RESOURCE( ../resources/, bubbleman_run.png, 130, IMAGE )
 
-//#define RES_CUSTOM_FONT CINDER_RESOURCE( ../resources/, ee_nobblee_boldwebfont.ttf, 128, TTF );
+#define RES_CUSTOM_FONT CINDER_RESOURCE( ../resources/, ee_nobblee_boldwebfont.ttf, 128, TTF );
 
