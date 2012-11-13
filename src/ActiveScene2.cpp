@@ -60,7 +60,7 @@ void ActiveScene2::showFrame2(){
 	speedDialNeedle.animateIn();
 
 	
-	bubbleManRun->alpha = 1.0f;
+	//bubbleManRun->alpha = 1.0f;
 }
 
 void ActiveScene2::showFrame3()
